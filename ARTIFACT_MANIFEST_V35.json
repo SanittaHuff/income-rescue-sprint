@@ -69,7 +69,7 @@
     },
     {
       "path": ".github/workflows/quality.yml",
-      "sha256": "eb9cc9c2f540852075fd63a18bd93ff1f1c155c7859e28f6b2864c452ef27358"
+      "sha256": "890935c9b75983913e0985a08371db53cae20ef910d8977a0bf72b830dfe5ba7"
     },
     {
       "path": "scripts/verify-ci-config.py",
