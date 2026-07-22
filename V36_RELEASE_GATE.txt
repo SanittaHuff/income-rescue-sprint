@@ -1,0 +1,107 @@
+
+> income-rescue-evidence-component@0.1.0 verify:release
+> npm run typecheck && npm test && npm run build:reproducible && python scripts/v13-static-quality-gate.py && python scripts/accessibility-preflight.py && python scripts/postgres-preflight.py && npm run artifact:verify
+
+
+> income-rescue-evidence-component@0.1.0 typecheck
+> node node_modules/typescript/bin/tsc --noEmit
+
+
+> income-rescue-evidence-component@0.1.0 test
+> node node_modules/vitest/vitest.mjs run
+
+
+[1m[7m[36m RUN [39m[27m[22m [36mv2.1.9 [39m[90m/mnt/data/v35_next[39m
+
+ [32m✓[39m tests/integration/evidence-to-component.test.ts [2m([22m[2m3 tests[22m[2m)[22m[90m 4[2mms[22m[39m
+ [32m✓[39m tests/integration/private-mvp-runtime.test.ts [2m([22m[2m6 tests[22m[2m)[22m[90m 17[2mms[22m[39m
+ [32m✓[39m tests/frontend/render-private-mvp.test.ts [2m([22m[2m7 tests[22m[2m)[22m[90m 4[2mms[22m[39m
+ [32m✓[39m tests/frontend/reconstructed-v16-v30.test.ts [2m([22m[2m4 tests[22m[2m)[22m[90m 11[2mms[22m[39m
+ [32m✓[39m tests/unit/resume-component.test.ts [2m([22m[2m4 tests[22m[2m)[22m[90m 2[2mms[22m[39m
+ [32m✓[39m tests/e2e/minimal-workflow.test.ts [2m([22m[2m2 tests[22m[2m)[22m[90m 4[2mms[22m[39m
+ [32m✓[39m tests/frontend/private-mvp-model.test.ts [2m([22m[2m4 tests[22m[2m)[22m[90m 16[2mms[22m[39m
+ [32m✓[39m tests/unit/job-matching.test.ts [2m([22m[2m3 tests[22m[2m)[22m[90m 6[2mms[22m[39m
+ [32m✓[39m tests/persistence/json-file-workflow-store.test.ts [2m([22m[2m1 test[22m[2m)[22m[90m 4[2mms[22m[39m
+ [32m✓[39m tests/persistence/workflow-store.test.ts [2m([22m[2m1 test[22m[2m)[22m[90m 3[2mms[22m[39m
+ [32m✓[39m tests/integration/private-mvp-facade.test.ts [2m([22m[2m2 tests[22m[2m)[22m[90m 5[2mms[22m[39m
+ [32m✓[39m tests/frontend/workflow.test.ts [2m([22m[2m4 tests[22m[2m)[22m[90m 5[2mms[22m[39m
+ [32m✓[39m tests/unit/resume-assembly.test.ts [2m([22m[2m1 test[22m[2m)[22m[90m 4[2mms[22m[39m
+ [32m✓[39m tests/contract/api-v1.test.ts [2m([22m[2m3 tests[22m[2m)[22m[90m 3[2mms[22m[39m
+ [32m✓[39m tests/frontend/accessibility-contract.test.ts [2m([22m[2m3 tests[22m[2m)[22m[90m 4[2mms[22m[39m
+ [32m✓[39m tests/persistence/migrations.test.ts [2m([22m[2m1 test[22m[2m)[22m[90m 3[2mms[22m[39m
+ [32m✓[39m tests/unit/resume-export.test.ts [2m([22m[2m2 tests[22m[2m)[22m[90m 4[2mms[22m[39m
+ [32m✓[39m tests/frontend/four-screen-model.test.ts [2m([22m[2m3 tests[22m[2m)[22m[90m 3[2mms[22m[39m
+ [32m✓[39m tests/unit/production-export.test.ts [2m([22m[2m2 tests[22m[2m)[22m[33m 1937[2mms[22m[39m
+   [33m[2m✓[22m[39m production resume export[2m > [22mcreates non-empty DOCX and PDF files [33m947[2mms[22m[39m
+   [33m[2m✓[22m[39m creates readable multi-page production files for a longer governed resume [33m989[2mms[22m[39m
+ [32m✓[39m tests/security/redaction.test.ts [2m([22m[2m2 tests[22m[2m)[22m[90m 3[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m20 passed[39m[22m[90m (20)[39m
+[2m      Tests [22m [1m[32m58 passed[39m[22m[90m (58)[39m
+[2m   Start at [22m 23:50:18
+[2m   Duration [22m 2.21s[2m (transform 340ms, setup 0ms, collect 725ms, tests 2.04s, environment 4ms, prepare 1.21s)[22m
+
+
+> income-rescue-evidence-component@0.1.0 build:reproducible
+> node scripts/verify-reproducible-build.mjs
+
+REPRODUCIBLE_BUILD_PASSED sha256=ac0e3ac9a4b71bf24b16d911178b31198f38458277db4a7c3221732af2f7ddfc bytes=18934
+PASS: four workflow screens
+PASS: confidence selector
+PASS: five confidence levels
+PASS: friendly unsupported wording
+PASS: non-accusatory clarification
+PASS: work preservation notice
+PASS: historical resume recovery
+PASS: email recovery
+PASS: reconstruction recovery
+PASS: highest ROI recovery
+PASS: job description boundary
+PASS: autosave status
+PASS: keyboard focus target
+PASS: integrity checksum
+PASS: unsafe property guard
+PASS: one megabyte import limit
+PASS: clear confirmation
+PASS: source model confidence
+PASS: source model recovery route
+PASS: source renderer parity
+{
+  "passed": 20,
+  "total": 20,
+  "failed": [],
+  "sha256": "ebf07779c6fca6e627729ee8674743145d06c56b04a9108407abce2e9070b9c7"
+}
+PASS: document language
+PASS: descriptive title
+PASS: skip link
+PASS: main landmark
+PASS: main focus target
+PASS: status live region
+PASS: alert live region
+PASS: visible keyboard focus
+PASS: minimum touch target
+PASS: evidence label
+PASS: job description label
+PASS: button types explicit
+PASS: no browser alert dialogs
+PASS: viewport supports zoom
+PASS: headings present
+PASS: no positive tabindex
+PASS: form controls have ids
+PASS: images have alt text
+ACCESSIBILITY_PREFLIGHT_PASSED 18 of 18 checks
+PASS: migration sequence complete
+PASS: docker compose present
+PASS: migration runner present
+PASS: no destructive drop database
+PASS: runner uses atomic migration transactions
+PASS: runner verifies required tables
+PASS: foreign keys present
+PASS: indexes present
+NOTE: This validates readiness only; it does not execute PostgreSQL.
+
+> income-rescue-evidence-component@0.1.0 artifact:verify
+> node scripts/verify-artifact.mjs
+
+ARTIFACT_VERIFICATION_PASSED 20 files

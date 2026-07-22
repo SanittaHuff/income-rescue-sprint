@@ -19,8 +19,9 @@
     "artifact:verify": "node scripts/verify-artifact.mjs",
     "verify:offline": "npm run typecheck && npm test && npm run demo:primary && npm run artifact:verify",
     "build:reproducible": "node scripts/verify-reproducible-build.mjs",
-    "verify:release": "npm run typecheck && npm test && npm run build:reproducible && python scripts/v13-static-quality-gate.py && python scripts/postgres-preflight.py && npm run artifact:verify",
-    "ci:preflight": "python scripts/verify-ci-config.py"
+    "verify:release": "npm run typecheck && npm test && npm run build:reproducible && python scripts/v13-static-quality-gate.py && python scripts/accessibility-preflight.py && python scripts/postgres-preflight.py && npm run artifact:verify",
+    "ci:preflight": "python scripts/verify-ci-config.py",
+    "accessibility:preflight": "python scripts/accessibility-preflight.py"
   },
   "devDependencies": {
     "typescript": "^5.6.3",

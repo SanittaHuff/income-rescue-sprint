@@ -1,0 +1,5 @@
+
+> income-rescue-evidence-component@0.1.0 ci:preflight
+> python scripts/verify-ci-config.py
+
+CI_PREFLIGHT_PASSED 9 controls

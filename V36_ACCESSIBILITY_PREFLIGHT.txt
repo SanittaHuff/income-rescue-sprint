@@ -1,0 +1,19 @@
+PASS: document language
+PASS: descriptive title
+PASS: skip link
+PASS: main landmark
+PASS: main focus target
+PASS: status live region
+PASS: alert live region
+PASS: visible keyboard focus
+PASS: minimum touch target
+PASS: evidence label
+PASS: job description label
+PASS: button types explicit
+PASS: no browser alert dialogs
+PASS: viewport supports zoom
+PASS: headings present
+PASS: no positive tabindex
+PASS: form controls have ids
+PASS: images have alt text
+ACCESSIBILITY_PREFLIGHT_PASSED 18 of 18 checks

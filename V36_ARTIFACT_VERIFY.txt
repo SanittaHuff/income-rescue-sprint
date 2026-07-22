@@ -1,0 +1,5 @@
+
+> income-rescue-evidence-component@0.1.0 artifact:verify
+> node scripts/verify-artifact.mjs
+
+ARTIFACT_VERIFICATION_PASSED 20 files

@@ -1,0 +1,9 @@
+
+> income-rescue-evidence-component@0.1.0 demo:primary
+> npm run build && node dist/src/demo/run-primary-app.js
+
+
+> income-rescue-evidence-component@0.1.0 build
+> node node_modules/typescript/bin/tsc
+
+Generated primary-private-mvp-app.html

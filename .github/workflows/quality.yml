@@ -41,6 +41,9 @@ jobs:
       - name: Run complete offline release gate
         run: npm run verify:release
 
+      - name: Run accessibility preflight
+        run: npm run accessibility:preflight
+
       - name: Generate production export
         run: npm run demo:export
 
