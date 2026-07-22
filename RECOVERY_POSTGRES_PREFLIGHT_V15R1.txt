@@ -1,0 +1,9 @@
+PASS: migration sequence complete
+PASS: docker compose present
+PASS: migration runner present
+PASS: no destructive drop database
+PASS: runner uses atomic migration transactions
+PASS: runner verifies required tables
+PASS: foreign keys present
+PASS: indexes present
+NOTE: This validates readiness only; it does not execute PostgreSQL.

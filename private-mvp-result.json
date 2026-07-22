@@ -1,0 +1,23 @@
+{
+  "ats": {
+    "passed": true,
+    "warnings": []
+  },
+  "match": {
+    "score": 78,
+    "supportedTerms": [
+      "azure",
+      "azure-devops",
+      "administrator",
+      "administration",
+      "powershell",
+      "yaml",
+      "experience."
+    ],
+    "gaps": [
+      "seeking",
+      "governance"
+    ],
+    "explanation": "The score compares normalized job-language terms only with certified resume components. Missing terms are investigation prompts, not proof that the candidate lacks the experience."
+  }
+}

@@ -1,0 +1,21 @@
+import { writeFile } from "node:fs/promises";
+import { PrivateMvpRuntime } from "../application/private-mvp-runtime.js";
+import type { EvidenceItem } from "../domain/evidence/types.js";
+import type { ResumeComponent } from "../domain/resume-component/types.js";
+const now = new Date().toISOString();
+const evidence: EvidenceItem = { evidenceId:"11111111-1111-4111-8111-111111111111", sourceId:"22222222-2222-4222-8222-222222222222", sourceLocation:"Verified Experience Library", exactTextOrFact:"Administered Azure DevOps boards, migrations, permissions, and workflow governance", evidenceType:"responsibility", confidence:"confirmed", verificationStatus:"needs_verification", restrictions:[], version:1, createdAt:now, updatedAt:now, createdBy:"captain", lastUpdatedBy:"captain" };
+const component: ResumeComponent = { componentId:"33333333-3333-4333-8333-333333333333", logicalComponentId:"44444444-4444-4444-8444-444444444444", componentType:"bullet", text:"Administered Azure DevOps boards, migrations, permissions, and workflow governance", evidenceLinks:[], experienceLinks:[], certificationStatus:"draft", approvedLanes:["B3A"], restrictions:[], truthGateStatus:"not_run", qaStatus:"not_run", version:1, createdAt:now, updatedAt:now, createdBy:"chief", lastUpdatedBy:"chief" };
+
+const summaryEvidence: EvidenceItem = { ...evidence, evidenceId:"66666666-6666-4666-8666-666666666666", exactTextOrFact:"Azure DevOps administrator supporting boards, migrations, permissions, reporting, and workflow governance" };
+const summaryComponent: ResumeComponent = { ...component, componentId:"77777777-7777-4777-8777-777777777777", logicalComponentId:"88888888-8888-4888-8888-888888888888", componentType:"summary", text:"Azure DevOps administrator supporting boards, migrations, permissions, reporting, and workflow governance" };
+const runtime = new PrivateMvpRuntime("private-mvp-demo");
+const certified = runtime.certify(evidence, component);
+if (!certified.ok) throw new Error(certified.error.message);
+const certifiedSummary = runtime.certify(summaryEvidence, summaryComponent);
+if (!certifiedSummary.ok) throw new Error(certifiedSummary.error.message);
+const resume = runtime.assemble({ resumeId:"55555555-5555-4555-8555-555555555555", candidateName:"Candidate Name", contactLine:"candidate@example.com | 425-555-1212", title:"Azure DevOps Administrator", targetLane:"B3A" });
+const match = runtime.match({ jobTitle:"Azure DevOps Administrator", jobDescription:"Administer Azure DevOps boards, migrations, permissions, workflow governance, PowerShell and reporting." });
+const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Resume Product Integrated MVP</title><style>body{font-family:Arial,sans-serif;line-height:1.5;max-width:900px;margin:auto;padding:24px}section{border:1px solid #bbb;border-radius:12px;padding:18px;margin:16px 0}.status{font-weight:700}code,pre{white-space:pre-wrap}.gap{font-weight:700}</style></head><body><main><p class="status">🟢 Integrated private MVP demonstration</p><h1>Resume Product</h1><section><h2>1. Certified Evidence</h2><p>${certified.value.evidence.exactTextOrFact}</p></section><section><h2>2. Recruiter Resume Output</h2><pre>${resume.resume.plainText}</pre></section><section><h2>3. Job Match</h2><p>Score: ${match.score}% · Confidence: ${match.confidence}</p><p>Supported: ${match.supportedTerms.join(", ") || "None"}</p><p class="gap">Gaps to investigate: ${match.gaps.join(", ") || "None"}</p><p>${match.highestRoiNextStep}</p></section><section><h2>4. Recovery</h2><p>The session can be exported and restored without losing certified work.</p></section></main></body></html>`;
+await writeFile("integrated-private-mvp-demo.html", html, "utf8");
+await writeFile("integrated-private-mvp-session.json", runtime.exportSession(), "utf8");
+console.log(JSON.stringify({ certification:"passed", ats:resume.ats, match, files:["integrated-private-mvp-demo.html","integrated-private-mvp-session.json"] }, null, 2));

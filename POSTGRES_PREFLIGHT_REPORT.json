@@ -1,0 +1,46 @@
+{
+  "checks": {
+    "migration sequence complete": true,
+    "docker compose present": true,
+    "migration runner present": true,
+    "no destructive drop database": true,
+    "runner uses atomic migration transactions": true,
+    "runner verifies required tables": true,
+    "foreign keys present": true,
+    "indexes present": true
+  },
+  "migrations": [
+    {
+      "file": "001_extensions.sql",
+      "bytes": 41,
+      "sha256": "6b9d13405012508438e45a4e665e444a10bd8172f56b825a3e5560f8e3329275"
+    },
+    {
+      "file": "002_sources_evidence.sql",
+      "bytes": 2125,
+      "sha256": "d5dd131f53bcb6fd2784445399925160aaaa27c2ebcd2c69fce9b060588a9566"
+    },
+    {
+      "file": "003_experiences.sql",
+      "bytes": 1334,
+      "sha256": "8129b5424d200efd215b96924c47caa5694a79f00eb81ead30e22e82d807f84b"
+    },
+    {
+      "file": "004_resume_components.sql",
+      "bytes": 1758,
+      "sha256": "2b776c168c56ebfbb3fdfd3d4f36734d92e86b397450119c18275a1fb8e36c74"
+    },
+    {
+      "file": "005_decisions.sql",
+      "bytes": 817,
+      "sha256": "d57e84c62e1013f70a23e8833398cfcd0a9c8bd0843aa55a490ccfa968654d52"
+    },
+    {
+      "file": "006_versions_audit.sql",
+      "bytes": 962,
+      "sha256": "b379ef8cec23135e5dda6a85d7c70fbcf6f3099d15c7d5cb339f3caa6233be3b"
+    }
+  ],
+  "readyForRealPostgresExecution": true,
+  "actualPostgresExecutionCompleted": false
+}

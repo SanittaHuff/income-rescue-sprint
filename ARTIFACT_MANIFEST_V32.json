@@ -1,0 +1,67 @@
+{
+  "version": "v32",
+  "baseline": "v31 reconstructed and independently verified",
+  "algorithm": "SHA-256",
+  "files": [
+    {
+      "path": "package.json",
+      "sha256": "29b6cdbe06383d1fd1344d650793ecbc26b78aa6c3ac891c4fe2e4533be26a3a"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "163c1883f6c010a3d5cf81e3b7b8ea054e9630d304e9b005eda62374551dca9f"
+    },
+    {
+      "path": "tsconfig.json",
+      "sha256": "803578a52c326e49cf4b0818fa1464a054f0d8526b2014ebdda64cdadeca4ae7"
+    },
+    {
+      "path": "vitest.config.ts",
+      "sha256": "05e72d3fde8e3121e078e8e2ac6e645a0ab7b547c74d59c3f20cb339b9c53126"
+    },
+    {
+      "path": "src/application/private-mvp-runtime.ts",
+      "sha256": "3541d7afa5d6b9fe111cecdecc401d909e0731ad2da659b86264dad4fa42985e"
+    },
+    {
+      "path": "src/application/private-mvp-facade.ts",
+      "sha256": "ae4f2fe659c9b48505710474a6a430a9a3d244a8a0162e7b10683232b642fdba"
+    },
+    {
+      "path": "src/frontend/app/private-mvp-model.ts",
+      "sha256": "a84e3f6b60f5c3539927407a8efe5f50e4f70e4ca42e6d89fa98dbe8fd440916"
+    },
+    {
+      "path": "src/frontend/app/render-private-mvp.ts",
+      "sha256": "549513cfb1e5c61e871101bdb5f0e6516a4a25ba3fb783650fc0085630a5d71d"
+    },
+    {
+      "path": "src/domain/job-matching/service.ts",
+      "sha256": "2e35c4f747ea027e094433a9c3b74bc659b97f0f6d4f5c61bee6e2c501feb190"
+    },
+    {
+      "path": "src/domain/resume-assembly/service.ts",
+      "sha256": "40dd8d1eda33a30769af1a1ae410b9afbbcc5fb696426d6fc3ca7d367d4e69e0"
+    },
+    {
+      "path": "scripts/quality-gate.mjs",
+      "sha256": "bd8949394d3146a0adbe2f88edc8b732c0d4473ee886d8307159e7c5bcb7a11f"
+    },
+    {
+      "path": "scripts/postgres-preflight.py",
+      "sha256": "80c003fcf4d2d322efa002e0c3776890be9833bd25b683fe2cf18a79c0204bc3"
+    },
+    {
+      "path": "scripts/run-postgres-migrations.sh",
+      "sha256": "e17701a288404020c5b4bf72d60bfa64dd5e1ac63ae8ae26e4627c751987bb6b"
+    },
+    {
+      "path": "docker-compose.postgres.yml",
+      "sha256": "8ffe02f22e7957adf4ccdf499672db0595ff616375e9b02684828dbec56ed978"
+    },
+    {
+      "path": "tests/frontend/reconstructed-v16-v30.test.ts",
+      "sha256": "752ed8afdadcd1ffb442b92e47614e49e376761c20c656977c57044a4c51f6e3"
+    }
+  ]
+}

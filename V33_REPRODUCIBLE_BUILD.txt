@@ -1,0 +1,5 @@
+
+> income-rescue-evidence-component@0.1.0 build:reproducible
+> node scripts/verify-reproducible-build.mjs
+
+REPRODUCIBLE_BUILD_PASSED sha256=6a0a2aa923f3f02dd45fe064897080a5d0e74182ec75ca044cbe0d3382faf483 bytes=18480

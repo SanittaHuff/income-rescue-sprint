@@ -1,0 +1,26 @@
+PASS: four workflow screens
+PASS: confidence selector
+PASS: five confidence levels
+PASS: friendly unsupported wording
+PASS: non-accusatory clarification
+PASS: work preservation notice
+PASS: historical resume recovery
+PASS: email recovery
+PASS: reconstruction recovery
+PASS: highest ROI recovery
+PASS: job description boundary
+PASS: autosave status
+PASS: keyboard focus target
+PASS: integrity checksum
+PASS: unsafe property guard
+PASS: one megabyte import limit
+PASS: clear confirmation
+PASS: source model confidence
+PASS: source model recovery route
+PASS: source renderer parity
+{
+  "passed": 20,
+  "total": 20,
+  "failed": [],
+  "sha256": "ebf07779c6fca6e627729ee8674743145d06c56b04a9108407abce2e9070b9c7"
+}
