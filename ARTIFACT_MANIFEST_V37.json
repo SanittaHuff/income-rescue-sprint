@@ -1,0 +1,69 @@
+{
+  "version": "v37",
+  "files": [
+    {
+      "path": "package.json",
+      "sha256": "56b7e6e68d4e891b43e294b03b97a046cc93b58f03644bd04fed7df218449851"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "163c1883f6c010a3d5cf81e3b7b8ea054e9630d304e9b005eda62374551dca9f"
+    },
+    {
+      "path": "tsconfig.json",
+      "sha256": "803578a52c326e49cf4b0818fa1464a054f0d8526b2014ebdda64cdadeca4ae7"
+    },
+    {
+      "path": "vitest.config.ts",
+      "sha256": "05e72d3fde8e3121e078e8e2ac6e645a0ab7b547c74d59c3f20cb339b9c53126"
+    },
+    {
+      "path": "src/frontend/app/render-private-mvp.ts",
+      "sha256": "c7a329c62596de4a97e5e12bb931471ee84f073991da8663fa867cda535e4e8c"
+    },
+    {
+      "path": "src/frontend/app/private-mvp-model.ts",
+      "sha256": "a84e3f6b60f5c3539927407a8efe5f50e4f70e4ca42e6d89fa98dbe8fd440916"
+    },
+    {
+      "path": "src/application/private-mvp-runtime.ts",
+      "sha256": "3541d7afa5d6b9fe111cecdecc401d909e0731ad2da659b86264dad4fa42985e"
+    },
+    {
+      "path": "src/domain/job-matching/service.ts",
+      "sha256": "2e35c4f747ea027e094433a9c3b74bc659b97f0f6d4f5c61bee6e2c501feb190"
+    },
+    {
+      "path": "scripts/verify-artifact.mjs",
+      "sha256": "9d6b3cd252969988f353e78322dc3f5ba32af1ce11744970d9eaa131cb668492"
+    },
+    {
+      "path": "scripts/verify-reproducible-build.mjs",
+      "sha256": "c887a15d3b94d50c53253fde3f344ece82513353494bbf12b828bf0246204784"
+    },
+    {
+      "path": "scripts/accessibility-preflight.py",
+      "sha256": "90afc3e7018377435dbc29c42e2adf9da391a052104b06ff784e90e4d8459a2c"
+    },
+    {
+      "path": "scripts/verify-user-test-package.py",
+      "sha256": "d8b75643180361c7bf0d8230b97d4db331c4529bc96a46be7bab48e8c369c6e7"
+    },
+    {
+      "path": "CAPTAIN_USER_TESTING_V37.md",
+      "sha256": "5905a25e9dad9771b3785ed3d3c6f0cfbef09e60fa6a0c16395c3673aa362a41"
+    },
+    {
+      "path": "USER_TEST_EVIDENCE_TEMPLATE_V37.md",
+      "sha256": "6a5e804affc1a556f6c5a92f2d99ebfa16523ae8546a37e5316d2797b78a5c70"
+    },
+    {
+      "path": "resume-product-primary-private-mvp-v37.html",
+      "sha256": "ac0e3ac9a4b71bf24b16d911178b31198f38458277db4a7c3221732af2f7ddfc"
+    },
+    {
+      "path": ".github/workflows/quality.yml",
+      "sha256": "5a8036a6e9ea0a0f3fa4bf097d48c0a5e5a6f1e9aecde08253525a0ae1b0a8fe"
+    }
+  ]
+}
