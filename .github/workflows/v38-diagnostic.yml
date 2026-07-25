@@ -1,0 +1,57 @@
+name: V38 Release Gate Diagnostic
+
+on:
+  pull_request:
+    branches: [v38-canonical]
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Dependency preflight
+        run: npm run dependency:preflight
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Tests
+        run: npm test
+
+      - name: Reproducible build
+        run: npm run build:reproducible
+
+      - name: Static quality gate
+        run: python scripts/v13-static-quality-gate.py
+
+      - name: Accessibility preflight
+        run: python scripts/accessibility-preflight.py
+
+      - name: PostgreSQL preflight
+        run: python scripts/postgres-preflight.py
+
+      - name: Artifact verification
+        run: npm run artifact:verify
+
+      - name: User-test preflight
+        run: npm run user-test:preflight
