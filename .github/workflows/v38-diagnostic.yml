@@ -35,23 +35,14 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
 
-      - name: Tests
-        run: npm test
+      - name: Capture tests
+        run: npm test > test-output.txt 2>&1
 
-      - name: Reproducible build
-        run: npm run build:reproducible
-
-      - name: Static quality gate
-        run: python scripts/v13-static-quality-gate.py
-
-      - name: Accessibility preflight
-        run: python scripts/accessibility-preflight.py
-
-      - name: PostgreSQL preflight
-        run: python scripts/postgres-preflight.py
-
-      - name: Artifact verification
-        run: npm run artifact:verify
-
-      - name: User-test preflight
-        run: npm run user-test:preflight
+      - name: Upload test diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v38-test-diagnostics
+          if-no-files-found: error
+          retention-days: 7
+          path: test-output.txt
