@@ -3,11 +3,11 @@
   "files": [
     {
       "path": "package.json",
-      "sha256": "9ce5d2ff81bca654fea0e42abd52bd51d8008bcab2d08c124ef7b30412a2a31e"
+      "sha256": "576d0f54d0feb39500baabc44af8f2ba74b25b3792c6fc64a4e871e4b5de3c9a"
     },
     {
       "path": "package-lock.json",
-      "sha256": "ecf0d0e9ccde3ffd3d1cc5dea2aabdeedc39010296c634d63b736130ca7ad89d"
+      "sha256": "bf7044239907382bea63561ba347f0e43c5ede3579b368bb6d07e5e8d1d624f7"
     },
     {
       "path": "tsconfig.json",
