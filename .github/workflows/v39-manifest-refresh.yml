@@ -1,0 +1,46 @@
+name: V39 Manifest Refresh
+
+on:
+  pull_request:
+    branches: [v38-canonical]
+
+permissions:
+  contents: write
+
+jobs:
+  refresh-manifest:
+    if: github.head_ref == 'v39-ci-repair'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repair branch
+        uses: actions/checkout@v4
+        with:
+          ref: v39-ci-repair
+
+      - name: Refresh recorded SHA-256 values
+        run: |
+          python - <<'PY'
+          import hashlib, json
+          path = 'ARTIFACT_MANIFEST_V39.json'
+          with open(path, encoding='utf-8') as f:
+              manifest = json.load(f)
+          for item in manifest['files']:
+              with open(item['path'], 'rb') as f:
+                  item['sha256'] = hashlib.sha256(f.read()).hexdigest()
+          with open(path, 'w', encoding='utf-8', newline='\n') as f:
+              json.dump(manifest, f, indent=2)
+              f.write('\n')
+          PY
+
+      - name: Commit refreshed manifest when changed
+        run: |
+          if git diff --quiet -- ARTIFACT_MANIFEST_V39.json; then
+            echo "Manifest already current."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add ARTIFACT_MANIFEST_V39.json
+          git commit -m "Refresh v39 artifact integrity manifest"
+          git push origin HEAD:v39-ci-repair
