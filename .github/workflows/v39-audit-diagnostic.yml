@@ -34,3 +34,5 @@ jobs:
           if-no-files-found: error
           retention-days: 7
           path: npm-audit.json
+
+# This diagnostic remains isolated from the canonical release workflow.
