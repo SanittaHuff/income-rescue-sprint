@@ -1,0 +1,32 @@
+name: V39 Lockfile Refresh
+
+on:
+  pull_request:
+    branches: [v38-canonical]
+
+permissions:
+  contents: read
+
+jobs:
+  refresh-lockfile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Regenerate lockfile
+        run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
+
+      - name: Upload refreshed lockfile
+        uses: actions/upload-artifact@v4
+        with:
+          name: v39-refreshed-lockfile
+          retention-days: 7
+          if-no-files-found: error
+          path: package-lock.json
