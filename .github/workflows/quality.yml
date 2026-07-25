@@ -2,7 +2,7 @@ name: Resume Product Release Gate
 
 on:
   push:
-    branches: [main, master]
+    branches: [main, master, ci-validation-v38]
   pull_request:
   workflow_dispatch:
 
