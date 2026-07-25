@@ -3,7 +3,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const root = resolve(process.cwd());
-const manifestPath = resolve(root, 'ARTIFACT_MANIFEST_V38.json');
+const manifestPath = resolve(root, 'ARTIFACT_MANIFEST_V39.json');
 if (!existsSync(manifestPath)) {
   console.error('ARTIFACT_MANIFEST_MISSING');
   process.exit(1);
