@@ -1,0 +1,53 @@
+name: V40 Navigation Source Repair
+
+on:
+  pull_request:
+    branches: [v39-canonical]
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repair branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Repair navigation selector syntax
+        shell: python
+        run: |
+          from pathlib import Path
+          path = Path('src/frontend/app/render-private-mvp.ts')
+          text = path.read_text(encoding='utf-8')
+          bad = 'document.querySelector(`[data-panel="${screen}"] h2`)?.focus()'
+          good = 'document.querySelector(\'[data-panel="\'+screen+\'"] h2\')?.focus()'
+          if bad in text:
+              text = text.replace(bad, good)
+          if 'location.reload()' in text:
+              raise SystemExit('Full-page reload remains in navigation source')
+          path.write_text(text, encoding='utf-8')
+
+      - name: Verify navigation source
+        run: |
+          node scripts/verify-navigation-regression.mjs
+          if grep -q 'document.querySelector(`' src/frontend/app/render-private-mvp.ts; then
+            echo 'Unsafe nested template literal remains'
+            exit 1
+          fi
+
+      - name: Commit verified syntax repair
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/frontend/app/render-private-mvp.ts
+          if git diff --cached --quiet; then
+            echo "No source repair changes to commit"
+            exit 0
+          fi
+          git commit -m "Repair in-page navigation selector syntax"
+          git push origin HEAD:${{ github.head_ref }}
