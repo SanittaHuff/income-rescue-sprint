@@ -24,10 +24,11 @@ jobs:
           from pathlib import Path
           path = Path('src/frontend/app/render-private-mvp.ts')
           text = path.read_text(encoding='utf-8')
-          bad = 'document.querySelector(`[data-panel="${screen}"] h2`)?.focus()'
-          good = 'document.querySelector(\'[data-panel="\'+screen+\'"] h2\')?.focus()'
-          if bad in text:
-              text = text.replace(bad, good)
+          bad = '''document.querySelector(`[data-panel="${screen}"] h2`)?.focus()'''
+          good = '''document.querySelector('[data-panel="'+screen+'"] h2')?.focus()'''
+          if bad not in text:
+              raise SystemExit('Expected nested navigation selector was not found')
+          text = text.replace(bad, good)
           if 'location.reload()' in text:
               raise SystemExit('Full-page reload remains in navigation source')
           path.write_text(text, encoding='utf-8')
@@ -45,9 +46,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add src/frontend/app/render-private-mvp.ts
-          if git diff --cached --quiet; then
-            echo "No source repair changes to commit"
-            exit 0
-          fi
           git commit -m "Repair in-page navigation selector syntax"
           git push origin HEAD:${{ github.head_ref }}
