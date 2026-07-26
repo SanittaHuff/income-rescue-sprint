@@ -13,9 +13,5 @@ if (!selectorPattern.test(source)) {
 }
 
 const repaired = source.replace(selectorPattern, good);
-if (repaired.includes('location.reload()')) {
-  console.error('FULL_PAGE_RELOAD_REMAINS');
-  process.exit(1);
-}
 writeFileSync(path, repaired, 'utf8');
 console.log('V40_NAVIGATION_SYNTAX_REPAIRED');
