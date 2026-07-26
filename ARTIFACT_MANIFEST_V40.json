@@ -1,0 +1,27 @@
+{
+  "version": "v40",
+  "files": [
+    {"path":"package.json","sha256":"576d0f54d0feb39500baabc44af8f2ba74b25b3792c6fc64a4e871e4b5de3c9a"},
+    {"path":"package-lock.json","sha256":"bf7044239907382bea63561ba347f0e43c5ede3579b368bb6d07e5e8d1d624f7"},
+    {"path":"tsconfig.json","sha256":"803578a52c326e49cf4b0818fa1464a054f0d8526b2014ebdda64cdadeca4ae7"},
+    {"path":"vitest.config.ts","sha256":"05e72d3fde8e3121e078e8e2ac6e645a0ab7b547c74d59c3f20cb339b9c53126"},
+    {"path":"src/frontend/app/render-private-mvp.ts","sha256":"510f80665c06e55dc098de70809f44641501b2188f9e06f1644812959eea14ca"},
+    {"path":"src/frontend/app/private-mvp-model.ts","sha256":"a84e3f6b60f5c3539927407a8efe5f50e4f70e4ca42e6d89fa98dbe8fd440916"},
+    {"path":"src/application/private-mvp-runtime.ts","sha256":"3541d7afa5d6b9fe111cecdecc401d909e0731ad2da659b86264dad4fa42985e"},
+    {"path":"src/domain/job-matching/service.ts","sha256":"2e35c4f747ea027e094433a9c3b74bc659b97f0f6d4f5c61bee6e2c501feb190"},
+    {"path":"scripts/verify-artifact.mjs","sha256":"a318a27de68ae6b677f9e465a42a9e2119b770cdb010400281cc3b87f0adafb7"},
+    {"path":"scripts/verify-reproducible-build.mjs","sha256":"c887a15d3b94d50c53253fde3f344ece82513353494bbf12b828bf0246204784"},
+    {"path":"scripts/accessibility-preflight.py","sha256":"90afc3e7018377435dbc29c42e2adf9da391a052104b06ff784e90e4d8459a2c"},
+    {"path":"scripts/verify-user-test-package.py","sha256":"d8b75643180361c7bf0d8230b97d4db331c4529bc96a46be7bab48e8c369c6e7"},
+    {"path":"scripts/dependency-preflight.mjs","sha256":"2a44f7a7cc636d133e3ead349a407a81bda8b469d96476afcd6aaa6ebefd1203"},
+    {"path":"docs/DEPENDENCY_RECOVERY.md","sha256":"dfa29d0a309f5595418082a32b8f868c7056d4e6b8a40fe85b6c68e553028586"},
+    {"path":"CAPTAIN_USER_TESTING_V37.md","sha256":"5905a25e9dad9771b3785ed3d3c6f0cfbef09e60fa6a0c16395c3673aa362a41"},
+    {"path":"USER_TEST_EVIDENCE_TEMPLATE_V37.md","sha256":"6a5e804affc1a556f6c5a92f2d99ebfa16523ae8546a37e5316d2797b78a5c70"},
+    {"path":"resume-product-primary-private-mvp-v38.html","sha256":"ac0e3ac9a4b71bf24b16d911178b31198f38458277db4a7c3221732af2f7ddfc"},
+    {"path":".github/workflows/quality.yml","sha256":"1e1eb5a4c95308a43445f6931511e96ad80cc146a87450db8178ac71e4301550"},
+    {"path":"requirements-ci.txt","sha256":"89739c11dab5da993c3d5082e453f818d15d23f3fae854d93670bc092c7c07c6"},
+    {"path":"EXECUTION_EVIDENCE_V38.md","sha256":"d3c9b4f1a1f83578fd18509e6e6309f320ded4ff41b6100378c7a2bc40ada854"},
+    {"path":"EXECUTION_EVIDENCE_V39.md","sha256":"81d20365483659d115ee395c7bbdaaf398d59c6eb426caa52c7807416092bba3"},
+    {"path":"scripts/verify-navigation-regression.mjs","sha256":"d01ddcff6c1710933f4dee4426f0e0007aad71a953ffbafd9c1bf551f49d2975"}
+  ]
+}
