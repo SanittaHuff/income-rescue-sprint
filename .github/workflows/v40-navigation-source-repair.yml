@@ -19,19 +19,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Repair navigation selector syntax
-        shell: python
-        run: |
-          from pathlib import Path
-          path = Path('src/frontend/app/render-private-mvp.ts')
-          text = path.read_text(encoding='utf-8')
-          bad = '''document.querySelector(`[data-panel="${screen}"] h2`)?.focus()'''
-          good = '''document.querySelector('[data-panel="'+screen+'"] h2')?.focus()'''
-          if bad not in text:
-              raise SystemExit('Expected nested navigation selector was not found')
-          text = text.replace(bad, good)
-          if 'location.reload()' in text:
-              raise SystemExit('Full-page reload remains in navigation source')
-          path.write_text(text, encoding='utf-8')
+        run: node scripts/patch-v40-navigation.mjs
 
       - name: Verify navigation source
         run: |
