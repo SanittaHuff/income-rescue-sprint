@@ -1,0 +1,36 @@
+name: V40 Manifest Refresh
+
+on:
+  pull_request:
+    branches: [v39-canonical]
+
+permissions:
+  contents: read
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate v40 integrity manifest
+        run: |
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          old = json.loads(Path('ARTIFACT_MANIFEST_V39.json').read_text(encoding='utf-8'))
+          files = []
+          for item in old['files']:
+              path = Path(item['path'])
+              files.append({'path': item['path'], 'sha256': hashlib.sha256(path.read_bytes()).hexdigest()})
+          for extra in ['scripts/verify-navigation-regression.mjs']:
+              path = Path(extra)
+              if path.exists() and not any(item['path'] == extra for item in files):
+                  files.append({'path': extra, 'sha256': hashlib.sha256(path.read_bytes()).hexdigest()})
+          Path('ARTIFACT_MANIFEST_V40.json').write_text(json.dumps({'version':'v40','files':files}, indent=2)+'\n', encoding='utf-8')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v40-integrity-manifest
+          path: ARTIFACT_MANIFEST_V40.json
+          retention-days: 7
+          if-no-files-found: error
