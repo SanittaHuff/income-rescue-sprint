@@ -3,7 +3,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 const path = 'src/frontend/app/render-private-mvp.ts';
 const source = readFileSync(path, 'utf8');
 const selectorPattern = /document\.querySelector\(`\[data-panel="\$\{screen\}"\] h2`\)\?\.focus\(\)/;
-const good = 'document.querySelector(\'[data-panel="\' + screen + '\"] h2\')?.focus()';
+const good = "document.querySelector('[data-panel=\"'+screen+'\"] h2')?.focus()";
 
 if (!selectorPattern.test(source)) {
   console.error('EXPECTED_NESTED_NAVIGATION_SELECTOR_NOT_FOUND');
