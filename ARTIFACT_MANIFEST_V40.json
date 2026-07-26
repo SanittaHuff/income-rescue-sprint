@@ -9,7 +9,7 @@
     {"path":"src/frontend/app/private-mvp-model.ts","sha256":"a84e3f6b60f5c3539927407a8efe5f50e4f70e4ca42e6d89fa98dbe8fd440916"},
     {"path":"src/application/private-mvp-runtime.ts","sha256":"3541d7afa5d6b9fe111cecdecc401d909e0731ad2da659b86264dad4fa42985e"},
     {"path":"src/domain/job-matching/service.ts","sha256":"2e35c4f747ea027e094433a9c3b74bc659b97f0f6d4f5c61bee6e2c501feb190"},
-    {"path":"scripts/verify-artifact.mjs","sha256":"a318a27de68ae6b677f9e465a42a9e2119b770cdb010400281cc3b87f0adafb7"},
+    {"path":"scripts/verify-artifact.mjs","sha256":"7edd8a1dcf8a39ce7783b1dbd69352dcf526e80e4ee86adcc32f0aef127b68a4"},
     {"path":"scripts/verify-reproducible-build.mjs","sha256":"c887a15d3b94d50c53253fde3f344ece82513353494bbf12b828bf0246204784"},
     {"path":"scripts/accessibility-preflight.py","sha256":"90afc3e7018377435dbc29c42e2adf9da391a052104b06ff784e90e4d8459a2c"},
     {"path":"scripts/verify-user-test-package.py","sha256":"d8b75643180361c7bf0d8230b97d4db331c4529bc96a46be7bab48e8c369c6e7"},
