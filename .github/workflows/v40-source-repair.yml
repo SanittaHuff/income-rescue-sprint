@@ -1,0 +1,62 @@
+name: V40 Navigation Source Repair
+
+on:
+  pull_request:
+    branches: [v39-canonical]
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repair branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Replace reload navigation with in-page switching
+        shell: python
+        run: |
+          from pathlib import Path
+          path = Path('src/frontend/app/render-private-mvp.ts')
+          text = path.read_text(encoding='utf-8')
+          old = "document.querySelectorAll('[data-screen]').forEach(b=>b.addEventListener('click',()=>{state.activeScreen=b.dataset.screen;save();location.reload()}));"
+          new = "const showScreen=(screen)=>{state.activeScreen=screen;document.querySelectorAll('[data-panel]').forEach(panel=>{panel.hidden=panel.dataset.panel!==screen});document.querySelectorAll('[data-screen]').forEach(button=>button.setAttribute('aria-current',button.dataset.screen===screen?'step':'false'));save();document.querySelector(`[data-panel=\"${screen}\"] h2`)?.focus()};document.querySelectorAll('[data-panel]').forEach(panel=>{panel.hidden=panel.dataset.panel!==state.activeScreen});document.querySelectorAll('[data-panel] h2').forEach(heading=>heading.setAttribute('tabindex','-1'));document.querySelectorAll('[data-screen]').forEach(b=>b.addEventListener('click',()=>showScreen(b.dataset.screen)));"
+          if old not in text:
+              raise SystemExit('Expected reload navigation source was not found')
+          path.write_text(text.replace(old, new), encoding='utf-8')
+
+      - name: Add navigation regression verifier
+        run: |
+          cat > scripts/verify-navigation-regression.mjs <<'EOF'
+          import { readFileSync } from 'node:fs';
+          const source = readFileSync('src/frontend/app/render-private-mvp.ts', 'utf8');
+          const failures = [];
+          if (source.includes('location.reload()')) failures.push('full-page reload remains in workflow navigation');
+          if (!source.includes("panel.hidden=panel.dataset.panel!==screen")) failures.push('in-page panel switching is missing');
+          if (!source.includes("button.setAttribute('aria-current'")) failures.push('active-step accessibility state update is missing');
+          if (!source.includes("heading.setAttribute('tabindex','-1')")) failures.push('screen heading focus target is missing');
+          if (failures.length) {
+            console.error('NAVIGATION_REGRESSION_FAILED');
+            failures.forEach((failure) => console.error(failure));
+            process.exit(1);
+          }
+          console.log('NAVIGATION_REGRESSION_PASSED');
+          EOF
+          node scripts/verify-navigation-regression.mjs
+
+      - name: Commit verified source repair
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/frontend/app/render-private-mvp.ts scripts/verify-navigation-regression.mjs
+          if git diff --cached --quiet; then
+            echo "No repair changes to commit"
+            exit 0
+          fi
+          git commit -m "Repair workflow navigation without page reloads"
+          git push origin HEAD:${{ github.head_ref }}
