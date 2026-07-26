@@ -1,0 +1,73 @@
+name: V40 Release Diagnostic
+
+on:
+  pull_request:
+    branches: [v39-canonical]
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install locked Node dependencies
+        run: npm ci
+
+      - name: Install locked Python dependencies
+        run: pip install -r requirements-ci.txt
+
+      - name: Dependency preflight
+        continue-on-error: true
+        run: npm run dependency:preflight
+
+      - name: Typecheck
+        continue-on-error: true
+        run: npm run typecheck
+
+      - name: Tests
+        continue-on-error: true
+        run: npm test
+
+      - name: Reproducible build
+        continue-on-error: true
+        run: npm run build:reproducible
+
+      - name: Static quality gate
+        continue-on-error: true
+        run: python scripts/v13-static-quality-gate.py
+
+      - name: Accessibility preflight
+        continue-on-error: true
+        run: python scripts/accessibility-preflight.py
+
+      - name: PostgreSQL preflight
+        continue-on-error: true
+        run: python scripts/postgres-preflight.py
+
+      - name: Artifact integrity
+        continue-on-error: true
+        run: npm run artifact:verify
+
+      - name: User-test package preflight
+        continue-on-error: true
+        run: npm run user-test:preflight
+
+      - name: Navigation regression
+        continue-on-error: true
+        run: node scripts/verify-navigation-regression.mjs

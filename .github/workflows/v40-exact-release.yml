@@ -1,0 +1,56 @@
+name: V40 Exact Release Capture
+
+on:
+  pull_request:
+    branches: [v39-canonical]
+
+permissions:
+  contents: read
+
+jobs:
+  exact-release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          npm ci
+          pip install -r requirements-ci.txt
+
+      - name: Capture exact release gate
+        id: release
+        continue-on-error: true
+        shell: bash
+        run: |
+          set +e
+          npm run verify:release 2>&1 | tee v40-exact-release.log
+          status=${PIPESTATUS[0]}
+          echo "exit_code=$status" >> "$GITHUB_OUTPUT"
+          exit "$status"
+
+      - name: Upload exact release log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v40-exact-release-log
+          if-no-files-found: error
+          retention-days: 7
+          path: v40-exact-release.log
+
+      - name: Enforce release result
+        if: always()
+        run: test "${{ steps.release.outputs.exit_code }}" = "0"
