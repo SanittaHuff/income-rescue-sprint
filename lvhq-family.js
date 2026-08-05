@@ -1,5 +1,6 @@
 const HELP_KEY = 'lvhq-help-tips-enabled';
 const GUIDED_KEY = 'lvhq-guided-mode-enabled';
+const WELCOME_KEY = 'lvhq-welcome-complete';
 
 const helpContent = {
   'Overview': 'See your current progress, priorities, and the clearest next action.',
@@ -120,6 +121,62 @@ function renderCoachStrip() {
   });
 }
 
+function installWelcomeStyles() {
+  if (document.getElementById('lvhqWelcomeStyles')) return;
+  const style = document.createElement('style');
+  style.id = 'lvhqWelcomeStyles';
+  style.textContent = `
+    .welcome-overlay{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;padding:1rem;background:rgba(3,10,14,.86)}
+    .welcome-card{width:min(720px,100%);max-height:90vh;overflow:auto;padding:1.4rem;border:1px solid #486474;border-radius:1rem;background:#101b22;box-shadow:0 24px 80px rgba(0,0,0,.45)}
+    .welcome-card h2{margin:.25rem 0 .6rem}.welcome-card p{line-height:1.55}.welcome-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.7rem;margin:1rem 0}.welcome-steps div{padding:.85rem;border:1px solid #334b59;border-radius:.7rem;background:#0d171c}.welcome-steps strong,.welcome-steps span{display:block}.welcome-steps span{margin-top:.25rem;color:#c7d8df;font-size:.9rem}.welcome-actions{display:flex;gap:.65rem;justify-content:flex-end;flex-wrap:wrap;margin-top:1rem}.welcome-note{padding:.8rem;border-left:4px solid #4fb3d8;background:#10232d;border-radius:.35rem}@media(max-width:650px){.welcome-steps{grid-template-columns:1fr}.welcome-actions{justify-content:stretch}.welcome-actions button{flex:1 1 100%}}
+  `;
+  document.head.appendChild(style);
+}
+
+function closeWelcome({ guided = false, panel = '' } = {}) {
+  localStorage.setItem(WELCOME_KEY, 'true');
+  document.getElementById('welcomeOverlay')?.remove();
+  setGuidedEnabled(guided);
+  if (panel) document.querySelector(`[data-panel="${panel}"]`)?.click();
+}
+
+function showFirstUseWelcome() {
+  if (localStorage.getItem(WELCOME_KEY) === 'true' || document.getElementById('welcomeOverlay')) return;
+  installWelcomeStyles();
+  const overlay = document.createElement('div');
+  overlay.id = 'welcomeOverlay';
+  overlay.className = 'welcome-overlay';
+  overlay.setAttribute('role', 'dialog');
+  overlay.setAttribute('aria-modal', 'true');
+  overlay.setAttribute('aria-labelledby', 'welcomeTitle');
+  overlay.innerHTML = `
+    <section class="welcome-card">
+      <p class="eyebrow">Welcome to Income Rescue Sprint</p>
+      <h2 id="welcomeTitle">Start small. Keep control. Build momentum.</h2>
+      <p>This prototype helps you organize work experience, prepare resume content, compare opportunities, and see one practical next action.</p>
+      <div class="welcome-note"><strong>You do not need documents or proof to begin.</strong> Start with what you remember. You can add dates, examples, or supporting information later.</div>
+      <div class="welcome-steps">
+        <div><strong>1. Add one experience</strong><span>Use your own words. A rough memory is enough to start.</span></div>
+        <div><strong>2. Review your wording</strong><span>Edit or approve what feels accurate and useful.</span></div>
+        <div><strong>3. Take one next step</strong><span>Guided Mode keeps the clearest action visible.</span></div>
+      </div>
+      <p class="plain-language-note">Prototype reminder: do not enter passwords, financial details, medical information, or confidential customer or employer information.</p>
+      <div class="welcome-actions">
+        <button id="welcomeExplore" class="outline" type="button">Explore on my own</button>
+        <button id="welcomeLearn" class="secondary" type="button">See Getting Started</button>
+        <button id="welcomeGuided" type="button">Start with Guided Mode</button>
+      </div>
+    </section>`;
+  document.body.appendChild(overlay);
+  document.getElementById('welcomeExplore').addEventListener('click', () => closeWelcome());
+  document.getElementById('welcomeLearn').addEventListener('click', () => {
+    closeWelcome();
+    openLearningCenter();
+  });
+  document.getElementById('welcomeGuided').addEventListener('click', () => closeWelcome({ guided: true, panel: 'evidence' }));
+  document.getElementById('welcomeGuided').focus();
+}
+
 function installFamilyExperience() {
   const headerIdentity = document.querySelector('.topbar > div:first-child');
   if (headerIdentity && !document.querySelector('.lvhq-family')) {
@@ -155,6 +212,7 @@ function installFamilyExperience() {
   replaceTechnicalLanguage();
   applyContextHelp();
   renderCoachStrip();
+  window.setTimeout(showFirstUseWelcome, 250);
 }
 
 const observer = new MutationObserver(() => {
