@@ -64,10 +64,26 @@
     });
   }
 
+  function loadExperienceEnhancements() {
+    if (!document.querySelector('link[href="build-mode.css"]')) {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = 'build-mode.css';
+      document.head.appendChild(link);
+    }
+    if (!document.querySelector('script[src="build-mode.js"]')) {
+      const script = document.createElement('script');
+      script.src = 'build-mode.js';
+      script.defer = true;
+      document.body.appendChild(script);
+    }
+  }
+
   function runPrototypeQA() {
     addInputSafety();
     improveDialogAccess();
     labelDynamicControls();
+    loadExperienceEnhancements();
     document.documentElement.dataset.prototypeQa = 'active';
   }
 
