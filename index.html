@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Income Rescue Sprint</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">Quiet Bridge Research</p>
+      <h1>Income Rescue Sprint</h1>
+    </div>
+    <button id="privacyBtn" class="secondary">Privacy & Trust</button>
+  </header>
+
+  <main class="shell">
+    <section class="hero card">
+      <div>
+        <span class="status">Pilot Workspace</span>
+        <h2>Turn scattered experience into your next best job-search action.</h2>
+        <p>Capture evidence, build truthful resume content, prioritize opportunities, and stay focused without losing your history.</p>
+      </div>
+      <div class="progress-wrap">
+        <strong id="progressText">Sprint readiness: 35%</strong>
+        <div class="progress"><span id="progressBar"></span></div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="card action-card">
+        <h3>1. Experience Evidence</h3>
+        <p>Capture the work you actually did before drafting resume language.</p>
+        <button data-panel="evidence">Open Evidence Intake</button>
+      </article>
+      <article class="card action-card">
+        <h3>2. Resume Readiness</h3>
+        <p>Review approved facts, gaps, and recruiter-ready components.</p>
+        <button data-panel="resume">Review Resume Readiness</button>
+      </article>
+      <article class="card action-card">
+        <h3>3. Opportunity Priority</h3>
+        <p>Compare roles by fit, urgency, location, pay, and evidence strength.</p>
+        <button data-panel="jobs">View Opportunities</button>
+      </article>
+      <article class="card action-card">
+        <h3>4. Next Best Action</h3>
+        <p>See the single highest-ROI action for today.</p>
+        <button data-panel="next">Show My Next Action</button>
+      </article>
+    </section>
+
+    <section id="workspace" class="card workspace" aria-live="polite">
+      <h2>Welcome</h2>
+      <p>Select a workspace card above to begin.</p>
+    </section>
+
+    <section class="card trust-strip">
+      <div><strong>Truth Gate</strong><span>No unverified claims added.</span></div>
+      <div><strong>User Control</strong><span>You approve consequential outputs.</span></div>
+      <div><strong>Export Ready</strong><span>Your information remains portable.</span></div>
+    </section>
+  </main>
+
+  <dialog id="privacyDialog">
+    <h2>Privacy & Trust</h2>
+    <p>This prototype uses local browser storage only. It does not send data to a server.</p>
+    <button id="closePrivacy">Close</button>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
