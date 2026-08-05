@@ -1,0 +1,29 @@
+name: Visible MVP Quality
+
+on:
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'styles.css'
+      - 'app.js'
+      - 'scripts/validate-visible-mvp.mjs'
+      - 'package.json'
+      - '.github/workflows/visible-mvp-quality.yml'
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate visible MVP
+        run: npm run validate:mvp
