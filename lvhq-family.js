@@ -1,4 +1,5 @@
 const HELP_KEY = 'lvhq-help-tips-enabled';
+const GUIDED_KEY = 'lvhq-guided-mode-enabled';
 
 const helpContent = {
   'Overview': 'See your current progress, priorities, and the clearest next action.',
@@ -14,11 +15,23 @@ function helpEnabled() {
   return localStorage.getItem(HELP_KEY) !== 'false';
 }
 
+function guidedEnabled() {
+  return localStorage.getItem(GUIDED_KEY) === 'true';
+}
+
 function setHelpEnabled(enabled) {
   localStorage.setItem(HELP_KEY, String(enabled));
   document.body.classList.toggle('help-tips-off', !enabled);
-  document.getElementById('helpTipsToggle')?.setAttribute('aria-checked', String(enabled));
-  document.getElementById('helpTipsCheckbox')?.toggleAttribute('checked', enabled);
+  const checkbox = document.getElementById('helpTipsCheckbox');
+  if (checkbox) checkbox.checked = enabled;
+}
+
+function setGuidedEnabled(enabled) {
+  localStorage.setItem(GUIDED_KEY, String(enabled));
+  document.body.classList.toggle('guided-mode-on', enabled);
+  const checkbox = document.getElementById('guidedModeCheckbox');
+  if (checkbox) checkbox.checked = enabled;
+  renderCoachStrip();
 }
 
 function addInfoTip(element, label, text) {
@@ -35,7 +48,7 @@ function addInfoTip(element, label, text) {
 
 function applyContextHelp() {
   document.querySelectorAll('.nav-button').forEach(button => {
-    const label = button.textContent.trim();
+    const label = button.childNodes[0]?.textContent?.trim() || button.textContent.trim();
     addInfoTip(button, label, helpContent[label] || 'Open this section for more information.');
   });
   const progress = document.querySelector('.progress-wrap strong');
@@ -65,6 +78,48 @@ function openLearningCenter() {
   if (dialog?.showModal) dialog.showModal();
 }
 
+function addWrittenGuide() {
+  const card = document.querySelector('#learningDialog .learning-card');
+  if (!card || document.getElementById('writtenGuide')) return;
+  const guide = document.createElement('section');
+  guide.id = 'writtenGuide';
+  guide.className = 'written-guide';
+  guide.innerHTML = `
+    <h3>How to use Income Rescue Sprint</h3>
+    <ol>
+      <li><strong>Start with one experience.</strong> Write what you remember in your own words.</li>
+      <li><strong>Review it when ready.</strong> Add dates, tools, examples, or supporting information later.</li>
+      <li><strong>Create resume wording.</strong> Keep, edit, or reject every suggestion.</li>
+      <li><strong>Add opportunities.</strong> Compare fit, timing, pay, and work arrangement.</li>
+      <li><strong>Follow one next action.</strong> Guided Mode keeps the clearest next step visible.</li>
+    </ol>
+    <p>You remain in control. Nothing is submitted, shared, or applied for automatically.</p>`;
+  card.appendChild(guide);
+}
+
+function renderCoachStrip() {
+  let strip = document.getElementById('coachStrip');
+  if (!guidedEnabled()) {
+    strip?.remove();
+    return;
+  }
+  const workspace = document.getElementById('workspace');
+  if (!workspace || typeof getNextAction !== 'function') return;
+  const next = getNextAction();
+  if (!strip) {
+    strip = document.createElement('section');
+    strip.id = 'coachStrip';
+    strip.className = 'coach-strip card';
+    workspace.parentNode.insertBefore(strip, workspace);
+  }
+  strip.innerHTML = `
+    <div><span class="coach-label">Guided Mode</span><strong>${escapeHtml(next.title)}</strong><p>${escapeHtml(next.detail)}</p></div>
+    <button id="coachActionBtn" type="button">Take this step</button>`;
+  document.getElementById('coachActionBtn')?.addEventListener('click', () => {
+    document.querySelector(`[data-panel="${next.panel}"]`)?.click();
+  });
+}
+
 function installFamilyExperience() {
   const headerIdentity = document.querySelector('.topbar > div:first-child');
   if (headerIdentity && !document.querySelector('.lvhq-family')) {
@@ -80,23 +135,32 @@ function installFamilyExperience() {
     controls.className = 'help-controls';
     controls.innerHTML = `
       <button id="learningBtn" class="secondary learn-button" type="button">Getting Started</button>
+      <label class="help-toggle" title="Keep the clearest next step visible">
+        <input id="guidedModeCheckbox" type="checkbox" ${guidedEnabled() ? 'checked' : ''} />
+        <span>Guided Mode</span>
+      </label>
       <label class="help-toggle" title="Show or hide optional explanations throughout the product">
         <input id="helpTipsCheckbox" type="checkbox" ${helpEnabled() ? 'checked' : ''} />
         <span>Help Tips</span>
       </label>`;
     actions.prepend(controls);
     document.getElementById('learningBtn').addEventListener('click', openLearningCenter);
+    document.getElementById('guidedModeCheckbox').addEventListener('change', event => setGuidedEnabled(event.target.checked));
     document.getElementById('helpTipsCheckbox').addEventListener('change', event => setHelpEnabled(event.target.checked));
   }
 
   setHelpEnabled(helpEnabled());
+  document.body.classList.toggle('guided-mode-on', guidedEnabled());
+  addWrittenGuide();
   replaceTechnicalLanguage();
   applyContextHelp();
+  renderCoachStrip();
 }
 
 const observer = new MutationObserver(() => {
   replaceTechnicalLanguage();
   applyContextHelp();
+  renderCoachStrip();
 });
 
 window.addEventListener('DOMContentLoaded', () => {
