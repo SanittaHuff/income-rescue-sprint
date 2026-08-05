@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Income Rescue Sprint — a governed job-search recovery workspace." />
-  <title>Income Rescue Sprint</title>
+  <meta name="description" content="Income Rescue Sprint — an independent job-search recovery product in the Life Vault HQ family." />
+  <title>Income Rescue Sprint | Life Vault HQ Family</title>
   <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="lvhq-family.css" />
 </head>
 <body>
   <a class="skip-link" href="#workspace">Skip to workspace</a>
@@ -14,7 +15,7 @@
     <div>
       <p class="eyebrow">Quiet Bridge Research</p>
       <h1>Income Rescue Sprint</h1>
-      <p class="topbar-subtitle">Evidence first. Truth gated. User controlled.</p>
+      <p class="topbar-subtitle">Your experience, organized with care and kept under your control.</p>
     </div>
     <div class="topbar-actions">
       <button id="exportBtn" class="secondary" type="button">Export</button>
@@ -27,9 +28,10 @@
       <div>
         <span class="status">Private MVP Workspace</span>
         <h2 id="heroTitle">Turn scattered experience into your next best job-search action.</h2>
-        <p>Capture evidence, approve truthful resume content, prioritize opportunities, and keep every action visible.</p>
+        <p>Start with what you remember. Organize your experience, strengthen your resume, prioritize opportunities, and keep every action visible.</p>
+        <div class="reassurance"><strong>You do not need proof to begin.</strong> Add documents, examples, or supporting details later whenever they are available.</div>
         <div class="hero-actions">
-          <button data-panel="evidence" type="button">Add Experience Evidence</button>
+          <button data-panel="evidence" type="button">Add Experience</button>
           <button data-panel="next" class="outline" type="button">Show Next Best Action</button>
         </div>
       </div>
@@ -38,15 +40,15 @@
         <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
           <span id="progressBar"></span>
         </div>
-        <p id="progressHint" class="muted">Add verified evidence to begin.</p>
+        <p id="progressHint" class="muted">Add one experience to begin.</p>
       </div>
     </section>
 
     <section class="metrics" aria-label="Workspace summary">
-      <article class="metric card"><span>Evidence</span><strong id="evidenceCount">0</strong><small id="verifiedCount">0 verified</small></article>
-      <article class="metric card"><span>Resume components</span><strong id="componentCount">0</strong><small>truth-gated</small></article>
+      <article class="metric card"><span>Experience entries</span><strong id="evidenceCount">0</strong><small id="verifiedCount">0 reviewed</small></article>
+      <article class="metric card"><span>Resume components</span><strong id="componentCount">0</strong><small>approved by you</small></article>
       <article class="metric card"><span>Opportunities</span><strong id="jobCount">0</strong><small id="priorityCount">0 high priority</small></article>
-      <article class="metric card"><span>Open actions</span><strong id="actionCount">1</strong><small>next-best-action driven</small></article>
+      <article class="metric card"><span>Open actions</span><strong id="actionCount">1</strong><small>one clear step at a time</small></article>
     </section>
 
     <nav class="module-nav card" aria-label="Income Rescue modules">
@@ -61,11 +63,27 @@
     <section id="workspace" class="card workspace" aria-live="polite" tabindex="-1"></section>
 
     <section class="card trust-strip" aria-label="Trust controls">
-      <div><strong>Truth Gate</strong><span>No unverified claims become resume content.</span></div>
-      <div><strong>User Control</strong><span>You approve, edit, export, and delete your information.</span></div>
+      <div><strong>Your Experience</strong><span>You can begin with memory and add supporting information later.</span></div>
+      <div><strong>Your Control</strong><span>You approve, edit, export, and delete your information.</span></div>
       <div><strong>Local Prototype</strong><span>Data stays in this browser unless you export it.</span></div>
     </section>
   </main>
+
+  <dialog id="learningDialog" aria-labelledby="learningTitle">
+    <h2 id="learningTitle">Getting Started</h2>
+    <p class="plain-language-note">Income Rescue Sprint helps you gather your work experience, turn it into useful resume content, compare opportunities, and identify the next practical action.</p>
+    <div class="learning-card">
+      <h3>Instructional and informational videos</h3>
+      <div class="video-grid">
+        <div class="video-placeholder"><strong>2-minute overview</strong><span>What this product is for and what it can help you accomplish.</span></div>
+        <div class="video-placeholder"><strong>Your first session</strong><span>How to enter one experience and begin building momentum.</span></div>
+        <div class="video-placeholder"><strong>Experience Evidence</strong><span>Why memory is enough to start and how supporting information can be added later.</span></div>
+        <div class="video-placeholder"><strong>Resume Readiness</strong><span>How you review and approve wording before using it.</span></div>
+      </div>
+      <p class="plain-language-note">Video production is planned. Each video will include captions, a transcript, and an accessible written guide.</p>
+    </div>
+    <div class="dialog-actions"><button id="closeLearning" type="button">Close</button></div>
+  </dialog>
 
   <dialog id="privacyDialog" aria-labelledby="privacyTitle">
     <h2 id="privacyTitle">Privacy & Trust</h2>
@@ -86,5 +104,9 @@
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <input id="importInput" type="file" accept="application/json" hidden />
   <script src="app.js"></script>
+  <script src="lvhq-family.js"></script>
+  <script>
+    document.getElementById('closeLearning')?.addEventListener('click', () => document.getElementById('learningDialog').close());
+  </script>
 </body>
 </html>
