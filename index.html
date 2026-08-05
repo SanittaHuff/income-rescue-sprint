@@ -11,6 +11,11 @@
 <body>
   <a class="skip-link" href="#workspace">Skip to workspace</a>
 
+  <div class="prototype-banner" role="status">
+    <strong>Prototype Preview</strong>
+    <span>This live build is for product review and testing. Do not enter passwords, financial information, medical information, or other sensitive personal data.</span>
+  </div>
+
   <header class="topbar">
     <div>
       <p class="eyebrow">Quiet Bridge Research</p>
@@ -26,7 +31,7 @@
   <main class="shell">
     <section class="hero card" aria-labelledby="heroTitle">
       <div>
-        <span class="status">Private MVP Workspace</span>
+        <span class="status">Live Prototype Workspace</span>
         <h2 id="heroTitle">Turn scattered experience into your next best job-search action.</h2>
         <p>Start with what you remember. Organize your experience, strengthen your resume, prioritize opportunities, and keep every action visible.</p>
         <div class="reassurance"><strong>You do not need proof to begin.</strong> Add documents, examples, or supporting details later whenever they are available.</div>
@@ -67,6 +72,22 @@
       <div><strong>Your Control</strong><span>You approve, edit, export, and delete your information.</span></div>
       <div><strong>Local Prototype</strong><span>Data stays in this browser unless you export it.</span></div>
     </section>
+
+    <section class="card readiness-panel" aria-labelledby="readinessTitle">
+      <div class="readiness-heading">
+        <div>
+          <p class="eyebrow">Product Readiness</p>
+          <h2 id="readinessTitle">What this live prototype is—and is not</h2>
+        </div>
+        <span class="readiness-state">Prototype review</span>
+      </div>
+      <div class="readiness-grid">
+        <div><strong>Available now</strong><span>Local browser workspace, experience capture, resume-component review, opportunity prioritization, export/import, contextual help, and Learning Center placeholders.</span></div>
+        <div><strong>Not yet approved</strong><span>Real participant data, sensitive data, payments, memberships, external connectors, account recovery, autonomous applications, or commercial launch.</span></div>
+        <div><strong>Reviews still required</strong><span>Final wording and visual design; Constitution; user experience; security and privacy; technical architecture; quality; legal and regulatory review.</span></div>
+      </div>
+      <p class="readiness-note">This disclosure stays visible so prototype progress is never confused with certification, production security, pilot authorization, or launch approval.</p>
+    </section>
   </main>
 
   <dialog id="learningDialog" aria-labelledby="learningTitle">
@@ -87,7 +108,8 @@
 
   <dialog id="privacyDialog" aria-labelledby="privacyTitle">
     <h2 id="privacyTitle">Privacy & Trust</h2>
-    <p>This MVP stores information only in this browser using local storage. It has no server, payment system, external connector, background automation, or autonomous application feature.</p>
+    <p>This prototype stores information only in this browser using local storage. It has no server, account-recovery system, payment system, external connector, background automation, or autonomous application feature.</p>
+    <p><strong>Do not enter sensitive information:</strong> Do not use passwords, authentication codes, Social Security numbers, financial account details, medical information, private customer information, or confidential employer data in this prototype.</p>
     <p><strong>Important:</strong> Clearing browser storage can erase local data. Use Export to create a portable JSON backup.</p>
     <button id="closePrivacy" type="button">Close</button>
   </dialog>
