@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Income Rescue Sprint — a governed job-search recovery workspace." />
+  <title>Income Rescue Sprint</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#workspace">Skip to workspace</a>
+
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">Quiet Bridge Research</p>
+      <h1>Income Rescue Sprint</h1>
+      <p class="topbar-subtitle">Evidence first. Truth gated. User controlled.</p>
+    </div>
+    <div class="topbar-actions">
+      <button id="exportBtn" class="secondary" type="button">Export</button>
+      <button id="privacyBtn" class="secondary" type="button">Privacy & Trust</button>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="hero card" aria-labelledby="heroTitle">
+      <div>
+        <span class="status">Private MVP Workspace</span>
+        <h2 id="heroTitle">Turn scattered experience into your next best job-search action.</h2>
+        <p>Capture evidence, approve truthful resume content, prioritize opportunities, and keep every action visible.</p>
+        <div class="hero-actions">
+          <button data-panel="evidence" type="button">Add Experience Evidence</button>
+          <button data-panel="next" class="outline" type="button">Show Next Best Action</button>
+        </div>
+      </div>
+      <div class="progress-wrap" aria-label="Sprint readiness">
+        <strong id="progressText">Sprint readiness: 0%</strong>
+        <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <span id="progressBar"></span>
+        </div>
+        <p id="progressHint" class="muted">Add verified evidence to begin.</p>
+      </div>
+    </section>
+
+    <section class="metrics" aria-label="Workspace summary">
+      <article class="metric card"><span>Evidence</span><strong id="evidenceCount">0</strong><small id="verifiedCount">0 verified</small></article>
+      <article class="metric card"><span>Resume components</span><strong id="componentCount">0</strong><small>truth-gated</small></article>
+      <article class="metric card"><span>Opportunities</span><strong id="jobCount">0</strong><small id="priorityCount">0 high priority</small></article>
+      <article class="metric card"><span>Open actions</span><strong id="actionCount">1</strong><small>next-best-action driven</small></article>
+    </section>
+
+    <nav class="module-nav card" aria-label="Income Rescue modules">
+      <button data-panel="dashboard" class="nav-button active" type="button">Overview</button>
+      <button data-panel="evidence" class="nav-button" type="button">Experience Evidence</button>
+      <button data-panel="resume" class="nav-button" type="button">Resume Readiness</button>
+      <button data-panel="jobs" class="nav-button" type="button">Opportunity Priority</button>
+      <button data-panel="next" class="nav-button" type="button">Next Best Action</button>
+      <button data-panel="settings" class="nav-button" type="button">Data & Settings</button>
+    </nav>
+
+    <section id="workspace" class="card workspace" aria-live="polite" tabindex="-1"></section>
+
+    <section class="card trust-strip" aria-label="Trust controls">
+      <div><strong>Truth Gate</strong><span>No unverified claims become resume content.</span></div>
+      <div><strong>User Control</strong><span>You approve, edit, export, and delete your information.</span></div>
+      <div><strong>Local Prototype</strong><span>Data stays in this browser unless you export it.</span></div>
+    </section>
+  </main>
+
+  <dialog id="privacyDialog" aria-labelledby="privacyTitle">
+    <h2 id="privacyTitle">Privacy & Trust</h2>
+    <p>This MVP stores information only in this browser using local storage. It has no server, payment system, external connector, background automation, or autonomous application feature.</p>
+    <p><strong>Important:</strong> Clearing browser storage can erase local data. Use Export to create a portable JSON backup.</p>
+    <button id="closePrivacy" type="button">Close</button>
+  </dialog>
+
+  <dialog id="confirmDialog" aria-labelledby="confirmTitle">
+    <h2 id="confirmTitle">Confirm action</h2>
+    <p id="confirmMessage"></p>
+    <div class="dialog-actions">
+      <button id="cancelConfirm" class="outline" type="button">Cancel</button>
+      <button id="acceptConfirm" class="danger" type="button">Confirm</button>
+    </div>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <input id="importInput" type="file" accept="application/json" hidden />
+  <script src="app.js"></script>
+</body>
+</html>
