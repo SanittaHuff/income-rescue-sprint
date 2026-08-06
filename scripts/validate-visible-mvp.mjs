@@ -67,4 +67,36 @@ if (files.buildCss.includes('*,@media')) {
   throw new Error('Malformed reduced-motion CSS detected.');
 }
 
-console.log('Visible MVP static validation passed across product, LVHQ, safety, accessibility, and display-preference assets.');
+if (!files.html.includes('href="build-mode.css"') || !files.html.includes('src="build-mode.js"')) {
+  throw new Error('P0 enhancement assets exist but are not wired into the live product.');
+}
+
+const companionRequirements = [
+  'Career Companion',
+  'not a live autonomous agent',
+  'No mailbox, calendar, job board, external AI service, or automatic application access',
+  'Permission level:',
+  'Explain and navigate only'
+];
+const missingCompanion = companionRequirements.filter(value => !files.buildJs.includes(value));
+if (missingCompanion.length) {
+  throw new Error(`Career Companion truth boundaries are incomplete: ${missingCompanion.join(', ')}`);
+}
+
+if (!files.buildCss.includes('.career-companion') || !files.buildCss.includes('.companion-panel')) {
+  throw new Error('Career Companion responsive styling is missing.');
+}
+
+if (!files.buildJs.includes("button.setAttribute('aria-label', 'Mark this evidence as reviewed by you')")) {
+  throw new Error('Evidence self-review control is not labeled truthfully.');
+}
+
+if (!files.html.includes('Written walkthroughs available now') || !files.html.includes('Video production remains planned')) {
+  throw new Error('Getting Started does not distinguish working guidance from planned video production.');
+}
+
+if (!files.html.includes('<strong>Not connected</strong>')) {
+  throw new Error('Product readiness does not clearly disclose unavailable connectors and services.');
+}
+
+console.log('Visible MVP static validation passed across product, LVHQ, safety, accessibility, P0 Companion, capability-boundary, and display-preference assets.');
