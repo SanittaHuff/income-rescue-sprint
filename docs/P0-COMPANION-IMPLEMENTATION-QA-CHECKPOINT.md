@@ -4,14 +4,16 @@
 **Repository:** `SanittaHuff/income-rescue-sprint`  
 **Branch:** `p0-companion-remediation`  
 **Pull request:** #6 — Draft / unmerged  
-**Verified code-and-test checkpoint:** `530ec201012d6d1389d30f16586af239b7e0814d`  
-**Quality workflow:** Visible MVP Quality — run 62 — success  
-**QA artifact:** `p0-browser-qa-report`, artifact `8964760931`  
-**Artifact digest:** `sha256:a7f418e191dde54c18bcb2c8e60d53717c827bbaa97fa19329e60dabfb54e849`
+**Verified tested review-build checkpoint:** `14a628529d4090106bdf43d535112dafa85ad882`  
+**Quality workflow:** Visible MVP Quality — run 69 — success  
+**Browser QA artifact:** `p0-browser-qa-report`, artifact `8964991729`  
+**Browser QA digest:** `sha256:126f08b02b6461f46efbae8be57294665cbe459ad38f75f1a994579e9297f4e5`  
+**Human review build:** `p0-human-review-build`, artifact `8964992204`  
+**Human review build digest:** `sha256:d12d663e8eb1a5c45ae35e6721ee8dbbf8f6816df9f36c614ef770c14dda296c`
 
 ## Governed result
 
-The P0 implementation block passed repository static validation and nine Chromium browser scenarios after final visual-evidence review and contrast correction. The branch remains a review build. This checkpoint does not authorize merge, deployment, production use, sensitive or real participant data, live connectors, autonomous actions, pilot activity, commercialization, or any certification claim.
+The P0 implementation block passed repository static validation and ten Chromium browser scenarios after final visual-evidence review, contrast correction, and narrow-screen navigation remediation. A tested offline human-review build was generated from the same successful workflow. The branch remains a review build. This checkpoint does not authorize merge, deployment, production use, sensitive or real participant data, live connectors, autonomous actions, pilot activity, commercialization, or any certification claim.
 
 ## Verified working capabilities
 
@@ -35,6 +37,7 @@ The P0 implementation block passed repository static validation and nine Chromiu
 - Connections & Agent Controls center with five permission levels and explicit connector status.
 - Written Getting Started guidance for core workflow, recruiter-email review, and agent/connector status.
 - Mobile and 200%-equivalent reflow evidence.
+- Every major product area is visibly reachable in narrow-screen navigation without horizontal discovery dependency.
 - Keyboard focus containment, Escape behavior, and focus return evidence.
 - Local export/import and invalid-data safe failure evidence.
 - Memory-first reassurance text has explicit readable contrast on its dark panel.
@@ -50,6 +53,7 @@ The P0 implementation block passed repository static validation and nine Chromiu
 7. Governed export/import and invalid-import safe failure.
 8. Automated WCAG 2.0/2.1 A/AA serious-impact preflight across Overview, Companion, Recruiter Email Review, and Connections & Agent Controls, including explicit reassurance-panel color regression checks.
 9. Redacted risk-phrase acceptance with actual SSN/account/authentication-shaped values rejected.
+10. All eight major product areas visible and operable through narrow-screen navigation.
 
 ## Material defects found and corrected during QA
 
@@ -61,12 +65,22 @@ The P0 implementation block passed repository static validation and nine Chromiu
 - Companion outline actions had insufficient contrast.
 - Agent-permission descriptions were slightly below the WCAG contrast threshold.
 - Visual screenshot review found the memory-first reassurance text inherited dark text on a dark background; explicit light text and strong-emphasis colors were added and regression-tested.
+- Narrow-screen navigation hid later product areas behind horizontal scrolling; it now changes to a fully visible grid and is regression-tested.
 
-Each defect above was corrected before workflow run 62 passed.
+Each defect above was corrected before workflow run 69 passed.
 
 ## Evidence preserved
 
-The workflow artifact contains the Playwright HTML report, screenshots, traces retained on failure during remediation, and test result evidence. The final workflow steps for static validation, governed browser QA, and evidence preservation all completed successfully.
+The browser QA artifact contains the Playwright HTML report, screenshots, traces retained on failure during remediation, and test-result evidence.
+
+The tested human-review build contains:
+
+- all required product HTML, CSS, and JavaScript assets;
+- `P0-REVIEW-START-HERE.txt`;
+- `docs/P0-HUMAN-REVIEW-GATE.md`;
+- `docs/RECRUITER-ATS-BASELINE-AND-P0-RETEST.md`.
+
+The downloaded human-review ZIP was independently checked after download: its SHA-256 matched the workflow digest, all 14 expected files were present, and ZIP integrity testing reported no errors.
 
 ## Remaining human and formal review gates
 
@@ -79,7 +93,7 @@ Automated Chromium and axe-core results are preflight evidence only. They are no
 - a Five Required Reviews pass;
 - security, privacy, architecture, legal, pilot, production, or release approval.
 
-Before PR #6 leaves Draft, the governing review must determine the remaining human comprehension and real assistive-technology evidence required, conduct the targeted Recruiter/ATS retest, and disposition any resulting Critical or High findings.
+Before PR #6 leaves Draft, the governing review must conduct the prepared human-review gate, disposition whether a real ATS parser/keyword comparison and video content are required at the next product gate, and correct/retest every resulting Critical or High finding.
 
 ## Current release boundary
 
