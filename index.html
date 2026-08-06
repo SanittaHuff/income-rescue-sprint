@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="lvhq-family.css" />
   <link rel="stylesheet" href="build-mode.css" />
+  <link rel="stylesheet" href="p0-tools.css" />
 </head>
 <body>
   <a class="skip-link" href="#workspace">Skip to workspace</a>
@@ -63,6 +64,8 @@
       <button data-panel="resume" class="nav-button" type="button">Resume Readiness</button>
       <button data-panel="jobs" class="nav-button" type="button">Opportunity Priority</button>
       <button data-panel="next" class="nav-button" type="button">Next Best Action</button>
+      <button data-panel="email-review" class="nav-button" type="button">Recruiter Email Review</button>
+      <button data-panel="capabilities" class="nav-button" type="button">Connections & Agent Controls</button>
       <button data-panel="settings" class="nav-button" type="button">Data & Settings</button>
     </nav>
 
@@ -83,7 +86,7 @@
         <span class="readiness-state">Prototype review</span>
       </div>
       <div class="readiness-grid">
-        <div><strong>Available now</strong><span>Local browser workspace, experience capture, resume-component review, opportunity prioritization, export/import, contextual help, and written Getting Started guidance.</span></div>
+        <div><strong>Available now</strong><span>Local browser workspace, experience capture, resume-component review, opportunity prioritization, user-supplied recruiter-email review, agent-permission visibility, export/import, contextual help, and written Getting Started guidance.</span></div>
         <div><strong>Not connected</strong><span>No mailbox, calendar, job board, external AI service, or automatic application access is connected in this prototype.</span></div>
         <div><strong>Reviews still required</strong><span>Final wording and visual design; Constitution; user experience; security and privacy; technical architecture; quality; legal and regulatory review.</span></div>
       </div>
@@ -101,6 +104,8 @@
         <div class="video-placeholder"><strong>Your first session</strong><span>Add one experience example, include tools and outcomes, then save it for your review.</span></div>
         <div class="video-placeholder"><strong>Experience Evidence</strong><span>Memory is enough to begin. Add source notes later and mark evidence reviewed only after checking it yourself.</span></div>
         <div class="video-placeholder"><strong>Resume Readiness</strong><span>Create editable recruiter-facing wording only from evidence you have reviewed, then approve the final wording yourself.</span></div>
+        <div class="video-placeholder"><strong>Recruiter Email Review</strong><span>Paste redacted text, review detected requests and safety cautions, then edit the local reply draft. No mailbox is connected.</span></div>
+        <div class="video-placeholder"><strong>Agent & Connector Status</strong><span>Use Connections & Agent Controls to see what works locally, what requires approval, and what remains unavailable.</span></div>
       </div>
       <p class="plain-language-note">Video production remains planned. Future videos must include captions, transcripts, and equivalent written guidance.</p>
     </div>
@@ -109,7 +114,7 @@
 
   <dialog id="privacyDialog" aria-labelledby="privacyTitle">
     <h2 id="privacyTitle">Privacy & Trust</h2>
-    <p>This prototype stores information only in this browser using local storage. It has no server, account-recovery system, payment system, external connector, background automation, or autonomous application feature.</p>
+    <p>This prototype stores workspace information only in this browser using local storage. Recruiter-email text is reviewed only while that page is open and is not included in workspace exports. The prototype has no server, account-recovery system, payment system, external connector, background automation, or autonomous application feature.</p>
     <p><strong>Do not enter sensitive information:</strong> Do not use passwords, authentication codes, Social Security numbers, financial account details, medical information, private customer information, or confidential employer data in this prototype.</p>
     <p><strong>Important:</strong> Clearing browser storage can erase local data. Use Export to create a portable JSON backup.</p>
     <button id="closePrivacy" type="button">Close</button>
@@ -131,6 +136,7 @@
   <script src="lvhq-family.js"></script>
   <script src="prototype-qa.js"></script>
   <script src="build-mode.js"></script>
+  <script src="p0-tools.js"></script>
   <script>
     document.getElementById('closeLearning')?.addEventListener('click', () => document.getElementById('learningDialog').close());
   </script>
