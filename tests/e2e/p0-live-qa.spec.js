@@ -120,9 +120,9 @@ test('legacy and unknown evidence states migrate safely and drive governed workf
   });
 
   await page.locator('.nav-button[data-panel="evidence"]').click();
-  await expect(page.locator('[data-id="ev-reviewed"]')).toContainText('Reviewed by you');
-  await expect(page.locator('[data-id="ev-pending"]')).toContainText('Needs your review');
-  await expect(page.locator('[data-id="ev-independent"]')).toContainText('Independently verified');
+  await expect(page.locator('article[data-id="ev-reviewed"]')).toContainText('Reviewed by you');
+  await expect(page.locator('article[data-id="ev-pending"]')).toContainText('Needs your review');
+  await expect(page.locator('article[data-id="ev-independent"]')).toContainText('Independently verified');
 
   await page.locator('.nav-button[data-panel="resume"]').click();
   await expect(page.locator('#evidenceId option')).toContainText(['Select evidence', /Legacy reviewed role/, /Independent role/]);
@@ -131,11 +131,11 @@ test('legacy and unknown evidence states migrate safely and drive governed workf
   await expect(page.getByRole('heading', { name: 'Review evidence from Pending role' })).toBeVisible();
 
   await page.locator('.nav-button[data-panel="evidence"]').click();
-  await page.locator('[data-id="ev-reviewed"] [data-action="edit-evidence"]').click();
+  await page.locator('article[data-id="ev-reviewed"] [data-action="edit-evidence"]').click();
   await page.locator('#evidence').fill('Reviewed evidence changed during edit');
   await page.getByRole('button', { name: 'Save Changes' }).click();
   await expect.poll(async () => (await storedWorkspace(page)).evidence.find(item => item.id === 'ev-reviewed').status).toBe('needs-review');
-  await expect(page.locator('[data-id="ev-reviewed"]')).toContainText('Needs your review');
+  await expect(page.locator('article[data-id="ev-reviewed"]')).toContainText('Needs your review');
 });
 
 test('export and import preserve governed states and invalid imports fail safely', async ({ page }) => {
