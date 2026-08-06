@@ -20,6 +20,10 @@ async function expectNoSeriousAccessibilityViolations(page, label) {
 
 test('core, Companion, email review, and capability surfaces pass automated WCAG preflight', async ({ page }) => {
   await openProduct(page);
+  const reassurance = page.locator('.reassurance');
+  await expect(reassurance).toBeVisible();
+  await expect.poll(() => reassurance.evaluate(element => getComputedStyle(element).color)).toBe('rgb(234, 247, 251)');
+  await expect.poll(() => reassurance.locator('strong').evaluate(element => getComputedStyle(element).color)).toBe('rgb(255, 255, 255)');
   await expectNoSeriousAccessibilityViolations(page, 'Overview');
 
   await page.locator('#careerCompanionToggle').click();
