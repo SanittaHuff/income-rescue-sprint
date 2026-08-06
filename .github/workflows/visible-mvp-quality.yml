@@ -14,7 +14,10 @@ on:
       - 'build-mode.js'
       - 'p0-tools.css'
       - 'p0-tools.js'
+      - 'P0-REVIEW-START-HERE.txt'
       - 'README.md'
+      - 'docs/P0-HUMAN-REVIEW-GATE.md'
+      - 'docs/RECRUITER-ATS-BASELINE-AND-P0-RETEST.md'
       - 'scripts/validate-visible-mvp.mjs'
       - 'tests/e2e/**'
       - 'playwright.config.js'
@@ -54,4 +57,26 @@ jobs:
             playwright-report/
             test-results/
           if-no-files-found: ignore
+          retention-days: 30
+      - name: Publish tested P0 human review build
+        if: ${{ success() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: p0-human-review-build
+          path: |
+            P0-REVIEW-START-HERE.txt
+            index.html
+            styles.css
+            app.js
+            evidence-state-governance.js
+            lvhq-family.css
+            lvhq-family.js
+            prototype-qa.js
+            build-mode.css
+            build-mode.js
+            p0-tools.css
+            p0-tools.js
+            docs/P0-HUMAN-REVIEW-GATE.md
+            docs/RECRUITER-ATS-BASELINE-AND-P0-RETEST.md
+          if-no-files-found: error
           retention-days: 30
