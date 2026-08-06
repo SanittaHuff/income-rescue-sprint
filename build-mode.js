@@ -81,38 +81,18 @@ function improveWelcomeKeyboardSafety() {
   });
 }
 
+// Only patch known legacy controls. Never rewrite user-authored content or governed status labels.
 function replaceVisibleText(root = document.body) {
   if (!root || root.nodeType !== Node.ELEMENT_NODE) return;
-  const replacements = [
-    [/\bverified evidence\b/i, 'evidence reviewed by you'],
-    [/\bverified\b/i, 'reviewed by you'],
-    [/\bunverified\b/i, 'not yet reviewed'],
-    [/\bverification\b/i, 'your review'],
-    [/\bverify\b/i, 'review']
-  ];
-  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
-    acceptNode(node) {
-      const parent = node.parentElement;
-      if (!parent || ['SCRIPT', 'STYLE', 'TEXTAREA', 'INPUT', 'OPTION'].includes(parent.tagName)) return NodeFilter.FILTER_REJECT;
-      return replacements.some(([pattern]) => pattern.test(node.nodeValue || '')) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
-    }
-  });
-  const nodes = [];
-  while (walker.nextNode()) nodes.push(walker.currentNode);
-  nodes.forEach(node => {
-    let value = node.nodeValue;
-    replacements.forEach(([pattern, replacement]) => {
-      value = value.replace(new RegExp(pattern.source, 'gi'), replacement);
-    });
-    node.nodeValue = value;
-  });
 
-  root.querySelectorAll('button[data-action="verify-evidence"]').forEach(button => {
+  root.querySelectorAll('button[data-action="verify-evidence"], button[data-action="review-evidence"]').forEach(button => {
     button.textContent = 'Mark reviewed by me';
     button.setAttribute('aria-label', 'Mark this evidence as reviewed by you');
   });
   root.querySelectorAll('.chip').forEach(chip => {
-    if (chip.textContent.trim().toLowerCase() === 'verified') chip.textContent = 'Reviewed by you';
+    const value = chip.textContent.trim().toLowerCase();
+    if (value === 'verified') chip.textContent = 'Reviewed by you';
+    if (value === 'pending') chip.textContent = 'Needs your review';
   });
 }
 
