@@ -4,14 +4,14 @@
 **Repository:** `SanittaHuff/income-rescue-sprint`  
 **Branch:** `p0-companion-remediation`  
 **Pull request:** #6 — Draft / unmerged  
-**Verified commit:** `55e9157b0af8613c8c51a0213848d3a362195050`  
-**Quality workflow:** Visible MVP Quality — run 59 — success  
-**QA artifact:** `p0-browser-qa-report`, artifact `8964563903`  
-**Artifact digest:** `sha256:9ac06564e0050efc2033dffc6fb882d76b002205d60fb71fba302890d53237d3`
+**Verified code-and-test checkpoint:** `530ec201012d6d1389d30f16586af239b7e0814d`  
+**Quality workflow:** Visible MVP Quality — run 62 — success  
+**QA artifact:** `p0-browser-qa-report`, artifact `8964760931`  
+**Artifact digest:** `sha256:a7f418e191dde54c18bcb2c8e60d53717c827bbaa97fa19329e60dabfb54e849`
 
 ## Governed result
 
-The P0 implementation block passed repository static validation and nine Chromium browser scenarios. The branch remains a review build. This checkpoint does not authorize merge, deployment, production use, sensitive or real participant data, live connectors, autonomous actions, pilot activity, commercialization, or any certification claim.
+The P0 implementation block passed repository static validation and nine Chromium browser scenarios after final visual-evidence review and contrast correction. The branch remains a review build. This checkpoint does not authorize merge, deployment, production use, sensitive or real participant data, live connectors, autonomous actions, pilot activity, commercialization, or any certification claim.
 
 ## Verified working capabilities
 
@@ -37,6 +37,7 @@ The P0 implementation block passed repository static validation and nine Chromiu
 - Mobile and 200%-equivalent reflow evidence.
 - Keyboard focus containment, Escape behavior, and focus return evidence.
 - Local export/import and invalid-data safe failure evidence.
+- Memory-first reassurance text has explicit readable contrast on its dark panel.
 
 ## Automated browser scenarios passed
 
@@ -47,7 +48,7 @@ The P0 implementation block passed repository static validation and nine Chromiu
 5. Recruiter-email signal/risk review without connecting, sending, or persisting pasted text.
 6. Agent-permission and connector-status visibility with external actions unavailable.
 7. Governed export/import and invalid-import safe failure.
-8. Automated WCAG 2.0/2.1 A/AA serious-impact preflight across Overview, Companion, Recruiter Email Review, and Connections & Agent Controls.
+8. Automated WCAG 2.0/2.1 A/AA serious-impact preflight across Overview, Companion, Recruiter Email Review, and Connections & Agent Controls, including explicit reassurance-panel color regression checks.
 9. Redacted risk-phrase acceptance with actual SSN/account/authentication-shaped values rejected.
 
 ## Material defects found and corrected during QA
@@ -59,8 +60,9 @@ The P0 implementation block passed repository static validation and nine Chromiu
 - Sprint progress bar lacked an accessible name.
 - Companion outline actions had insufficient contrast.
 - Agent-permission descriptions were slightly below the WCAG contrast threshold.
+- Visual screenshot review found the memory-first reassurance text inherited dark text on a dark background; explicit light text and strong-emphasis colors were added and regression-tested.
 
-Each defect above was corrected before workflow run 59 passed.
+Each defect above was corrected before workflow run 62 passed.
 
 ## Evidence preserved
 
