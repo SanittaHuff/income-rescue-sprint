@@ -39,9 +39,9 @@
     const pay = text.match(/\$\s?\d+(?:,\d{3})*(?:\.\d{1,2})?(?:\s*(?:-|–|to)\s*\$?\s?\d+(?:,\d{3})*(?:\.\d{1,2})?)?(?:\s*(?:\/\s*(?:hr|hour|yr|year)|per\s+(?:hour|year)|annually))?/i)?.[0] || '';
 
     const messageType = detectFirst(text, [
-      { label: 'Interview or scheduling request', pattern: /\b(interview|schedule|availability|calendar invite)\b/i },
-      { label: 'Recruiter outreach or job lead', pattern: /\b(opportunity|position|opening|role|job description)\b/i },
-      { label: 'Application follow-up', pattern: /\b(follow[- ]?up|application status|next steps)\b/i }
+      { label: 'Interview or screening request', pattern: /\b(interview|phone screen|technical screen|calendar invite|schedule\s+(?:a|an|the)?\s*(?:call|interview|screen))\b/i },
+      { label: 'Application follow-up', pattern: /\b(follow[- ]?up|application status|next steps)\b/i },
+      { label: 'Recruiter outreach or job lead', pattern: /\b(opportunity|position|opening|role|job description|recruiter)\b/i }
     ], 'General recruiting message');
 
     const workArrangement = detectFirst(text, [
@@ -51,11 +51,11 @@
     ], 'Not clearly stated');
 
     const employmentType = detectFirst(text, [
-      { label: 'Contract', pattern: /\b(contract|consulting assignment|temporary)\b/i },
       { label: 'W-2 contract', pattern: /\bw-?2\b/i },
       { label: 'C2C / corp-to-corp', pattern: /\b(c2c|corp[- ]?to[- ]?corp)\b/i },
       { label: 'Full time', pattern: /\b(full[- ]?time|permanent|direct hire)\b/i },
-      { label: 'Part time', pattern: /\bpart[- ]?time\b/i }
+      { label: 'Part time', pattern: /\bpart[- ]?time\b/i },
+      { label: 'Contract', pattern: /\b(contract|consulting assignment|temporary)\b/i }
     ], 'Not clearly stated');
 
     const requestedActions = uniqueMatches(text, [
