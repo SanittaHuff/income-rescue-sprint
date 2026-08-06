@@ -84,11 +84,11 @@ function improveWelcomeKeyboardSafety() {
 function replaceVisibleText(root = document.body) {
   if (!root || root.nodeType !== Node.ELEMENT_NODE) return;
   const replacements = [
-    [/\bverified evidence\b/gi, 'evidence reviewed by you'],
-    [/\bverified\b/gi, 'reviewed by you'],
-    [/\bunverified\b/gi, 'not yet reviewed'],
-    [/\bverification\b/gi, 'your review'],
-    [/\bverify\b/gi, 'review']
+    [/\bverified evidence\b/i, 'evidence reviewed by you'],
+    [/\bverified\b/i, 'reviewed by you'],
+    [/\bunverified\b/i, 'not yet reviewed'],
+    [/\bverification\b/i, 'your review'],
+    [/\bverify\b/i, 'review']
   ];
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
     acceptNode(node) {
@@ -101,7 +101,9 @@ function replaceVisibleText(root = document.body) {
   while (walker.nextNode()) nodes.push(walker.currentNode);
   nodes.forEach(node => {
     let value = node.nodeValue;
-    replacements.forEach(([pattern, replacement]) => { value = value.replace(pattern, replacement); });
+    replacements.forEach(([pattern, replacement]) => {
+      value = value.replace(new RegExp(pattern.source, 'gi'), replacement);
+    });
     node.nodeValue = value;
   });
 
