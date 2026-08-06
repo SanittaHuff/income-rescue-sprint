@@ -42,7 +42,7 @@ test('redacted warning phrases are reviewable but actual secret-shaped values ar
   const textarea = page.locator('#recruiterEmailText');
 
   await textarea.fill('The sender asked for a bank account and an authentication code. These values have been removed.');
-  await expect(textarea).toContainText('bank account');
+  await expect(textarea).toHaveValue(/bank account/);
   await expect(textarea).toHaveAttribute('aria-invalid', 'false');
 
   await textarea.fill('Social Security number: 123-45-6789');
