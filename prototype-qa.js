@@ -79,6 +79,11 @@
         field.setAttribute('aria-label', field.name || field.id);
       }
     });
+    document.querySelectorAll('[role="progressbar"]').forEach(progress => {
+      if (!progress.getAttribute('aria-label') && !progress.getAttribute('aria-labelledby')) {
+        progress.setAttribute('aria-label', 'Sprint readiness');
+      }
+    });
   }
 
   function loadExperienceEnhancements() {
