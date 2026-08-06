@@ -1,29 +1,45 @@
 # Income Rescue Sprint — P0 Human Review Gate
 
-**Status:** Prepared / Not yet executed  
+**Status:** Internal panel execution in progress / Captain walkthrough and UAT deferred  
 **Branch:** `p0-companion-remediation`  
 **Pull request:** #6 — Draft / unmerged  
 **Authority:** Review only; no merge, deployment, pilot, production, certification, or release authority
 
 ## 1. Purpose
 
-Complete the human evidence that automation cannot truthfully provide before PR #6 may be considered ready for review, merge, or deployment.
+Complete the professional product-review, human-usability, assistive-technology, remediation, and acceptance evidence that automation cannot truthfully provide before PR #6 may be considered for readiness, merge, deployment, or a later gate.
 
-This gate combines three bounded activities:
+This gate implements the Captain-approved order:
 
-1. Targeted Recruiter / ATS revised-product retest
-2. Human capability-comprehension review
-3. Real assistive-technology preflight
+1. Internal multidisciplinary panel review in safe parallel
+2. Consolidated findings and accepted revision implementation
+3. Real assistive-technology preflight, internal QA/UAT reliability review, and Critical/High blocker closure
+4. Captain walkthrough and formal Captain UAT
+5. Governed PR readiness, merge, deployment, and next-gate decision
 
-These activities may be scheduled separately, but their findings must be reconciled together.
+Captain’s earlier first-screen observations remain valid product findings. They are not formal UAT evidence.
 
-## 2. Required test build
+## 2. Internal-only panel boundary
+
+The SME panel is internal only. It uses simulated professional perspectives to examine the actual working product, including:
+
+- Brand Management
+- Recruiter / ATS
+- Workforce Development / Job-Seeker Experience
+- UX and Accessibility
+- Security, Privacy, and Data Governance
+- QA / UAT and Reliability
+- Product Management and other relevant perspectives when needed
+
+No external SME recruitment, outreach, engagement, or independent-review dependency is authorized. Internal panel findings are preliminary product evidence, not independent certification or external validation.
+
+## 3. Required test build
 
 Use the `p0-companion-remediation` branch at or after the final verified automated checkpoint recorded in `docs/P0-COMPANION-IMPLEMENTATION-QA-CHECKPOINT.md`.
 
-Do not test the current public `main` deployment as a substitute; it does not contain the complete P0 remediation.
+Do not use the current public `main` deployment as a substitute. It does not contain the complete P0 remediation.
 
-## 3. Data boundary
+## 4. Data boundary
 
 Use fictional or synthetic information only.
 
@@ -37,50 +53,47 @@ Do not enter:
 - production credentials;
 - real participant data.
 
-## 4. Session A — First-time comprehension
+## 5. Current WGZ execution metrics
 
-### Reviewer
+| Work item | Status | Completion | Estimated active time remaining | Owner |
+|---|---|---:|---:|---|
+| Overall internal review and readiness program | In progress | 35% | 10–18 Chief work hours, plus 1–2 hours Captain UAT | Chief; Captain at Wave 4 |
+| Internal Brand Management review | Wave 1 parallel | 15% | 60–90 minutes | Chief |
+| Internal Recruiter / ATS retest | Wave 1 parallel | 25% | 2–3 hours | Chief |
+| Internal Workforce / Job-Seeker review | Wave 1 parallel | 10% | 60–90 minutes | Chief |
+| UX / Accessibility review and real AT preflight | Wave 1 desk review; Wave 3 real AT | 45% | 2–4 hours after revisions; AT access dependent | Chief |
+| Internal Security / Privacy / Data Governance review | Wave 1 parallel | 35% | 90–120 minutes | Chief |
+| Pending-capability scope analysis | Wave 1 analysis; final disposition after evidence | 25% | 45–60 minutes after Wave 1 | Chief recommendation; Captain at genuine scope gate |
+| Consolidated findings and accepted revisions | Wave 2 | 10% | 3–6 hours; defect-volume dependent | Chief |
+| Internal QA/UAT, regression, and Critical/High retest | Wave 3 | 45% | 3–7 hours after revisions | Chief |
+| Captain walkthrough and formal UAT | Wave 4 / not active | 10% | 1–2 hours after Waves 1–3 | Captain / Chief Coach Mode |
+| PR readiness and next-gate decision | Wave 5 / blocked | 20% | 30–60 minutes after prerequisites | Chief recommendation / Captain decision |
 
-A person who has not been coached on the product screens immediately before testing.
+Time estimates are active-work estimates, not calendar promises. A blocked item holds at its last verified percentage until its dependency is met.
 
-### Procedure
+## 6. Wave 1 — Internal panel review in safe parallel
 
-1. Begin with cleared local storage.
-2. Complete the first-use welcome.
-3. Explore the product for no more than five minutes without help.
-4. Ask the reviewer to explain, in their own words:
-   - What is this product for?
-   - What does Experience Evidence mean?
-   - What does “Reviewed by you” mean?
-   - Has the product verified the user’s employment or evidence?
-   - Is the Career Companion a live AI agent?
-   - Can the product read or send email?
-   - Has the product run a real ATS scan?
-   - What happens to the user’s data?
-5. Ask the reviewer to find:
-   - Experience Evidence;
-   - Recruiter Email Review;
-   - Connections & Agent Controls;
-   - Privacy & Trust;
-   - Export.
+### A. Internal Brand Management
 
-### Passing evidence
+Review the actual product for:
 
-The reviewer can accurately explain the product’s purpose and boundaries without being corrected on a material claim, and can locate every required area.
+- headline and value proposition;
+- product promise and message hierarchy;
+- resume-component and customized-resume clarity;
+- naming and terminology;
+- voice and tone;
+- differentiation;
+- sensitive-context wording.
 
-## 5. Session B — Recruiter / ATS revised-product retest
+Track `BM-001`: the first-use headline does not yet clearly surface that the user can build, revise, store, reuse, and assemble resume components into customized resumes.
 
-### Reviewer
+### B. Internal Recruiter / ATS revised-product retest
 
-A Senior Recruiter, talent-acquisition professional, resume strategist, ATS administrator, or career-services professional with direct employer feedback.
-
-### Procedure
-
-Follow `docs/RECRUITER-ATS-BASELINE-AND-P0-RETEST.md` and `docs/SME-REVIEW-01-SENIOR-RECRUITER-ATS.md` using synthetic data.
+Follow `docs/RECRUITER-ATS-BASELINE-AND-P0-RETEST.md` using synthetic data.
 
 At minimum:
 
-1. Create one strong accomplishment and one uncertain/recovered memory.
+1. Create one strong accomplishment and one uncertain or recovered memory.
 2. Review evidence and observe the edit-reset behavior.
 3. Create at least two resume components.
 4. Evaluate recruiter scan, credibility, specificity, and ATS readability.
@@ -90,23 +103,83 @@ At minimum:
    - interview request;
    - incomplete job lead;
    - suspicious redacted request.
-7. Evaluate whether the product is sufficiently useful without a real ATS parser, keyword comparison, resume-file generation, live AI model, or mailbox connector at this product gate.
-8. Recommend which missing capabilities are:
-   - required before Captain UAT;
-   - required before pilot;
-   - later roadmap items.
+7. Evaluate whether the product is sufficiently useful without a real ATS parser, keyword comparison, resume-file generation, live AI model, or mailbox connector at this gate.
+8. Recommend whether missing capabilities are required before PR readiness, Captain UAT, pilot, or a later roadmap gate.
 
-### Passing evidence
+### C. Internal Workforce / Job-Seeker review
 
-Every High baseline question has an explicit recommendation, evidence, confidence level, and required gate.
+Test representative synthetic scenarios involving:
 
-## 6. Session C — Assistive-technology preflight
+- career gaps;
+- contract work;
+- recovered memories;
+- limited documentation;
+- discouraged or overwhelmed users;
+- user control;
+- one Next Best Action;
+- dignity and non-shaming language.
 
-### Reviewer
+### D. Internal UX / Accessibility desk review
 
-A tester using at least one real screen reader and keyboard-only navigation. Additional low-vision or voice-control testing should be added when available.
+Review:
 
-### Minimum scenarios
+- first-use comprehension;
+- discoverability;
+- task flow;
+- focus design;
+- content hierarchy;
+- mobile and 200%-equivalent reflow;
+- navigation and dynamic status behavior;
+- known accessibility risk areas.
+
+Real assistive-technology testing occurs in Wave 3 after accepted revisions are implemented.
+
+### E. Internal Security / Privacy / Data Governance review
+
+Review:
+
+- local-data behavior;
+- secret-shaped-value rejection;
+- persistence and export boundaries;
+- permission and connector disclosures;
+- agent authority and unavailable actions;
+- misuse and safe-failure behavior;
+- future production-security dependencies.
+
+### F. Pending-capability scope analysis
+
+Keep these capabilities visible until disposition:
+
+- real ATS parser;
+- job-description keyword comparison;
+- resume-file generation or export;
+- captioned tutorial videos;
+- live conversational AI;
+- mailbox, calendar, job-board, and cloud-storage connectors.
+
+Do not silently treat them as complete, mandatory now, cancelled, or authorized for implementation.
+
+## 7. Wave 2 — Consolidated findings and accepted revisions
+
+For every finding:
+
+- preserve a permanent ID;
+- record perspective and scenario;
+- distinguish observation, evidence, inference, and recommendation;
+- assign severity and confidence;
+- identify the affected gate;
+- disposition as Accept, Modify, Reject, or Defer;
+- assign owner and dependency;
+- implement accepted revisions;
+- update tests, documentation, and traceability.
+
+## 8. Wave 3 — Real AT, internal QA/UAT, regression, and blocker closure
+
+### Real assistive-technology preflight
+
+Use at least one real screen reader and keyboard-only navigation. Additional low-vision or voice-control testing should be added when available.
+
+Minimum scenarios:
 
 - Skip to workspace
 - First-use dialog focus and Escape behavior
@@ -117,35 +190,49 @@ A tester using at least one real screen reader and keyboard-only navigation. Add
 - Connections & Agent Controls permission list
 - Privacy dialog
 - Export and import confirmation
-- Toast/status announcements
+- Toast and status announcements
 - 200% zoom or equivalent reflow
 
-### Record
+Record browser, operating system, assistive technology and version, expected behavior, actual behavior, severity, reproducibility, remediation, and retest evidence.
 
-- Browser and operating system
-- Assistive technology and version
-- Scenario
-- Expected announcement or behavior
-- Actual announcement or behavior
-- Severity
-- Reproducibility
-- Remediation and retest evidence
+### Internal QA/UAT and reliability review
 
-### Passing evidence
+Run end-to-end functional, regression, safe-failure, portability, data-boundary, navigation, and representative internal UAT scenarios against the revised build.
 
-No Critical or High barrier remains for the tested scenarios. This is still a preflight, not accessibility certification.
+### Critical / High blocker closure
 
-## 7. Finding governance
+No required Critical or High finding may remain without verified correction and retest or a defensible governed later-gate deferral with owner, dependency, and evidence.
+
+## 9. Wave 4 — Captain walkthrough and formal UAT
+
+Captain walkthrough and UAT begin only after Waves 1–3 are complete or defensibly deferred through governance.
+
+Captain should receive a reconciled candidate and should not serve as the primary internal tester or defect finder.
+
+The walkthrough is guided in Coach Mode, one screen and task at a time. Formal UAT records acceptance-focused observations and decisions against the revised Application Under Test.
+
+## 10. Wave 5 — PR readiness and next-gate decision
+
+After Captain UAT, prepare one consolidated decision package covering whether PR #6 may:
+
+- leave Draft;
+- merge;
+- deploy;
+- advance to the next governed product gate.
+
+A successful workflow run, automated preflight, internal panel review, or Captain UAT does not by itself grant pilot, production, security, legal, accessibility-certification, commercialization, or public-release authority.
+
+## 11. Finding governance
 
 Every finding must include:
 
 - Permanent ID
-- Reviewer and expertise
+- Internal perspective or Captain role
 - Scenario
 - Observation
 - Evidence
 - Severity
-- User/recruiter/ATS/accessibility impact
+- User, recruiter, ATS, accessibility, security, privacy, or product impact
 - Recommendation
 - Required before PR readiness?
 - Required before Captain UAT?
@@ -155,27 +242,31 @@ Every finding must include:
 - Owner
 - Verification evidence after correction
 
-## 8. Stop conditions
+## 12. Stop conditions
 
-Stop the review and keep PR #6 Draft if any of these occur:
+Stop advancement and keep PR #6 Draft if any of these occur:
 
 - a material capability is misunderstood as connected or autonomous;
 - candidate facts can enter resume content without required user review;
 - independent verification is confused with self-review;
-- real pasted email text is persisted or exported unexpectedly;
+- pasted recruiter-email text is persisted or exported unexpectedly;
 - sensitive values are accepted contrary to prototype safeguards;
 - a keyboard or assistive-technology user cannot complete a core scenario;
 - a Critical or High finding lacks an owner and remediation plan;
-- test data crosses the synthetic-data boundary.
+- test data crosses the synthetic-data boundary;
+- Captain is asked to begin formal UAT before the internal review and remediation gates are complete.
 
-## 9. Completion boundary
+## 13. Completion boundary
 
 The human gate is complete only when:
 
-- all required sessions are performed or a governed decision explicitly narrows the requirement;
-- all Critical and High findings are corrected and retested or formally deferred to a later gate with defensible rationale;
-- ATS parser/keyword comparison and video requirements receive explicit scope disposition;
-- the consolidated results are synchronized into CBOM/WGZ and the repository;
-- PR #6 receives a separately governed decision on whether it may leave Draft.
+- all required internal panel perspectives are performed or explicitly narrowed through governance;
+- accepted revisions are implemented and traced;
+- real assistive-technology preflight and post-revision reliability testing are complete;
+- all required Critical and High findings are corrected and retested or defensibly deferred;
+- pending capabilities receive explicit scope disposition;
+- Captain walkthrough and formal UAT are complete;
+- results are synchronized into CBOM, WGZ, the registers, issue #5, PR #6, and the repository;
+- PR #6 receives a separate governed readiness decision.
 
 Completion of this gate does not grant security, privacy, legal, pilot, production, commercial, or release approval.
