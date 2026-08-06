@@ -4,6 +4,7 @@ const files = {
   html: readFileSync('index.html', 'utf8'),
   css: readFileSync('styles.css', 'utf8'),
   app: readFileSync('app.js', 'utf8'),
+  evidenceGovernance: readFileSync('evidence-state-governance.js', 'utf8'),
   familyCss: readFileSync('lvhq-family.css', 'utf8'),
   familyJs: readFileSync('lvhq-family.js', 'utf8'),
   qa: readFileSync('prototype-qa.js', 'utf8'),
@@ -99,4 +100,32 @@ if (!files.html.includes('<strong>Not connected</strong>')) {
   throw new Error('Product readiness does not clearly disclose unavailable connectors and services.');
 }
 
-console.log('Visible MVP static validation passed across product, LVHQ, safety, accessibility, P0 Companion, capability-boundary, and display-preference assets.');
+if (!files.html.includes('src="evidence-state-governance.js"')) {
+  throw new Error('Governed evidence-state migration is not wired into the live product.');
+}
+
+const governedStateRequirements = [
+  "const REVIEWED = 'reviewed-by-user'",
+  "const NEEDS_REVIEW = 'needs-review'",
+  "if (value === 'verified') return REVIEWED",
+  "if (value === 'pending') return NEEDS_REVIEW",
+  "return ALLOWED.has(value) ? value : NEEDS_REVIEW",
+  'Legacy evidence states will be migrated safely',
+  'delete item.verifiedAt',
+  'Self-review is explicit and is not third-party verification',
+  'Workspace export created with governed evidence states'
+];
+const missingGovernedStates = governedStateRequirements.filter(value => !files.evidenceGovernance.includes(value));
+if (missingGovernedStates.length) {
+  throw new Error(`Evidence-state migration boundaries are incomplete: ${missingGovernedStates.join(', ')}`);
+}
+
+if (!files.evidenceGovernance.includes("existing.status) ? NEEDS_REVIEW") && !files.evidenceGovernance.includes('status: isReviewed(existing) ? NEEDS_REVIEW')) {
+  throw new Error('Editing reviewed evidence does not reset it to needs-review.');
+}
+
+if (!files.evidenceGovernance.includes("const INDEPENDENT = 'independently-verified'")) {
+  throw new Error('Independent verification is not reserved as a distinct governed state.');
+}
+
+console.log('Visible MVP static validation passed across product, LVHQ, safety, accessibility, P0 Companion, capability boundaries, governed evidence-state migration, portability, and display-preference assets.');
