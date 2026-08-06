@@ -123,6 +123,7 @@ test('legacy and unknown evidence states migrate safely and drive governed workf
   await expect(page.locator('article[data-id="ev-reviewed"]')).toContainText('Reviewed by you');
   await expect(page.locator('article[data-id="ev-pending"]')).toContainText('Needs your review');
   await expect(page.locator('article[data-id="ev-independent"]')).toContainText('Independently verified');
+  await expect(page.locator('article[data-id="ev-unknown"]')).toContainText('Needs verification');
 
   await page.locator('.nav-button[data-panel="resume"]').click();
   await expect(page.locator('#evidenceId option')).toContainText(['Select evidence', /Legacy reviewed role/, /Independent role/]);
@@ -136,6 +137,50 @@ test('legacy and unknown evidence states migrate safely and drive governed workf
   await page.getByRole('button', { name: 'Save Changes' }).click();
   await expect.poll(async () => (await storedWorkspace(page)).evidence.find(item => item.id === 'ev-reviewed').status).toBe('needs-review');
   await expect(page.locator('article[data-id="ev-reviewed"]')).toContainText('Needs your review');
+});
+
+test('recruiter email review detects useful signals without connecting, sending, or persisting pasted text', async ({ page }, testInfo) => {
+  await openProduct(page);
+  await page.locator('.nav-button[data-panel="email-review"]').click();
+  await expect(page.getByRole('heading', { name: 'Recruiter Email Review' })).toBeVisible();
+  await expect(page.locator('#workspace')).toContainText('No mailbox is connected');
+
+  const sample = `Role: Azure DevOps Administrator\nCompany: Example Staffing\nThis is a remote W-2 contract at $70/hr. Please send your resume and availability. Contact us on WhatsApp and provide your bank account for equipment reimbursement.`;
+  await page.locator('#recruiterEmailText').fill(sample);
+  await page.locator('#emailSafetyAcknowledge').check();
+  await page.getByRole('button', { name: 'Review Message' }).click();
+
+  await expect(page.locator('#emailReviewResult')).toContainText('Remote');
+  await expect(page.locator('#emailReviewResult')).toContainText('W-2 contract');
+  await expect(page.locator('#emailReviewResult')).toContainText('$70/hr');
+  await expect(page.locator('#emailReviewResult')).toContainText('Send or update a resume');
+  await expect(page.locator('#emailReviewResult')).toContainText('Provide availability');
+  await expect(page.locator('#emailReviewResult')).toContainText('Requests banking, card, payment, gift-card, or cryptocurrency information');
+  await expect(page.locator('#emailReviewResult')).toContainText('Moves the conversation to Telegram or WhatsApp');
+  await expect(page.locator('#emailReplyDraft')).not.toHaveValue('');
+  await expect(page.locator('#emailReviewResult')).toContainText('Nothing is sent');
+  await expect.poll(() => page.evaluate(value => Object.values(localStorage).every(item => !item.includes(value)), 'equipment reimbursement')).toBe(true);
+
+  await testInfo.attach('recruiter-email-review', {
+    body: await page.screenshot({ fullPage: true }),
+    contentType: 'image/png'
+  });
+});
+
+test('agent permissions and connector status remain visible and external actions stay unavailable', async ({ page }) => {
+  await openProduct(page);
+  await page.locator('#careerCompanionToggle').click();
+  await page.getByRole('button', { name: 'Show connection status' }).click();
+
+  await expect(page.getByRole('heading', { name: 'Connections & Agent Controls' })).toBeVisible();
+  await expect(page.locator('#workspace')).toContainText('1. Explain and navigate — Available');
+  await expect(page.locator('#workspace')).toContainText('2. Suggest — Available locally');
+  await expect(page.locator('#workspace')).toContainText('3. Draft internally — Available');
+  await expect(page.locator('#workspace')).toContainText('4. Prepare for your approval — User controlled');
+  await expect(page.locator('#workspace')).toContainText('5. External action — Unavailable');
+  await expect(page.locator('#workspace')).toContainText('Gmail and Outlook');
+  await expect(page.locator('#workspace')).toContainText('No connector can be enabled from this screen');
+  await expect(page.locator('#workspace')).toContainText('No sending, scheduling, applying, purchasing, sharing, deleting external data, or background monitoring');
 });
 
 test('export and import preserve governed states and invalid imports fail safely', async ({ page }) => {
