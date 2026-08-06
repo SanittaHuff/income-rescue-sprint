@@ -9,7 +9,10 @@ const files = {
   familyJs: readFileSync('lvhq-family.js', 'utf8'),
   qa: readFileSync('prototype-qa.js', 'utf8'),
   buildCss: readFileSync('build-mode.css', 'utf8'),
-  buildJs: readFileSync('build-mode.js', 'utf8')
+  buildJs: readFileSync('build-mode.js', 'utf8'),
+  p0Css: readFileSync('p0-tools.css', 'utf8'),
+  p0Js: readFileSync('p0-tools.js', 'utf8'),
+  readme: readFileSync('README.md', 'utf8')
 };
 
 const requiredHtml = [
@@ -18,6 +21,8 @@ const requiredHtml = [
   'Resume Readiness',
   'Opportunity Priority',
   'Next Best Action',
+  'Recruiter Email Review',
+  'Connections & Agent Controls',
   'Privacy & Trust',
   'Data & Settings',
   'Prototype Preview',
@@ -69,7 +74,11 @@ if (files.buildCss.includes('*,@media')) {
 }
 
 if (!files.html.includes('href="build-mode.css"') || !files.html.includes('src="build-mode.js"')) {
-  throw new Error('P0 enhancement assets exist but are not wired into the live product.');
+  throw new Error('P0 Companion assets exist but are not wired into the live product.');
+}
+
+if (!files.html.includes('href="p0-tools.css"') || !files.html.includes('src="p0-tools.js"')) {
+  throw new Error('P0 recruiter-review and capability assets are not wired into the live product.');
 }
 
 const companionRequirements = [
@@ -90,6 +99,10 @@ if (!files.buildCss.includes('.career-companion') || !files.buildCss.includes('.
 
 if (!files.buildJs.includes("button.setAttribute('aria-label', 'Mark this evidence as reviewed by you')")) {
   throw new Error('Evidence self-review control is not labeled truthfully.');
+}
+
+if (files.buildJs.includes('createTreeWalker')) {
+  throw new Error('Broad visible-text rewriting could alter user-authored or governed evidence language.');
 }
 
 if (!files.html.includes('Written walkthroughs available now') || !files.html.includes('Video production remains planned')) {
@@ -128,4 +141,44 @@ if (!files.evidenceGovernance.includes("const INDEPENDENT = 'independently-verif
   throw new Error('Independent verification is not reserved as a distinct governed state.');
 }
 
-console.log('Visible MVP static validation passed across product, LVHQ, safety, accessibility, P0 Companion, capability boundaries, governed evidence-state migration, portability, and display-preference assets.');
+const emailReviewRequirements = [
+  'Recruiter Email Review',
+  'User-supplied text only',
+  'No mailbox is connected',
+  'not added to the workspace export',
+  'transparent prototype rules—not by a connected AI model',
+  'Nothing is sent',
+  'This is not sender verification'
+];
+const missingEmailReview = emailReviewRequirements.filter(value => !files.p0Js.includes(value));
+if (missingEmailReview.length) {
+  throw new Error(`Recruiter email review boundaries are incomplete: ${missingEmailReview.join(', ')}`);
+}
+
+const capabilityRequirements = [
+  'Connections & Agent Controls',
+  '1. Explain and navigate — Available',
+  '2. Suggest — Available locally',
+  '3. Draft internally — Available',
+  '4. Prepare for your approval — User controlled',
+  '5. External action — Unavailable',
+  'No connector can be enabled from this screen'
+];
+const missingCapabilities = capabilityRequirements.filter(value => !files.p0Js.includes(value));
+if (missingCapabilities.length) {
+  throw new Error(`Agent permission or connector boundaries are incomplete: ${missingCapabilities.join(', ')}`);
+}
+
+if (!files.p0Css.includes('.email-review-summary') || !files.p0Css.includes('.capability-grid') || !files.p0Css.includes('@media')) {
+  throw new Error('Recruiter review or capability-center responsive styling is missing.');
+}
+
+if (!files.html.includes('Recruiter-email text is reviewed only while that page is open')) {
+  throw new Error('Privacy disclosure does not explain recruiter-email handling.');
+}
+
+if (!files.readme.includes('local, user-supplied recruiter-email review') || !files.readme.includes('It does not read or verify a mailbox')) {
+  throw new Error('README capability disclosures are not reconciled with the product.');
+}
+
+console.log('Visible MVP static validation passed across product, LVHQ, safety, accessibility, Career Companion, agent permissions, recruiter-email review, connector truth boundaries, governed evidence-state migration, portability, and display-preference assets.');
