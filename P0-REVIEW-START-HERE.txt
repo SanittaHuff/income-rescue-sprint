@@ -1,0 +1,12 @@
+INCOME RESCUE SPRINT — P0 HUMAN REVIEW BUILD
+
+1. Extract the complete p0-human-review-build ZIP into one folder.
+2. Open index.html in a current Chrome, Edge, Firefox, or Safari browser.
+3. Use fictional or synthetic information only.
+4. Do not enter passwords, authentication codes, Social Security numbers, financial or medical details, confidential customer/employer information, production credentials, or real participant data.
+5. The review build stores workspace data only in that browser unless you export it.
+6. Recruiter-email text is reviewed only while its page is open and is not included in workspace export.
+7. No mailbox, calendar, job board, external AI model, sending, scheduling, monitoring, or automatic job application is connected.
+8. Follow docs/P0-HUMAN-REVIEW-GATE.md and docs/RECRUITER-ATS-BASELINE-AND-P0-RETEST.md for the governed review.
+
+This is a branch review build. It is not the public deployment, production software, a certified pilot, or a release-approved product.
