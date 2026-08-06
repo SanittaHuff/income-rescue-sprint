@@ -16,9 +16,8 @@
   ];
 
   function patternsFor(field) {
-    return field.dataset.prototypeSafetyMode === 'risk-review'
-      ? RISK_REVIEW_SECRET_PATTERNS
-      : GENERAL_SENSITIVE_PATTERNS;
+    const isRiskReview = field.id === 'recruiterEmailText' || field.dataset.prototypeSafetyMode === 'risk-review';
+    return isRiskReview ? RISK_REVIEW_SECRET_PATTERNS : GENERAL_SENSITIVE_PATTERNS;
   }
 
   function showSafetyMessage() {
