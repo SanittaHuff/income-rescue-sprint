@@ -192,13 +192,14 @@
     return coreScoreJob(job);
   };
 
-  calculateProgress = function calculateProgressWithOpportunityHolds() {
+  calculateProgress = function calculateProgressWithVerifiedProgressOnly() {
     const base = coreCalculateProgress();
     const priorCount = state.jobs.filter(job => job.status !== 'Skipped').length;
     const activeCount = state.jobs.filter(opportunityIsActive).length;
-    const priorPoints = Math.min(25, priorCount * 8);
-    const activePoints = Math.min(25, activeCount * 8);
-    return Math.max(0, Math.min(100, base - priorPoints + activePoints));
+    const priorOpportunityPoints = Math.min(25, priorCount * 8);
+    const activeOpportunityPoints = Math.min(25, activeCount * 8);
+    const legacyAcknowledgementPoints = Math.min(10, (Array.isArray(state.completedActions) ? state.completedActions.length : 0) * 2);
+    return Math.max(0, Math.min(100, base - priorOpportunityPoints + activeOpportunityPoints - legacyAcknowledgementPoints));
   };
 
   function reviewFallback() {
@@ -254,6 +255,7 @@
 
   // The prior manual completion control could record progress without changing the underlying
   // workflow state. Actual completion remains derived from the workspace facts; pausing is explicit.
+  // Legacy completedActions are preserved for non-destructive compatibility but no longer increase readiness.
   renderNext = function renderNextWithVerifiedProgress() {
     const next = getNextAction();
     workspace.innerHTML = `
