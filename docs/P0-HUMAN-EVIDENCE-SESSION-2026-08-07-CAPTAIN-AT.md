@@ -31,7 +31,7 @@ After restarting the first-use state in an InPrivate Edge window, the reviewer t
 
 With focus returned to **Explore on my own**, the reviewer pressed **Shift+Tab once** and focus moved to **Start with Guided Mode**, confirming reverse wrap from the first control to the last control.
 
-For the first Escape attempt, the reviewer reported that nothing visibly changed. Earlier screenshot evidence showed Microsoft Edge's in-page Find box (`workspace 1/4`) open in the browser chrome. Because Edge can consume Escape to close that browser-level Find UI before the page receives the key, this first Escape result is classified as **inconclusive** rather than a product failure. A clean Escape retest is required after confirming the Find box is closed.
+For the first Escape attempt, the reviewer initially reported that nothing visibly changed, then clarified that Microsoft Edge's in-page Find box disappeared on that first Escape. Therefore the first Escape was **confirmed consumed by browser chrome** and did not test the product's page-level Escape handler. A second clean Escape while the Find box is absent is required.
 
 ### Chief source/code reconciliation
 
@@ -47,13 +47,13 @@ For the first Escape attempt, the reviewer reported that nothing visibly changed
 - **Skip-to-workspace:** **Not yet tested.** The prior test order was premature because the modal was intentionally active. The skip-link scenario will be tested after the welcome dialog is dismissed.
 - **Welcome modal forward focus containment:** **Pass evidence.** The reviewer confirmed keyboard movement across all three welcome controls with Tab and did not report focus escaping to background controls.
 - **Welcome modal reverse focus containment:** **Pass evidence.** Shift+Tab from the first welcome control wrapped to the last welcome control as designed.
-- **Welcome Escape behavior:** **Inconclusive / clean retest required.** The first Escape attempt may have been consumed by Edge's Find box and cannot be used as pass or fail evidence.
+- **Welcome Escape behavior:** **Not yet tested at product level.** The first Escape was confirmed to close Edge's Find box. A clean second Escape is required.
 - **Background interaction isolation:** Reviewer could not access underlying page controls while the modal remained open; consistent with intended modal isolation.
 - **Candidate finding — background scroll leakage:** The reviewer reports that the page scrollbar can move while the fixed modal remains visually stationary. This may indicate the background document remains scrollable under the modal. **Status: Candidate / reproduction required before permanent finding ID or severity assignment.** Potential impact is loss of page position or disorientation after the modal closes.
 
 ## Next evidence action
 
-Confirm the browser Find box is closed, then retest Escape once while focus is on a welcome button. After dismissal, test the actual `Skip to workspace` link as a separate scenario.
+With the browser Find box now closed, press Escape once while focus is on a welcome button. After dismissal, test the actual `Skip to workspace` link as a separate scenario.
 
 ## Truth boundary
 
