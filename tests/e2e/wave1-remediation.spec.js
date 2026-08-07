@@ -110,6 +110,30 @@ test('high-risk recruiter message defaults to independent verification before en
   await expect(page.locator('#emailReplyDraft')).not.toHaveValue(/I am interested in learning more/i);
 });
 
+test('shortened-link caution also receives the safety-first non-engagement draft', async ({ page }) => {
+  await openProduct(page);
+  await page.locator('.nav-button[data-panel="email-review"]').click();
+  await page.locator('#recruiterEmailText').fill('Role: Support Analyst\nCompany: Example Co\nPlease use https://bit.ly/example-onboarding to complete the next step for this opportunity.');
+  await page.locator('#emailSafetyAcknowledge').check();
+  await page.getByRole('button', { name: 'Review Message' }).click();
+
+  await expect(page.locator('#emailReviewResult .risk-block')).toContainText('shortened link');
+  await expect(page.locator('#emailReplyDraft')).toHaveValue(/Do not reply yet/);
+  await expect(page.locator('#emailReplyDraft')).not.toHaveValue(/I am interested in learning more/i);
+});
+
+test('guaranteed-hire caution also receives the safety-first non-engagement draft', async ({ page }) => {
+  await openProduct(page);
+  await page.locator('.nav-button[data-panel="email-review"]').click();
+  await page.locator('#recruiterEmailText').fill('Role: Support Analyst\nCompany: Example Co\nThis is a guaranteed job and an instant hire. Reply now to start today.');
+  await page.locator('#emailSafetyAcknowledge').check();
+  await page.getByRole('button', { name: 'Review Message' }).click();
+
+  await expect(page.locator('#emailReviewResult .risk-block')).toContainText('guaranteed hiring');
+  await expect(page.locator('#emailReplyDraft')).toHaveValue(/Do not reply yet/);
+  await expect(page.locator('#emailReplyDraft')).not.toHaveValue(/I am interested in learning more/i);
+});
+
 test('interview request receives interview-aware rather than generic outreach drafting', async ({ page }) => {
   await openProduct(page);
   await page.locator('.nav-button[data-panel="email-review"]').click();
