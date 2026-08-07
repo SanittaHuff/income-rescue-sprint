@@ -18,6 +18,21 @@ async function expectNoSeriousAccessibilityViolations(page, label) {
   expect(serious, `${label}: ${JSON.stringify(serious, null, 2)}`).toEqual([]);
 }
 
+test('completed welcome state preserves skip link as the first keyboard target', async ({ page }) => {
+  await openProduct(page);
+
+  await expect.poll(() => page.evaluate(() => document.activeElement?.id || document.activeElement?.tagName)).not.toBe('workspace');
+
+  await page.keyboard.press('Tab');
+  const skipLink = page.locator('.skip-link');
+  await expect(skipLink).toBeFocused();
+  await expect(skipLink).toBeVisible();
+  await expect(skipLink).toHaveText('Skip to workspace');
+
+  await page.keyboard.press('Enter');
+  await expect(page.locator('#workspace')).toBeFocused();
+});
+
 test('core, Companion, email review, and capability surfaces pass automated WCAG preflight', async ({ page }) => {
   await openProduct(page);
   const reassurance = page.locator('.reassurance');
