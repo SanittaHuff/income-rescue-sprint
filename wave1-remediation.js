@@ -6,7 +6,9 @@
   // without a current-session user action. The visual state is restored after initialization.
   if (restoreCompanionOpen) localStorage.setItem(COMPANION_KEY, 'false');
 
-  const riskPattern = /\b(ssn|social security number|passport number|driver'?s license number|bank account|routing number|credit card|debit card|gift card|bitcoin|crypto(?:currency)?|processing fee|pay a fee|password|passcode|authentication code|verification code|one[- ]?time code|otp|telegram|whatsapp)\b/i;
+  // Keep the safety-first reply override aligned with every caution class detected by p0-tools.js.
+  // A visible caution must never fall through to an engagement-oriented default draft.
+  const riskPattern = /\b(ssn|social security number|passport number|driver'?s license number|bank account|routing number|credit card|debit card|gift card|bitcoin|crypto(?:currency)?|processing fee|pay a fee|password|passcode|authentication code|verification code|one[- ]?time code|otp|telegram|whatsapp|bit\.ly|tinyurl\.com|t\.co|goo\.gl|guaranteed job|guaranteed employment|instant hire|immediate payment|earn money today)\b/i;
   const interviewPattern = /\b(interview|phone screen|technical screen|calendar invite|schedule\s+(?:a|an|the)?\s*(?:call|interview|screen))\b/i;
 
   function clean(value = '') {
