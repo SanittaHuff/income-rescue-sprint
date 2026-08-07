@@ -31,7 +31,9 @@ After restarting the first-use state in an InPrivate Edge window, the reviewer t
 
 With focus returned to **Explore on my own**, the reviewer pressed **Shift+Tab once** and focus moved to **Start with Guided Mode**, confirming reverse wrap from the first control to the last control.
 
-For the first Escape attempt, the reviewer initially reported that nothing visibly changed, then clarified that Microsoft Edge's in-page Find box disappeared on that first Escape. Therefore the first Escape was **confirmed consumed by browser chrome** and did not test the product's page-level Escape handler. A second clean Escape while the Find box is absent is required.
+For the first Escape attempt, the reviewer initially reported that nothing visibly changed, then clarified that Microsoft Edge's in-page Find box disappeared on that first Escape. Therefore the first Escape was **confirmed consumed by browser chrome** and did not test the product's page-level Escape handler.
+
+After the Find box was confirmed closed, the reviewer performed a second Escape attempt and reported **“Nothing.”** No visible dismissal or state change was observed. Because the evidence recorder cannot independently verify which window owned keyboard focus at the moment of the second keypress, this result is recorded as **observed Escape failure / controlled reproduction still required** rather than yet assigning a permanent defect ID or severity.
 
 ### Chief source/code reconciliation
 
@@ -40,20 +42,20 @@ For the first Escape attempt, the reviewer initially reported that nothing visib
 - Build-mode keyboard safety intentionally traps Tab/Shift+Tab focus among controls inside the welcome overlay.
 - The welcome implementation initially focuses **Start with Guided Mode**. Because it is the last control, pressing Tab is designed to wrap focus to the first control, **Explore on my own**.
 - The keyboard safety handler explicitly wraps **Shift+Tab** from the first control back to the last control.
-- The same handler is designed to intercept page-level Escape and activate **Explore on my own**, which should dismiss the welcome overlay. Browser chrome must not be active for the test to validly exercise that page-level handler.
+- The same handler is designed to intercept page-level Escape and activate **Explore on my own**, which should dismiss the welcome overlay. A clean reproduction must ensure the review-build window itself owns keyboard focus.
 
 ### Current evidence interpretation
 
 - **Skip-to-workspace:** **Not yet tested.** The prior test order was premature because the modal was intentionally active. The skip-link scenario will be tested after the welcome dialog is dismissed.
 - **Welcome modal forward focus containment:** **Pass evidence.** The reviewer confirmed keyboard movement across all three welcome controls with Tab and did not report focus escaping to background controls.
 - **Welcome modal reverse focus containment:** **Pass evidence.** Shift+Tab from the first welcome control wrapped to the last welcome control as designed.
-- **Welcome Escape behavior:** **Not yet tested at product level.** The first Escape was confirmed to close Edge's Find box. A clean second Escape is required.
+- **Welcome Escape behavior:** **Observed failure / controlled reproduction required.** The clean second attempt produced no visible change even though the source code intends Escape to dismiss the overlay. Before permanent finding assignment, repeat once with explicit confirmation that the review-build Edge window owns focus and a welcome button has visible keyboard focus.
 - **Background interaction isolation:** Reviewer could not access underlying page controls while the modal remained open; consistent with intended modal isolation.
 - **Candidate finding — background scroll leakage:** The reviewer reports that the page scrollbar can move while the fixed modal remains visually stationary. This may indicate the background document remains scrollable under the modal. **Status: Candidate / reproduction required before permanent finding ID or severity assignment.** Potential impact is loss of page position or disorientation after the modal closes.
 
 ## Next evidence action
 
-With the browser Find box now closed, press Escape once while focus is on a welcome button. After dismissal, test the actual `Skip to workspace` link as a separate scenario.
+Perform one controlled Escape reproduction with explicit review-build window focus and visible welcome-button focus. If Escape again produces no dismissal, promote this to a permanent accessibility/keyboard finding and stop advancement of the current core route for Chief remediation. After the welcome dialog is successfully dismissed in a tested build, test the actual `Skip to workspace` link as a separate scenario.
 
 ## Truth boundary
 
