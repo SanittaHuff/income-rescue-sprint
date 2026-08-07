@@ -10,7 +10,7 @@
     "test:e2e": "playwright test",
     "build": "node node_modules/typescript/bin/tsc",
     "demo": "npm run build && node dist/src/demo/run-demo.js",
-    "validate:mvp": "node --check app.js && node --check evidence-state-governance.js && node --check build-mode.js && node --check p0-tools.js && node --check prototype-qa.js && node scripts/validate-visible-mvp.mjs",
+    "validate:mvp": "node --check app.js && node --check evidence-state-governance.js && node --check build-mode.js && node --check p0-tools.js && node --check wave1-remediation.js && node --check prototype-qa.js && node scripts/validate-visible-mvp.mjs",
     "verify": "npm run validate:mvp",
     "demo:resume": "npm run build && node dist/src/demo/run-resume-demo.js",
     "demo:mvp": "npm run validate:mvp",
