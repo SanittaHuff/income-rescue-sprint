@@ -1,6 +1,6 @@
 # Income Rescue Sprint — P0 Human Review Gate
 
-**Status:** Internal panel execution in progress / Captain walkthrough and UAT deferred  
+**Status:** Internal panel execution in progress / Wave 1 substantial / Wave 2 active / Captain walkthrough and UAT deferred  
 **Branch:** `p0-companion-remediation`  
 **Pull request:** #6 — Draft / unmerged  
 **Authority:** Review only; no merge, deployment, pilot, production, certification, or release authority
@@ -35,7 +35,9 @@ No external SME recruitment, outreach, engagement, or independent-review depende
 
 ## 3. Required test build
 
-Use the `p0-companion-remediation` branch at or after the final verified automated checkpoint recorded in `docs/P0-COMPANION-IMPLEMENTATION-QA-CHECKPOINT.md`.
+Use the `p0-companion-remediation` branch at or after the latest verified automated checkpoint recorded in `docs/P0-COMPANION-IMPLEMENTATION-QA-CHECKPOINT.md` and any later tested remediation checkpoint explicitly included in the human-review package.
+
+For current Next Best Action and user-control remediation, also read `docs/P0-NEXT-BEST-ACTION-USER-CONTROL-CHECKPOINT.md`.
 
 Do not use the current public `main` deployment as a substitute. It does not contain the complete P0 remediation.
 
@@ -55,17 +57,20 @@ Do not enter:
 
 ## 5. Current WGZ execution metrics
 
+These percentages are working program-control estimates synchronized to the Command Center. They do not represent product, pilot, production, certification, commercialization, or release readiness. Growth in automated test coverage does not by itself increase these percentages.
+
 | Work item | Status | Completion | Estimated active time remaining | Owner |
 |---|---|---:|---:|---|
-| Overall internal review and readiness program | In progress | 35% | 10–18 Chief work hours, plus 1–2 hours Captain UAT | Chief; Captain at Wave 4 |
-| Internal Brand Management review | Wave 1 parallel | 15% | 60–90 minutes | Chief |
-| Internal Recruiter / ATS retest | Wave 1 parallel | 25% | 2–3 hours | Chief |
-| Internal Workforce / Job-Seeker review | Wave 1 parallel | 10% | 60–90 minutes | Chief |
-| UX / Accessibility review and real AT preflight | Wave 1 desk review; Wave 3 real AT | 45% | 2–4 hours after revisions; AT access dependent | Chief |
-| Internal Security / Privacy / Data Governance review | Wave 1 parallel | 35% | 90–120 minutes | Chief |
-| Pending-capability scope analysis | Wave 1 analysis; final disposition after evidence | 25% | 45–60 minutes after Wave 1 | Chief recommendation; Captain at genuine scope gate |
-| Consolidated findings and accepted revisions | Wave 2 | 10% | 3–6 hours; defect-volume dependent | Chief |
-| Internal QA/UAT, regression, and Critical/High retest | Wave 3 | 45% | 3–7 hours after revisions | Chief |
+| Overall internal review and readiness program | Wave 1 substantial / Wave 2 active | 46% | Existing 10–18 Chief work-hour estimate retained pending human evidence, plus 1–2 hours Captain UAT | Chief; Captain at Wave 4 |
+| Internal Brand Management review | Substantial desk pass / BM-001 open | 80% | 60–90 minutes | Chief |
+| Internal Recruiter / ATS retest | Substantial desk retest / human evidence open | 70% | 2–3 hours | Chief |
+| Internal Workforce / Job-Seeker review | Substantial desk pass / post-remediation scenario evidence open | 75% | 60–90 minutes | Chief |
+| UX / Accessibility desk review | Substantial desk pass | 75% | 60–90 minutes desk reconciliation | Chief |
+| Real assistive-technology preflight | Dependency open / Wave 3 | 45% | 2–4 hours after revisions; real AT access dependent | Chief; Captain device participation only if required |
+| Internal Security / Privacy / Data Governance review | Substantial desk pass / pilot architecture gate preserved | 75% | 90–120 minutes | Chief |
+| Pending-capability scope analysis | Preliminary classification substantially complete | 90% | 45–60 minutes after remaining Wave 1 evidence | Chief recommendation; Captain only at genuine scope gate |
+| Consolidated findings and accepted revisions | Accepted remediation substantial / Wave 2 active | 70% | 3–6 hours; defect-volume dependent | Chief |
+| Internal QA/UAT, regression, and Critical/High retest | Automated regression current / human reliability open | 55% | 3–7 hours after remaining revisions; defect-volume dependent | Chief |
 | Captain walkthrough and formal UAT | Wave 4 / not active | 10% | 1–2 hours after Waves 1–3 | Captain / Chief Coach Mode |
 | PR readiness and next-gate decision | Wave 5 / blocked | 20% | 30–60 minutes after prerequisites | Chief recommendation / Captain decision |
 
@@ -118,6 +123,8 @@ Test representative synthetic scenarios involving:
 - user control;
 - one Next Best Action;
 - dignity and non-shaming language.
+
+Explicitly retest the user-control scenarios preserved in `docs/P0-NEXT-BEST-ACTION-USER-CONTROL-CHECKPOINT.md`: held opportunities must remain outside the active queue until deliberately reactivated, pause must preserve state without creating false completion, and an opportunity recommendation must preserve the user’s recorded next step when present.
 
 ### D. Internal UX / Accessibility desk review
 
@@ -173,6 +180,8 @@ For every finding:
 - implement accepted revisions;
 - update tests, documentation, and traceability.
 
+Current supplemental workflow-integrity findings are preserved in `docs/P0-NEXT-BEST-ACTION-USER-CONTROL-CHECKPOINT.md` and must remain included in consolidated reconciliation.
+
 ## 8. Wave 3 — Real AT, internal QA/UAT, regression, and blocker closure
 
 ### Real assistive-technology preflight
@@ -197,7 +206,7 @@ Record browser, operating system, assistive technology and version, expected beh
 
 ### Internal QA/UAT and reliability review
 
-Run end-to-end functional, regression, safe-failure, portability, data-boundary, navigation, and representative internal UAT scenarios against the revised build.
+Run end-to-end functional, regression, safe-failure, portability, data-boundary, navigation, state-migration, and representative internal UAT scenarios against the revised build. Returning-workspace scenarios must verify that legacy recommendation acknowledgments cannot inflate current readiness after the verified-progress remediation.
 
 ### Critical / High blocker closure
 
@@ -251,6 +260,8 @@ Stop advancement and keep PR #6 Draft if any of these occur:
 - independent verification is confused with self-review;
 - pasted recruiter-email text is persisted or exported unexpectedly;
 - sensitive values are accepted contrary to prototype safeguards;
+- a user Hold or Pause is overridden by active recommendation/progress behavior;
+- recommendation acknowledgment can create readiness without underlying workflow progress;
 - a keyboard or assistive-technology user cannot complete a core scenario;
 - a Critical or High finding lacks an owner and remediation plan;
 - test data crosses the synthetic-data boundary;
