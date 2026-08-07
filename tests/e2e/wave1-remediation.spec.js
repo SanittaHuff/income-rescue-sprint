@@ -28,6 +28,23 @@ function reviewedWorkspace() {
   };
 }
 
+function opportunityReadyWorkspace(jobs = []) {
+  const workspace = reviewedWorkspace();
+  workspace.components = [
+    {
+      id: 'component-wave1',
+      evidenceId: 'ev-wave1',
+      type: 'Achievement bullet',
+      label: 'Synthetic governed component',
+      text: 'Reconciled ownership mappings and updated the governed work board for engineering managers.',
+      status: 'approved',
+      createdAt: '2026-08-06T00:00:00.000Z'
+    }
+  ];
+  workspace.jobs = jobs;
+  return workspace;
+}
+
 async function openProduct(page, { state = null, companionOpen = false } = {}) {
   await page.addInitScript(({ initialState, restoreCompanion }) => {
     localStorage.clear();
@@ -155,4 +172,99 @@ test('interview request receives interview-aware rather than generic outreach dr
   await expect(page.locator('#emailReplyDraft')).toHaveValue(/Thank you for the interview invitation/);
   await expect(page.locator('#emailReplyDraft')).toHaveValue(/confirm an available time/);
   await expect(page.locator('#emailReplyDraft')).not.toHaveValue(/interested in learning more/i);
+});
+
+test('held opportunity cannot drive high-priority counts readiness or Next Best Action', async ({ page }) => {
+  const state = opportunityReadyWorkspace([
+    {
+      id: 'job-held',
+      title: 'Held Platform Administrator',
+      company: 'Example Hold Co',
+      fit: 'Strong',
+      arrangement: 'Remote',
+      urgency: 'Apply now',
+      payAlignment: 'Meets target',
+      evidenceStrength: '5',
+      deadline: '2026-08-10',
+      status: 'Hold',
+      nextStep: 'Do not advance until I reactivate this role',
+      createdAt: '2026-08-06T00:00:00.000Z'
+    }
+  ]);
+
+  await openProduct(page, { state });
+  await expect(page.locator('#priorityCount')).toHaveText('0 high priority');
+  await page.locator('.nav-button[data-panel="next"]').click();
+  await expect(page.getByRole('heading', { name: 'Reactivate or add one target opportunity' })).toBeVisible();
+  await expect(page.locator('#workspace')).toContainText('Held and skipped opportunities stay out of your active queue');
+
+  await page.locator('.nav-button[data-panel="jobs"]').click();
+  await expect(page.locator('.score')).toHaveText('0');
+});
+
+test('Next Best Action prefers an active role and surfaces the user-recorded next step', async ({ page }) => {
+  const state = opportunityReadyWorkspace([
+    {
+      id: 'job-held-high',
+      title: 'Held Senior Platform Administrator',
+      company: 'Example Hold Co',
+      fit: 'Strong',
+      arrangement: 'Remote',
+      urgency: 'Apply now',
+      payAlignment: 'Meets target',
+      evidenceStrength: '5',
+      status: 'Hold',
+      nextStep: 'Keep on hold',
+      createdAt: '2026-08-06T00:00:00.000Z'
+    },
+    {
+      id: 'job-active',
+      title: 'Platform Administrator',
+      company: 'Example Active Co',
+      fit: 'Possible',
+      arrangement: 'Remote',
+      urgency: 'This week',
+      payAlignment: 'Meets target',
+      evidenceStrength: '4',
+      deadline: '2026-08-12',
+      status: 'Ready to apply',
+      nextStep: 'Tailor the approved component to the job posting',
+      createdAt: '2026-08-06T00:00:00.000Z'
+    }
+  ]);
+
+  await openProduct(page, { state });
+  await page.locator('.nav-button[data-panel="next"]').click();
+  await expect(page.getByRole('heading', { name: 'Advance Platform Administrator at Example Active Co' })).toBeVisible();
+  await expect(page.locator('#workspace')).toContainText('Next step you set: Tailor the approved component to the job posting');
+  await expect(page.locator('#workspace')).toContainText('based on fit, work arrangement, urgency, evidence strength, and pay alignment');
+  await expect(page.locator('#workspace')).not.toContainText('Advance Held Senior Platform Administrator');
+});
+
+test('Next Best Action pause preserves state without recording false completion', async ({ page }) => {
+  const state = opportunityReadyWorkspace([
+    {
+      id: 'job-active',
+      title: 'Platform Administrator',
+      company: 'Example Active Co',
+      fit: 'Strong',
+      arrangement: 'Remote',
+      urgency: 'Apply now',
+      payAlignment: 'Meets target',
+      evidenceStrength: '5',
+      status: 'Ready to apply',
+      nextStep: 'Tailor the resume',
+      createdAt: '2026-08-06T00:00:00.000Z'
+    }
+  ]);
+
+  await openProduct(page, { state });
+  await page.locator('.nav-button[data-panel="next"]').click();
+  await expect(page.getByRole('button', { name: 'Mark complete' })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Pause for now' })).toBeVisible();
+  await page.getByRole('button', { name: 'Pause for now' }).click();
+  await expect(page.getByRole('heading', { name: 'Command Overview' })).toBeVisible();
+
+  const completedActions = await page.evaluate(key => JSON.parse(localStorage.getItem(key) || '{}').completedActions || [], STORAGE_KEY);
+  expect(completedActions).toEqual([]);
 });
