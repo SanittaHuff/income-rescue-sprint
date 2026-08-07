@@ -27,6 +27,8 @@ After opening the extracted run-98 `index.html` review build and pressing **Tab 
 3. Reviewer reported that only the first welcome surface was accessible while the dialog was open.
 4. Reviewer reported that the vertical browser/page scrollbar moved, but the visible welcome UI did not move.
 
+After restarting the first-use state in an InPrivate Edge window, the reviewer then reported that repeated **Tab** navigation moved across all three welcome controls: **Explore on my own → See Getting Started → Start with Guided Mode**, confirming forward keyboard access across the complete control set in the modal.
+
 ### Chief source/code reconciliation
 
 - `index.html` contains a real skip link before the main page content: `Skip to workspace` → `#workspace`.
@@ -37,7 +39,8 @@ After opening the extracted run-98 `index.html` review build and pressing **Tab 
 ### Current evidence interpretation
 
 - **Skip-to-workspace:** **Not yet tested.** The prior test order was premature because the modal was intentionally active. The skip-link scenario will be tested after the welcome dialog is dismissed.
-- **Welcome modal focus containment:** **Preliminary pass evidence.** The observed one-Tab transition is consistent with the intended focus loop. Reverse-loop and Escape behavior remain to be tested.
+- **Welcome modal forward focus containment:** **Pass evidence.** The reviewer confirmed keyboard movement across all three welcome controls with Tab and did not report focus escaping to background controls.
+- **Welcome modal reverse focus containment:** **Not yet tested.** Shift+Tab wrap from the first control to the last remains the next check.
 - **Background interaction isolation:** Reviewer could not access underlying page controls while the modal remained open; consistent with intended modal isolation.
 - **Candidate finding — background scroll leakage:** The reviewer reports that the page scrollbar can move while the fixed modal remains visually stationary. This may indicate the background document remains scrollable under the modal. **Status: Candidate / reproduction required before permanent finding ID or severity assignment.** Potential impact is loss of page position or disorientation after the modal closes.
 
