@@ -39,6 +39,17 @@ async function openProduct(page, { state = null, companionOpen = false } = {}) {
   await expect(page.locator('#workspace')).toBeVisible();
 }
 
+test('first-use supporting promise aligns the workflow while preserving the governed headline', async ({ page }) => {
+  await page.addInitScript(() => localStorage.clear());
+  await page.goto('/');
+  const welcome = page.locator('#welcomeOverlay');
+  await expect(welcome).toBeVisible();
+  await expect(welcome.locator('#welcomeTitle')).toHaveText('Start small. Keep control. Build momentum.');
+  await expect(welcome).toContainText('turn it into reusable resume content');
+  await expect(welcome).toContainText('prioritize opportunities');
+  await expect(welcome).toContainText('one deliberate next action');
+});
+
 test('reviewed evidence can create a transparent local resume draft without adding new facts', async ({ page }) => {
   await openProduct(page, { state: reviewedWorkspace() });
   await page.locator('.nav-button[data-panel="resume"]').click();
