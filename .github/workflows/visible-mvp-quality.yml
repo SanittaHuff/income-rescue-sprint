@@ -20,6 +20,7 @@ on:
       - 'docs/P0-HUMAN-REVIEW-GATE.md'
       - 'docs/RECRUITER-ATS-BASELINE-AND-P0-RETEST.md'
       - 'docs/P0-WAVE1-INTERNAL-PANEL-FINDINGS.md'
+      - 'docs/P0-NEXT-BEST-ACTION-USER-CONTROL-CHECKPOINT.md'
       - 'scripts/validate-visible-mvp.mjs'
       - 'tests/e2e/**'
       - 'playwright.config.js'
@@ -82,5 +83,6 @@ jobs:
             docs/P0-HUMAN-REVIEW-GATE.md
             docs/RECRUITER-ATS-BASELINE-AND-P0-RETEST.md
             docs/P0-WAVE1-INTERNAL-PANEL-FINDINGS.md
+            docs/P0-NEXT-BEST-ACTION-USER-CONTROL-CHECKPOINT.md
           if-no-files-found: error
           retention-days: 30
