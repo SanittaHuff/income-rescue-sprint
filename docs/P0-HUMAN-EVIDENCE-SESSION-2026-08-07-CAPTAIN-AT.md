@@ -29,24 +29,27 @@ After opening the extracted run-98 `index.html` review build and pressing **Tab 
 
 After restarting the first-use state in an InPrivate Edge window, the reviewer then reported that repeated **Tab** navigation moved across all three welcome controls: **Explore on my own → See Getting Started → Start with Guided Mode**, confirming forward keyboard access across the complete control set in the modal.
 
+With focus returned to **Explore on my own**, the reviewer pressed **Shift+Tab once** and focus moved to **Start with Guided Mode**, confirming reverse wrap from the first control to the last control.
+
 ### Chief source/code reconciliation
 
 - `index.html` contains a real skip link before the main page content: `Skip to workspace` → `#workspace`.
 - The first-use welcome is rendered as `role="dialog"` with `aria-modal="true"`.
 - Build-mode keyboard safety intentionally traps Tab/Shift+Tab focus among controls inside the welcome overlay.
 - The welcome implementation initially focuses **Start with Guided Mode**. Because it is the last control, pressing Tab is designed to wrap focus to the first control, **Explore on my own**.
+- The keyboard safety handler also explicitly wraps **Shift+Tab** from the first control back to the last control.
 
 ### Current evidence interpretation
 
 - **Skip-to-workspace:** **Not yet tested.** The prior test order was premature because the modal was intentionally active. The skip-link scenario will be tested after the welcome dialog is dismissed.
 - **Welcome modal forward focus containment:** **Pass evidence.** The reviewer confirmed keyboard movement across all three welcome controls with Tab and did not report focus escaping to background controls.
-- **Welcome modal reverse focus containment:** **Not yet tested.** Shift+Tab wrap from the first control to the last remains the next check.
+- **Welcome modal reverse focus containment:** **Pass evidence.** Shift+Tab from the first welcome control wrapped to the last welcome control as designed.
 - **Background interaction isolation:** Reviewer could not access underlying page controls while the modal remained open; consistent with intended modal isolation.
 - **Candidate finding — background scroll leakage:** The reviewer reports that the page scrollbar can move while the fixed modal remains visually stationary. This may indicate the background document remains scrollable under the modal. **Status: Candidate / reproduction required before permanent finding ID or severity assignment.** Potential impact is loss of page position or disorientation after the modal closes.
 
 ## Next evidence action
 
-Verify reverse focus wrapping while the welcome dialog remains open, then test Escape behavior. After dismissal, test the actual `Skip to workspace` link as a separate scenario.
+Test Escape behavior while the welcome dialog remains open. After dismissal, test the actual `Skip to workspace` link as a separate scenario.
 
 ## Truth boundary
 
