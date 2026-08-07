@@ -37,12 +37,17 @@ After the Find box was confirmed closed, the reviewer performed a second Escape 
 
 The controlled reproduction then used the InPrivate Income Rescue Sprint review-build window with visible keyboard focus on a welcome control. The reviewer pressed **Escape once** and reported **“WELCOME CLOSED.”** Screenshot evidence shows the welcome overlay dismissed and the underlying Income Rescue Sprint workspace visible in Microsoft Edge InPrivate.
 
-For the next skip-link scenario, the reviewer reloaded the current InPrivate review-build page after the welcome-complete state had been stored, waited for load, and pressed **Tab once**. The reviewer reported that **Add Experience** became highlighted. The reviewer also noticed a **quick blink**, but did not see a persistent visible **Skip to workspace** link and did not observe an intentional skip action occurring.
+For the skip-link scenario, the reviewer reloaded the current InPrivate review-build page after the welcome-complete state had been stored, waited for load, and pressed **Tab once**. The reviewer reported that **Add Experience** became highlighted. The reviewer noticed a **quick blink**, but did not see a persistent visible **Skip to workspace** link and did not observe an intentional skip action occurring.
+
+With **Add Experience** visibly focused, the reviewer pressed **Shift+Tab once**. Focus moved to **Display Options**, not to **Skip to workspace**.
 
 ### Chief source/code reconciliation
 
 - `index.html` contains a real skip link before the main page content: `Skip to workspace` → `#workspace`.
 - `styles.css` positions `.skip-link` off-screen by default and moves it onscreen only while focused via `.skip-link:focus{left:10px}`.
+- `app.js` defines `setActivePanel(panel)` and calls `workspace.focus({ preventScroll: true })` every time that function runs.
+- `app.js` calls `setActivePanel('dashboard')` during initial page setup. Therefore page load programmatically moves focus to `#workspace` before the user begins normal tab navigation.
+- From that programmatically focused workspace, the next Tab enters the workspace’s interactive content; reverse Tab moves backward into controls that precede the workspace, which is consistent with the live-device **Add Experience → Display Options** observation.
 - The first-use welcome is rendered as `role="dialog"` with `aria-modal="true"`.
 - Build-mode keyboard safety intentionally traps Tab/Shift+Tab focus among controls inside the welcome overlay.
 - The welcome implementation initially focuses **Start with Guided Mode**. Because it is the last control, pressing Tab is designed to wrap focus to the first control, **Explore on my own**.
@@ -54,14 +59,18 @@ For the next skip-link scenario, the reviewer reloaded the current InPrivate rev
 - **Welcome modal forward focus containment:** **Pass evidence.** The reviewer confirmed keyboard movement across all three welcome controls with Tab and did not report focus escaping to background controls.
 - **Welcome modal reverse focus containment:** **Pass evidence.** Shift+Tab from the first welcome control wrapped to the last welcome control as designed.
 - **Welcome Escape behavior:** **Pass evidence.** A controlled review-build-window reproduction dismissed the welcome overlay with one Escape press after browser Find UI was closed.
-- **Skip-to-workspace:** **Candidate focus-order / discoverability failure — controlled confirmation required.** The code contains a skip link that should become visible on focus, but the live-device result after reload and one Tab landed visibly on **Add Experience** instead. The reviewer perceived only a brief blink and could not identify or use the skip link. A reverse-order check from the visible Add Experience focus is required before assigning a permanent finding ID or severity.
+- **AT-001 — Initial-load focus override bypasses skip-link start position — Medium — CONFIRMED.** On page load, `setActivePanel('dashboard')` programmatically focuses the workspace. This prevents a keyboard user from beginning at the document’s intended first focusable control and makes the visible-on-focus **Skip to workspace** link unavailable as the first Tab target. The finding is supported by both source behavior and live-device evidence. The user is not trapped and can still navigate, so this is not currently classified as Critical/High; however, it must be remediated and retested before accessibility gate closure.
 - **Background interaction isolation:** Reviewer could not access underlying page controls while the modal remained open; consistent with intended modal isolation.
 - **Candidate finding — background scroll leakage:** The reviewer reports that the page scrollbar can move while the fixed modal remains visually stationary. This may indicate the background document remains scrollable under the modal. **Status: Candidate / reproduction required before permanent finding ID or severity assignment.** Potential impact is loss of page position or disorientation after the modal closes.
 
+## Remediation requirement for AT-001
+
+Do not programmatically move focus into the workspace during initial page load. Preserve workspace focus movement for explicit user-triggered panel navigation where it is useful. Add automated regression coverage proving that, after welcome completion and reload, the first Tab exposes **Skip to workspace** and activating that link moves focus/navigation to the workspace.
+
 ## Next evidence action
 
-With **Add Experience** visibly focused after the skip-link attempt, press **Shift+Tab once** and record exactly which control receives focus. This will establish the immediately preceding keyboard target in the live tab order and help determine whether the skip link is being skipped, only flashing transiently, or focus is being repositioned by another page behavior.
+Chief-owned remediation and automated regression must complete first. Captain should not continue reverse-tabbing through the header to compensate for AT-001. After a new governed human-review build is generated, retest the skip-link route on the Captain device before continuing the remaining keyboard-only and real-screen-reader scenarios.
 
 ## Truth boundary
 
-No RATS item, accessibility gate, or Critical/High blocker is closed by this partial evidence. No merge or deployment action is authorized.
+AT-001 is confirmed from human evidence plus implementation reconciliation. It is not yet remediated or retested. No accessibility gate, RATS item, merge, deployment, pilot, certification, or release gate is closed by this evidence.
