@@ -37,9 +37,12 @@ After the Find box was confirmed closed, the reviewer performed a second Escape 
 
 The controlled reproduction then used the InPrivate Income Rescue Sprint review-build window with visible keyboard focus on a welcome control. The reviewer pressed **Escape once** and reported **“WELCOME CLOSED.”** Screenshot evidence shows the welcome overlay dismissed and the underlying Income Rescue Sprint workspace visible in Microsoft Edge InPrivate.
 
+For the next skip-link scenario, the reviewer reloaded the current InPrivate review-build page after the welcome-complete state had been stored, waited for load, and pressed **Tab once**. The reviewer reported that **Add Experience** became highlighted. The reviewer also noticed a **quick blink**, but did not see a persistent visible **Skip to workspace** link and did not observe an intentional skip action occurring.
+
 ### Chief source/code reconciliation
 
 - `index.html` contains a real skip link before the main page content: `Skip to workspace` → `#workspace`.
+- `styles.css` positions `.skip-link` off-screen by default and moves it onscreen only while focused via `.skip-link:focus{left:10px}`.
 - The first-use welcome is rendered as `role="dialog"` with `aria-modal="true"`.
 - Build-mode keyboard safety intentionally traps Tab/Shift+Tab focus among controls inside the welcome overlay.
 - The welcome implementation initially focuses **Start with Guided Mode**. Because it is the last control, pressing Tab is designed to wrap focus to the first control, **Explore on my own**.
@@ -48,16 +51,16 @@ The controlled reproduction then used the InPrivate Income Rescue Sprint review-
 
 ### Current evidence interpretation
 
-- **Skip-to-workspace:** **Not yet tested.** The first-use modal is now dismissed in the InPrivate session, so the skip-link scenario can proceed after a controlled reload that keeps the welcome-complete state.
 - **Welcome modal forward focus containment:** **Pass evidence.** The reviewer confirmed keyboard movement across all three welcome controls with Tab and did not report focus escaping to background controls.
 - **Welcome modal reverse focus containment:** **Pass evidence.** Shift+Tab from the first welcome control wrapped to the last welcome control as designed.
 - **Welcome Escape behavior:** **Pass evidence.** A controlled review-build-window reproduction dismissed the welcome overlay with one Escape press after browser Find UI was closed.
+- **Skip-to-workspace:** **Candidate focus-order / discoverability failure — controlled confirmation required.** The code contains a skip link that should become visible on focus, but the live-device result after reload and one Tab landed visibly on **Add Experience** instead. The reviewer perceived only a brief blink and could not identify or use the skip link. A reverse-order check from the visible Add Experience focus is required before assigning a permanent finding ID or severity.
 - **Background interaction isolation:** Reviewer could not access underlying page controls while the modal remained open; consistent with intended modal isolation.
 - **Candidate finding — background scroll leakage:** The reviewer reports that the page scrollbar can move while the fixed modal remains visually stationary. This may indicate the background document remains scrollable under the modal. **Status: Candidate / reproduction required before permanent finding ID or severity assignment.** Potential impact is loss of page position or disorientation after the modal closes.
 
 ## Next evidence action
 
-Reload the current InPrivate review-build page after welcome completion, then press Tab once to test whether the first keyboard target is the visible `Skip to workspace` link. If present, activate it with Enter and confirm focus/navigation lands at the workspace. After that, continue keyboard-only navigation and then real screen-reader testing.
+With **Add Experience** visibly focused after the skip-link attempt, press **Shift+Tab once** and record exactly which control receives focus. This will establish the immediately preceding keyboard target in the live tab order and help determine whether the skip link is being skipped, only flashing transiently, or focus is being repositioned by another page behavior.
 
 ## Truth boundary
 
