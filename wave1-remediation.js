@@ -177,6 +177,97 @@
     });
   }
 
+  // Respect explicit opportunity holds throughout prioritization and Next Best Action.
+  // Hold and Skipped remain stored and editable, but cannot drive active readiness or recommendation priority.
+  const coreScoreJob = scoreJob;
+  const coreCalculateProgress = calculateProgress;
+  const coreGetNextAction = getNextAction;
+
+  function opportunityIsActive(job) {
+    return Boolean(job) && job.status !== 'Hold' && job.status !== 'Skipped';
+  }
+
+  scoreJob = function scoreJobWithUserControl(job) {
+    if (!opportunityIsActive(job)) return 0;
+    return coreScoreJob(job);
+  };
+
+  calculateProgress = function calculateProgressWithOpportunityHolds() {
+    const base = coreCalculateProgress();
+    const priorCount = state.jobs.filter(job => job.status !== 'Skipped').length;
+    const activeCount = state.jobs.filter(opportunityIsActive).length;
+    const priorPoints = Math.min(25, priorCount * 8);
+    const activePoints = Math.min(25, activeCount * 8);
+    return Math.max(0, Math.min(100, base - priorPoints + activePoints));
+  };
+
+  function reviewFallback() {
+    return {
+      key: 'review',
+      title: 'Review your sprint dashboard',
+      detail: 'Your core workflow is current. Confirm priorities and choose the next deliberate action.',
+      panel: 'dashboard'
+    };
+  }
+
+  function reactivateOpportunityAction() {
+    return {
+      key: 'opportunity-reactivate',
+      title: 'Reactivate or add one target opportunity',
+      detail: 'Held and skipped opportunities stay out of your active queue until you choose to bring one back. Review your opportunities and reactivate one, or add a new target role.',
+      panel: 'jobs'
+    };
+  }
+
+  function opportunityAction(job) {
+    const score = scoreJob(job);
+    const nextStep = clean(job?.nextStep);
+    const deadline = job?.deadline ? ` Deadline: ${formatDate(job.deadline)}.` : '';
+    const detail = nextStep
+      ? `Next step you set: ${nextStep}. Priority score: ${score}/100 based on fit, work arrangement, urgency, evidence strength, and pay alignment.${deadline}`
+      : `Priority score: ${score}/100 based on fit, work arrangement, urgency, evidence strength, and pay alignment. Add or confirm the next step before acting.${deadline}`;
+    return {
+      key: `job-${job.id}`,
+      title: `Advance ${job.title} at ${job.company}`,
+      detail,
+      panel: 'jobs'
+    };
+  }
+
+  getNextAction = function getNextActionWithUserControl() {
+    const base = coreGetNextAction();
+    const activePending = [...state.jobs]
+      .filter(job => opportunityIsActive(job) && job.status !== 'Applied')
+      .sort((a, b) => scoreJob(b) - scoreJob(a));
+    const activeAny = state.jobs.some(opportunityIsActive);
+    const baseOpportunity = state.jobs.find(job => `job-${job.id}` === base.key);
+
+    if (baseOpportunity) {
+      if (opportunityIsActive(baseOpportunity)) return opportunityAction(baseOpportunity);
+      if (activePending[0]) return opportunityAction(activePending[0]);
+      return activeAny ? reviewFallback() : reactivateOpportunityAction();
+    }
+
+    if (base.key === 'review' && state.jobs.length && !activeAny) return reactivateOpportunityAction();
+    return base;
+  };
+
+  // The prior manual completion control could record progress without changing the underlying
+  // workflow state. Actual completion remains derived from the workspace facts; pausing is explicit.
+  renderNext = function renderNextWithVerifiedProgress() {
+    const next = getNextAction();
+    workspace.innerHTML = `
+      <div class="workspace-header"><div><h2>Next Best Action</h2><p>One recommendation, based only on the information currently stored in this workspace.</p></div><span class="status">Highest ROI</span></div>
+      <div class="next-action"><div class="next-number">1</div><div><h3>${escapeHtml(next.title)}</h3><p>${escapeHtml(next.detail)}</p><div class="toolbar"><button data-go="${next.panel}" type="button">Open the work area</button><button id="pauseAction" class="outline" type="button">Pause for now</button></div></div></div>
+      <div class="section-divider"></div>
+      <div class="callout"><strong>Recommendation boundary</strong><p>This prototype does not apply to jobs, send messages, change documents, or take external action. It organizes the next decision for you. Completion is based on the workspace facts you actually update, not on acknowledging a recommendation.</p></div>`;
+    bindGoButtons();
+    document.getElementById('pauseAction')?.addEventListener('click', () => {
+      setActivePanel('dashboard');
+      showToast('Progress remains saved in this browser. Return when you are ready.');
+    });
+  };
+
   function applyWorkspaceRemediation() {
     improveEvidencePrompts();
     installResumeDrafting();
@@ -197,6 +288,7 @@
 
   window.addEventListener('DOMContentLoaded', () => {
     restoreCompanionWithoutFocusTransfer();
+    if (typeof updateDashboardChrome === 'function') updateDashboardChrome();
     applyWorkspaceRemediation();
     const workspace = document.getElementById('workspace');
     if (workspace) {
