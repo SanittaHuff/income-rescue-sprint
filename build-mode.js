@@ -1,7 +1,7 @@
 const COMFORT_KEY = 'lvhq-comfort-view';
 const MOTION_KEY = 'lvhq-reduce-motion';
 const COMPANION_KEY = 'lvhq-career-companion-open';
-const WELCOME_KEY = 'lvhq-welcome-complete';
+const BUILD_WELCOME_KEY = 'lvhq-welcome-complete';
 
 function systemPrefersReducedMotion() {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -59,7 +59,7 @@ function installExperiencePreferences() {
 function preserveInitialSkipLinkFocusOrder() {
   const workspace = document.getElementById('workspace');
   if (!workspace) return;
-  if (localStorage.getItem(WELCOME_KEY) === 'true' && document.activeElement === workspace) {
+  if (localStorage.getItem(BUILD_WELCOME_KEY) === 'true' && document.activeElement === workspace) {
     workspace.blur();
   }
 }
