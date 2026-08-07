@@ -19,6 +19,7 @@ on:
       - 'README.md'
       - 'docs/P0-COMPANION-IMPLEMENTATION-QA-CHECKPOINT.md'
       - 'docs/P0-HUMAN-REVIEW-GATE.md'
+      - 'docs/P0-HUMAN-EVIDENCE-EXECUTION-RUNBOOK.md'
       - 'docs/RECRUITER-ATS-BASELINE-AND-P0-RETEST.md'
       - 'docs/P0-WAVE1-INTERNAL-PANEL-FINDINGS.md'
       - 'docs/P0-NEXT-BEST-ACTION-USER-CONTROL-CHECKPOINT.md'
@@ -83,6 +84,7 @@ jobs:
             wave1-remediation.js
             docs/P0-COMPANION-IMPLEMENTATION-QA-CHECKPOINT.md
             docs/P0-HUMAN-REVIEW-GATE.md
+            docs/P0-HUMAN-EVIDENCE-EXECUTION-RUNBOOK.md
             docs/RECRUITER-ATS-BASELINE-AND-P0-RETEST.md
             docs/P0-WAVE1-INTERNAL-PANEL-FINDINGS.md
             docs/P0-NEXT-BEST-ACTION-USER-CONTROL-CHECKPOINT.md
