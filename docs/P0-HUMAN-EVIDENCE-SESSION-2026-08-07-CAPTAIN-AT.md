@@ -75,18 +75,28 @@ Captain has prior product exposure, so this session must not be labeled first-ti
 - Human-review digest: `sha256:f7a6b8289dae3b00ae5f8f4ecca6f5991de806784fb5c4016e94a18dfdd31b49`
 - Captain handoff intentionally held so AT-002 could be remediated in the same download candidate.
 
-### Run 114 — current combined accessibility-remediation candidate
-- Head: `602c4af8da65f96d1623e397e57234ca49a4e03b`
+### Run 114 — combined code-remediation checkpoint
+- Code head: `602c4af8da65f96d1623e397e57234ca49a4e03b`
 - Visible MVP Quality run **114 — success**.
 - Static validation passed.
 - **26/26 governed Chromium tests passed**.
 - AT-001 regression passed.
 - AT-002 background-scroll regression passed.
-- Existing automated WCAG serious-impact, first-use dialog, Companion, responsive/200%-equivalent, migration, recruiter-safety, portability, and user-control coverage remained green.
 - Browser QA artifact: `8989800360`
 - Browser QA digest: `sha256:eb327320e8928afb02b6ff29127e9f5afd8eb6a1c4f8b2ce630bfb66959d4a1d`
 - Human-review build artifact: `8989800807`
 - Human-review build digest: `sha256:e02f19f27176ff96dbc884fa36f7d125bcf4e1af17a145a7c232b2618048e3f9`
+
+### Run 115 — current branch/evidence checkpoint
+- Current branch head: `cf93ae39e7fee6ab3affb94b05fed6ec1e713c6b`
+- The only change after run 114 was reconciliation of this human-evidence record; product code remained the run-114 combined accessibility-remediation candidate.
+- Visible MVP Quality run **115 — success**.
+- Static validation passed.
+- **26/26 governed Chromium tests passed**.
+- Browser QA artifact: `8989909066`
+- Browser QA digest: `sha256:22e2cd262c9f0fc0a333e9620b3fd87c6762be76788cc8a38429700bd0bb8c40`
+- Human-review build artifact: `8989909748`
+- Human-review build digest: `sha256:b1fb7970bab630cb1f0a4f20ccd1d943ae3f5c2bf8eb3c187f8d733baa745f40`
 - Workflow logs verify **20 governed review files** packaged.
 
 ## Current interpretation
@@ -102,7 +112,7 @@ Captain has prior product exposure, so this session must not be labeled first-ti
 
 ## Next evidence action
 
-Use the exact run-114 human-review artifact on the Captain device. Retest AT-001 first, then AT-002, one Coach Mode action at a time. If both pass, continue the remaining keyboard-only core route and then enable a real screen reader for D2 evidence.
+Use the exact run-115 human-review artifact on the Captain device. Retest AT-001 first, then AT-002, one Coach Mode action at a time. If both pass, continue the remaining keyboard-only core route and then enable a real screen reader for D2 evidence.
 
 ## Truth boundary
 
