@@ -17,6 +17,7 @@ on:
       - 'wave1-remediation.js'
       - 'P0-REVIEW-START-HERE.txt'
       - 'README.md'
+      - 'docs/P0-COMPANION-IMPLEMENTATION-QA-CHECKPOINT.md'
       - 'docs/P0-HUMAN-REVIEW-GATE.md'
       - 'docs/RECRUITER-ATS-BASELINE-AND-P0-RETEST.md'
       - 'docs/P0-WAVE1-INTERNAL-PANEL-FINDINGS.md'
@@ -80,6 +81,7 @@ jobs:
             p0-tools.css
             p0-tools.js
             wave1-remediation.js
+            docs/P0-COMPANION-IMPLEMENTATION-QA-CHECKPOINT.md
             docs/P0-HUMAN-REVIEW-GATE.md
             docs/RECRUITER-ATS-BASELINE-AND-P0-RETEST.md
             docs/P0-WAVE1-INTERNAL-PANEL-FINDINGS.md
