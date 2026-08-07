@@ -1,6 +1,7 @@
 const COMFORT_KEY = 'lvhq-comfort-view';
 const MOTION_KEY = 'lvhq-reduce-motion';
 const COMPANION_KEY = 'lvhq-career-companion-open';
+const WELCOME_KEY = 'lvhq-welcome-complete';
 
 function systemPrefersReducedMotion() {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -53,6 +54,14 @@ function installExperiencePreferences() {
     if (details.open && !details.contains(event.target)) details.open = false;
   });
   applyExperiencePreferences();
+}
+
+function preserveInitialSkipLinkFocusOrder() {
+  const workspace = document.getElementById('workspace');
+  if (!workspace) return;
+  if (localStorage.getItem(WELCOME_KEY) === 'true' && document.activeElement === workspace) {
+    workspace.blur();
+  }
 }
 
 function improveWelcomeKeyboardSafety() {
@@ -159,6 +168,7 @@ function installCareerCompanion() {
 }
 
 function initializeBuildMode() {
+  preserveInitialSkipLinkFocusOrder();
   installExperiencePreferences();
   improveWelcomeKeyboardSafety();
   installCareerCompanion();
