@@ -90,9 +90,21 @@ function installModuleNavigationStatus() {
   const nav = document.querySelector('.module-nav');
   if (!nav || document.getElementById('moduleNavStatus')) return;
 
+  const moduleLabels = {
+    dashboard: 'Overview',
+    evidence: 'Experience Evidence',
+    resume: 'Resume Readiness',
+    jobs: 'Opportunity Priority',
+    next: 'Next Best Action',
+    'email-review': 'Recruiter Email Review',
+    capabilities: 'Connections & Agent Controls',
+    settings: 'Data & Settings'
+  };
   const buttons = [...nav.querySelectorAll('.nav-button')];
   buttons.forEach(button => {
-    button.dataset.moduleLabel = button.textContent.trim();
+    const label = moduleLabels[button.dataset.panel] || button.getAttribute('aria-label') || button.textContent.trim();
+    button.dataset.moduleLabel = label;
+    button.setAttribute('aria-label', label);
   });
 
   const status = document.createElement('section');
