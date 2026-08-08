@@ -113,7 +113,7 @@ Captain has prior product exposure, so this session must not be labeled first-ti
 - Diagnostics isolated stale assertions and the narrow-screen pointer-activation defect UXUI-006.
 
 ### Run 132 — verified expanded-panel candidate and Captain UX-004 retest build
-- Head: `0b90bfc8a2fd42051a5843efebc50d54ed464851`
+- Tested product code head: `0b90bfc8a2fd42051a5843efebc50d54ed464851`
 - Visible MVP Quality run 132 — **SUCCESS**.
 - Workflow run: `31271595064`
 - Static/truth-boundary validation: **PASS**.
@@ -140,6 +140,10 @@ Captain has prior product exposure, so this session must not be labeled first-ti
 ## Next evidence action
 
 Continue the remaining keyboard-only core route on the exact verified run-132 human-review build currently open on the Captain device. After the keyboard route is sufficiently covered, enable a real screen reader for D2 evidence. Documentation recording must not be interpreted as changing the tested run-132 product artifact.
+
+## Process note — documentation synchronization during active device session
+
+After the UX-004 PASS was captured, the evidence record itself was synchronized to the branch. That evidence-only documentation commit changes the branch head but does **not** alter the run-132 product code or the exact human-review artifact currently under test. The active device session remains pinned to run-132 artifact `9025776735` / tested product code head `0b90bfc8a2fd42051a5843efebc50d54ed464851`; do not switch artifacts merely because the documentation commit creates a later workflow run.
 
 ## Truth boundary
 
