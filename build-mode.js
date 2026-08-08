@@ -159,6 +159,24 @@ function installModuleNavigationStatus() {
     button.addEventListener('click', () => window.setTimeout(syncCurrent, 0));
   });
 
+  // Make reverse navigation from the programmatically focused workspace deterministic.
+  // Native Shift+Tab behavior from tabindex="-1" can vary across browser/platform combinations.
+  workspace?.addEventListener('keydown', event => {
+    if (
+      event.target === workspace &&
+      event.key === 'Tab' &&
+      event.shiftKey &&
+      !event.altKey &&
+      !event.ctrlKey &&
+      !event.metaKey
+    ) {
+      const previousModule = buttons.at(-1);
+      if (!previousModule) return;
+      event.preventDefault();
+      previousModule.focus();
+    }
+  });
+
   const observer = new MutationObserver(syncCurrent);
   observer.observe(nav, { subtree: true, attributes: true, attributeFilter: ['class'] });
   syncCurrent();
