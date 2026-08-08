@@ -33,6 +33,50 @@ test('completed welcome state preserves skip link as the first keyboard target',
   await expect(page.locator('#workspace')).toBeFocused();
 });
 
+test('module navigation makes keyboard focus and active location visually distinct', async ({ page }) => {
+  await openProduct(page);
+  const evidenceTab = page.locator('.nav-button[data-panel="evidence"]');
+
+  // Establish keyboard modality before programmatically moving to the control under test.
+  await page.keyboard.press('Tab');
+  await evidenceTab.focus();
+  await expect(evidenceTab).toBeFocused();
+  await expect.poll(() => evidenceTab.evaluate(element => element.matches(':focus-visible'))).toBe(true);
+
+  const focusStyle = await evidenceTab.evaluate(element => {
+    const style = getComputedStyle(element);
+    return {
+      outlineWidth: style.outlineWidth,
+      outlineColor: style.outlineColor,
+      textDecorationLine: style.textDecorationLine,
+      boxShadow: style.boxShadow
+    };
+  });
+  expect(parseFloat(focusStyle.outlineWidth)).toBeGreaterThanOrEqual(4);
+  expect(focusStyle.outlineColor).toBe('rgb(255, 216, 77)');
+  expect(focusStyle.textDecorationLine).toContain('underline');
+  expect(focusStyle.boxShadow).not.toBe('none');
+
+  await evidenceTab.press('Enter');
+  await expect(evidenceTab).toHaveClass(/active/);
+  await expect(page.locator('#workspace')).toBeFocused();
+
+  const activeStyle = await evidenceTab.evaluate(element => {
+    const style = getComputedStyle(element);
+    const marker = getComputedStyle(element, '::after');
+    return {
+      borderBottomWidth: style.borderBottomWidth,
+      boxShadow: style.boxShadow,
+      markerHeight: marker.height,
+      markerContent: marker.content
+    };
+  });
+  expect(parseFloat(activeStyle.borderBottomWidth)).toBeGreaterThanOrEqual(2);
+  expect(activeStyle.boxShadow).toContain('inset');
+  expect(parseFloat(activeStyle.markerHeight)).toBeGreaterThanOrEqual(4);
+  expect(activeStyle.markerContent).not.toBe('none');
+});
+
 test('core, Companion, email review, and capability surfaces pass automated WCAG preflight', async ({ page }) => {
   await openProduct(page);
   const reassurance = page.locator('.reassurance');
