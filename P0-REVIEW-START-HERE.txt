@@ -1,0 +1,16 @@
+INCOME RESCUE SPRINT — P0 HUMAN REVIEW BUILD
+
+1. Extract the complete p0-human-review-build ZIP into one folder.
+2. Open index.html in a current Chrome, Edge, Firefox, or Safari browser.
+3. Use fictional or synthetic information only.
+4. Do not enter passwords, authentication codes, Social Security numbers, financial or medical details, confidential customer/employer information, production credentials, or real participant data.
+5. The review build stores workspace data only in that browser unless you export it.
+6. Recruiter-email text is reviewed only while its page is open and is not included in workspace export.
+7. No mailbox, calendar, job board, external AI model, sending, scheduling, monitoring, or automatic job application is connected.
+8. Read docs/P0-COMPANION-IMPLEMENTATION-QA-CHECKPOINT.md for the tested implementation boundary.
+9. Follow docs/P0-HUMAN-REVIEW-GATE.md and docs/RECRUITER-ATS-BASELINE-AND-P0-RETEST.md for the governing human-review requirements.
+10. Use docs/P0-HUMAN-EVIDENCE-EXECUTION-RUNBOOK.md as the step-by-step evidence collection procedure for first-use comprehension, Recruiter/ATS human evidence, Next Best Action user-control confirmation, and real assistive-technology preflight.
+11. Record the session in docs/P0-HUMAN-EVIDENCE-RESULTS-TEMPLATE.md. Use reviewer role or a neutral reviewer label rather than private identifying information, and keep the synthetic-data boundary intact.
+12. Review docs/P0-WAVE1-INTERNAL-PANEL-FINDINGS.md and docs/P0-NEXT-BEST-ACTION-USER-CONTROL-CHECKPOINT.md for current internal findings, tested remediation, and remaining human gates.
+
+This is a branch review build. It is not the public deployment, production software, a certified pilot, or a release-approved product.

@@ -6,12 +6,27 @@ on:
       - 'index.html'
       - 'styles.css'
       - 'app.js'
+      - 'evidence-state-governance.js'
       - 'lvhq-family.css'
       - 'lvhq-family.js'
       - 'prototype-qa.js'
       - 'build-mode.css'
       - 'build-mode.js'
+      - 'p0-tools.css'
+      - 'p0-tools.js'
+      - 'wave1-remediation.js'
+      - 'P0-REVIEW-START-HERE.txt'
+      - 'README.md'
+      - 'docs/P0-COMPANION-IMPLEMENTATION-QA-CHECKPOINT.md'
+      - 'docs/P0-HUMAN-REVIEW-GATE.md'
+      - 'docs/P0-HUMAN-EVIDENCE-EXECUTION-RUNBOOK.md'
+      - 'docs/P0-HUMAN-EVIDENCE-RESULTS-TEMPLATE.md'
+      - 'docs/RECRUITER-ATS-BASELINE-AND-P0-RETEST.md'
+      - 'docs/P0-WAVE1-INTERNAL-PANEL-FINDINGS.md'
+      - 'docs/P0-NEXT-BEST-ACTION-USER-CONTROL-CHECKPOINT.md'
       - 'scripts/validate-visible-mvp.mjs'
+      - 'tests/e2e/**'
+      - 'playwright.config.js'
       - 'package.json'
       - '.github/workflows/visible-mvp-quality.yml'
   push:
@@ -22,6 +37,7 @@ permissions:
 
 jobs:
   validate:
+    timeout-minutes: 30
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -30,5 +46,63 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Validate visible MVP
+      - name: Install test dependencies
+        run: npm install --no-audit --no-fund
+      - name: Install Chromium and system dependencies
+        run: npx playwright install --with-deps chromium
+      - name: Validate visible MVP assets and truth boundaries
         run: npm run validate:mvp
+      - name: Run governed browser QA
+        shell: bash
+        run: |
+          set +e
+          npm run test:e2e 2>&1 | tee playwright-ci.log
+          status=${PIPESTATUS[0]}
+          if [ "$status" -ne 0 ]; then
+            {
+              echo '### Governed browser QA failure details'
+              echo '```text'
+              tail -n 120 playwright-ci.log
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
+          exit "$status"
+      - name: Preserve browser QA evidence
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: p0-browser-qa-report
+          path: |
+            playwright-report/
+            test-results/
+            playwright-ci.log
+          if-no-files-found: ignore
+          retention-days: 30
+      - name: Publish tested P0 human review build
+        if: ${{ success() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: p0-human-review-build
+          path: |
+            P0-REVIEW-START-HERE.txt
+            index.html
+            styles.css
+            app.js
+            evidence-state-governance.js
+            lvhq-family.css
+            lvhq-family.js
+            prototype-qa.js
+            build-mode.css
+            build-mode.js
+            p0-tools.css
+            p0-tools.js
+            wave1-remediation.js
+            docs/P0-COMPANION-IMPLEMENTATION-QA-CHECKPOINT.md
+            docs/P0-HUMAN-REVIEW-GATE.md
+            docs/P0-HUMAN-EVIDENCE-EXECUTION-RUNBOOK.md
+            docs/P0-HUMAN-EVIDENCE-RESULTS-TEMPLATE.md
+            docs/RECRUITER-ATS-BASELINE-AND-P0-RETEST.md
+            docs/P0-WAVE1-INTERNAL-PANEL-FINDINGS.md
+            docs/P0-NEXT-BEST-ACTION-USER-CONTROL-CHECKPOINT.md
+          if-no-files-found: error
+          retention-days: 30

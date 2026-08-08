@@ -1,5 +1,6 @@
 const COMFORT_KEY = 'lvhq-comfort-view';
 const MOTION_KEY = 'lvhq-reduce-motion';
+const COMPANION_KEY = 'lvhq-career-companion-open';
 
 function systemPrefersReducedMotion() {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -44,7 +45,7 @@ function installExperiencePreferences() {
   });
   details.addEventListener('keydown', event => {
     if (event.key === 'Escape' && details.open) {
-      details.open = false;
+      event.preventDefault();
       details.querySelector('summary')?.focus();
     }
   });
@@ -52,6 +53,11 @@ function installExperiencePreferences() {
     if (details.open && !details.contains(event.target)) details.open = false;
   });
   applyExperiencePreferences();
+}
+
+function enableWorkspaceProgrammaticFocus() {
+  const workspace = document.getElementById('workspace');
+  if (workspace && !workspace.hasAttribute('tabindex')) workspace.setAttribute('tabindex', '-1');
 }
 
 function improveWelcomeKeyboardSafety() {
@@ -80,10 +86,193 @@ function improveWelcomeKeyboardSafety() {
   });
 }
 
+function installModuleNavigationStatus() {
+  const nav = document.querySelector('.module-nav');
+  if (!nav || document.getElementById('moduleNavStatus')) return;
+
+  const moduleLabels = {
+    dashboard: 'Overview',
+    evidence: 'Experience Evidence',
+    resume: 'Resume Readiness',
+    jobs: 'Opportunity Priority',
+    next: 'Next Best Action',
+    'email-review': 'Recruiter Email Review',
+    capabilities: 'Connections & Agent Controls',
+    settings: 'Data & Settings'
+  };
+  const buttons = [...nav.querySelectorAll('.nav-button')];
+  const workspace = document.getElementById('workspace');
+  buttons.forEach(button => {
+    const label = moduleLabels[button.dataset.panel] || button.getAttribute('aria-label') || button.textContent.trim();
+    button.dataset.moduleLabel = label;
+    button.setAttribute('aria-label', label);
+  });
+
+  const status = document.createElement('section');
+  status.id = 'moduleNavStatus';
+  status.className = 'module-nav-status card';
+  status.setAttribute('aria-label', 'Module navigation status');
+  status.innerHTML = `
+    <span class="module-status current-status"><strong>Current section:</strong> <span id="moduleCurrentValue">Overview</span></span>
+    <span class="module-status focus-status"><strong>Keyboard focus:</strong> <span id="moduleFocusValue">Not on module navigation</span></span>`;
+  nav.parentNode.insertBefore(status, nav);
+
+  const currentValue = document.getElementById('moduleCurrentValue');
+  const focusValue = document.getElementById('moduleFocusValue');
+
+  const syncCurrent = () => {
+    const active = buttons.find(button => button.classList.contains('active')) || buttons[0];
+    if (!active) return;
+    currentValue.textContent = active.dataset.moduleLabel;
+    buttons.forEach(button => {
+      const isActive = button === active;
+      let badge = button.querySelector('.nav-current-badge');
+      if (isActive) {
+        button.setAttribute('aria-current', 'page');
+        if (!badge) {
+          badge = document.createElement('span');
+          badge.className = 'nav-current-badge';
+          badge.setAttribute('aria-hidden', 'true');
+          badge.textContent = 'Current';
+          button.appendChild(badge);
+        }
+      } else {
+        button.removeAttribute('aria-current');
+        badge?.remove();
+      }
+    });
+  };
+
+  const setFocusStatus = target => {
+    const focusedButton = buttons.find(candidate => candidate === target);
+    const keyboardFocusedButton = focusedButton?.matches(':focus-visible') ? focusedButton : null;
+    const inWorkspace = Boolean(workspace && target && (target === workspace || workspace.contains(target)));
+    focusValue.textContent = keyboardFocusedButton?.dataset.moduleLabel || (inWorkspace ? 'Workspace content' : 'Not on module navigation');
+    status.classList.toggle('keyboard-focus-active', Boolean(keyboardFocusedButton));
+  };
+
+  document.addEventListener('focusin', event => setFocusStatus(event.target));
+  document.addEventListener('focusout', () => {
+    window.setTimeout(() => setFocusStatus(document.activeElement), 0);
+  });
+  buttons.forEach(button => {
+    button.addEventListener('click', () => window.setTimeout(syncCurrent, 0));
+  });
+
+  // Make reverse navigation from the programmatically focused workspace deterministic.
+  // Native Shift+Tab behavior from tabindex="-1" can vary across browser/platform combinations.
+  workspace?.addEventListener('keydown', event => {
+    if (
+      event.target === workspace &&
+      event.key === 'Tab' &&
+      event.shiftKey &&
+      !event.altKey &&
+      !event.ctrlKey &&
+      !event.metaKey
+    ) {
+      const previousModule = buttons.at(-1);
+      if (!previousModule) return;
+      event.preventDefault();
+      previousModule.focus();
+    }
+  });
+
+  const observer = new MutationObserver(syncCurrent);
+  observer.observe(nav, { subtree: true, attributes: true, attributeFilter: ['class'] });
+  syncCurrent();
+  setFocusStatus(document.activeElement);
+}
+
+// Only patch known legacy controls. Never rewrite user-authored content or governed status labels.
+function replaceVisibleText(root = document.body) {
+  if (!root || root.nodeType !== Node.ELEMENT_NODE) return;
+
+  root.querySelectorAll('button[data-action="verify-evidence"], button[data-action="review-evidence"]').forEach(button => {
+    button.textContent = 'Mark reviewed by me';
+    button.setAttribute('aria-label', 'Mark this evidence as reviewed by you');
+  });
+  root.querySelectorAll('.chip').forEach(chip => {
+    const value = chip.textContent.trim().toLowerCase();
+    if (value === 'verified') chip.textContent = 'Reviewed by you';
+    if (value === 'pending') chip.textContent = 'Needs your review';
+  });
+}
+
+function installCareerCompanion() {
+  if (document.getElementById('careerCompanion')) return;
+  const companion = document.createElement('aside');
+  companion.id = 'careerCompanion';
+  companion.className = 'career-companion';
+  companion.setAttribute('aria-label', 'Career Companion');
+  companion.innerHTML = `
+    <button id="careerCompanionToggle" class="companion-toggle" type="button" aria-expanded="false" aria-controls="careerCompanionPanel">
+      <span aria-hidden="true">✦</span> Career Companion
+    </button>
+    <section id="careerCompanionPanel" class="companion-panel" hidden>
+      <div class="companion-header">
+        <div><strong>Career Companion</strong><small>Prototype guidance — not a live autonomous agent</small></div>
+        <button id="careerCompanionClose" class="companion-close" type="button" aria-label="Close Career Companion">×</button>
+      </div>
+      <p>I can guide you through the current workspace, explain what each step does, and help you choose the next deliberate action.</p>
+      <div class="companion-boundary" role="note">
+        <strong>Available now</strong>
+        <span>Guidance, explanations, and navigation inside this browser prototype.</span>
+      </div>
+      <div class="companion-boundary" role="note">
+        <strong>Not connected</strong>
+        <span>No mailbox, calendar, job board, external AI service, or automatic application access.</span>
+      </div>
+      <div class="companion-actions">
+        <button type="button" data-companion-go="next">Show my next best action</button>
+        <button type="button" class="outline" data-companion-go="evidence">Help me capture experience</button>
+        <button type="button" class="outline" data-companion-go="resume">Explain resume readiness</button>
+      </div>
+      <p class="companion-permissions"><strong>Permission level:</strong> Explain and navigate only. External or consequential actions are unavailable.</p>
+    </section>`;
+  document.body.appendChild(companion);
+
+  const toggle = document.getElementById('careerCompanionToggle');
+  const panel = document.getElementById('careerCompanionPanel');
+  const setOpen = open => {
+    panel.hidden = !open;
+    toggle.setAttribute('aria-expanded', String(open));
+    localStorage.setItem(COMPANION_KEY, String(open));
+    if (open) panel.querySelector('button')?.focus();
+  };
+  toggle.addEventListener('click', () => setOpen(panel.hidden));
+  document.getElementById('careerCompanionClose').addEventListener('click', () => {
+    setOpen(false);
+    toggle.focus();
+  });
+  panel.addEventListener('keydown', event => {
+    if (event.key === 'Escape') {
+      setOpen(false);
+      toggle.focus();
+    }
+  });
+  panel.querySelectorAll('[data-companion-go]').forEach(button => {
+    button.addEventListener('click', () => {
+      const target = document.querySelector(`.nav-button[data-panel="${button.dataset.companionGo}"]`);
+      target?.click();
+      setOpen(false);
+    });
+  });
+  if (localStorage.getItem(COMPANION_KEY) === 'true') setOpen(true);
+}
+
 function initializeBuildMode() {
+  enableWorkspaceProgrammaticFocus();
   installExperiencePreferences();
   improveWelcomeKeyboardSafety();
-  const observer = new MutationObserver(() => improveWelcomeKeyboardSafety());
+  installModuleNavigationStatus();
+  installCareerCompanion();
+  replaceVisibleText();
+  const observer = new MutationObserver(mutations => {
+    improveWelcomeKeyboardSafety();
+    mutations.forEach(mutation => mutation.addedNodes.forEach(node => {
+      if (node.nodeType === Node.ELEMENT_NODE) replaceVisibleText(node);
+    }));
+  });
   observer.observe(document.body, { childList: true, subtree: true });
 }
 

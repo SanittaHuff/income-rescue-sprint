@@ -153,7 +153,7 @@ function showFirstUseWelcome() {
     <section class="welcome-card">
       <p class="eyebrow">Welcome to Income Rescue Sprint</p>
       <h2 id="welcomeTitle">Start small. Keep control. Build momentum.</h2>
-      <p>This prototype helps you organize work experience, prepare resume content, compare opportunities, and see one practical next action.</p>
+      <p>Recover and organize work experience, turn it into reusable resume content, prioritize opportunities, and take one deliberate next action.</p>
       <div class="welcome-note"><strong>You do not need documents or proof to begin.</strong> Start with what you remember. You can add dates, examples, or supporting information later.</div>
       <div class="welcome-steps">
         <div><strong>1. Add one experience</strong><span>Use your own words. A rough memory is enough to start.</span></div>
