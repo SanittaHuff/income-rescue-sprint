@@ -53,7 +53,20 @@ jobs:
       - name: Validate visible MVP assets and truth boundaries
         run: npm run validate:mvp
       - name: Run governed browser QA
-        run: npm run test:e2e
+        shell: bash
+        run: |
+          set +e
+          npm run test:e2e 2>&1 | tee playwright-ci.log
+          status=${PIPESTATUS[0]}
+          if [ "$status" -ne 0 ]; then
+            {
+              echo '### Governed browser QA failure details'
+              echo '```text'
+              tail -n 120 playwright-ci.log
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
+          exit "$status"
       - name: Preserve browser QA evidence
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
@@ -62,6 +75,7 @@ jobs:
           path: |
             playwright-report/
             test-results/
+            playwright-ci.log
           if-no-files-found: ignore
           retention-days: 30
       - name: Publish tested P0 human review build
