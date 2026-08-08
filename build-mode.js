@@ -45,7 +45,7 @@ function installExperiencePreferences() {
   });
   details.addEventListener('keydown', event => {
     if (event.key === 'Escape' && details.open) {
-      details.open = false;
+      event.preventDefault();
       details.querySelector('summary')?.focus();
     }
   });
@@ -145,9 +145,10 @@ function installModuleNavigationStatus() {
 
   const setFocusStatus = target => {
     const focusedButton = buttons.find(candidate => candidate === target);
+    const keyboardFocusedButton = focusedButton?.matches(':focus-visible') ? focusedButton : null;
     const inWorkspace = Boolean(workspace && target && (target === workspace || workspace.contains(target)));
-    focusValue.textContent = focusedButton?.dataset.moduleLabel || (inWorkspace ? 'Workspace content' : 'Not on module navigation');
-    status.classList.toggle('keyboard-focus-active', Boolean(focusedButton));
+    focusValue.textContent = keyboardFocusedButton?.dataset.moduleLabel || (inWorkspace ? 'Workspace content' : 'Not on module navigation');
+    status.classList.toggle('keyboard-focus-active', Boolean(keyboardFocusedButton));
   };
 
   document.addEventListener('focusin', event => setFocusStatus(event.target));
