@@ -10,16 +10,23 @@ test('all major product areas are visibly discoverable in narrow-screen navigati
 
   const nav = page.locator('.module-nav');
   await expect(nav).toBeVisible();
+  const navDisplay = await nav.evaluate(element => getComputedStyle(element).display);
   await expect.poll(() => nav.evaluate(element => getComputedStyle(element).display)).toBe('grid');
 
   const panels = ['dashboard', 'evidence', 'resume', 'jobs', 'next', 'email-review', 'capabilities', 'settings'];
+  const bounds = [];
   for (const panel of panels) {
     const button = page.locator(`.nav-button[data-panel="${panel}"]`);
     await expect(button).toBeVisible();
-    const box = await button.boundingBox();
-    expect(box).not.toBeNull();
-    expect(box.x).toBeGreaterThanOrEqual(0);
-    expect(box.x + box.width).toBeLessThanOrEqual(391);
+    bounds.push({ panel, box: await button.boundingBox() });
+  }
+
+  console.log(`::notice title=Mobile navigation bounds::${JSON.stringify({ viewport: { width: 390, height: 844 }, navDisplay, nav: await nav.boundingBox(), buttons: bounds })}`);
+
+  for (const { panel, box } of bounds) {
+    expect(box, `${panel} button must have a measurable box`).not.toBeNull();
+    expect(box.x, `${panel} left edge must remain in the viewport`).toBeGreaterThanOrEqual(0);
+    expect(box.x + box.width, `${panel} right edge must remain in the viewport`).toBeLessThanOrEqual(391);
   }
 
   await page.locator('.nav-button[data-panel="email-review"]').click();
