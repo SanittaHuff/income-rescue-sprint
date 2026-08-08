@@ -33,15 +33,26 @@ test('completed welcome state preserves skip link as the first keyboard target',
   await expect(page.locator('#workspace')).toBeFocused();
 });
 
-test('module navigation makes keyboard focus and active location visually distinct', async ({ page }) => {
+test('module navigation explicitly names current section and keyboard focus', async ({ page }) => {
   await openProduct(page);
+  const status = page.locator('#moduleNavStatus');
+  const currentValue = page.locator('#moduleCurrentValue');
+  const focusValue = page.locator('#moduleFocusValue');
+  const overviewTab = page.locator('.nav-button[data-panel="dashboard"]');
   const evidenceTab = page.locator('.nav-button[data-panel="evidence"]');
+
+  await expect(status).toBeVisible();
+  await expect(currentValue).toHaveText('Overview');
+  await expect(focusValue).toHaveText('Not on module navigation');
+  await expect(overviewTab.locator('.nav-current-badge')).toHaveText('Current');
 
   // Establish keyboard modality before programmatically moving to the control under test.
   await page.keyboard.press('Tab');
   await evidenceTab.focus();
   await expect(evidenceTab).toBeFocused();
   await expect.poll(() => evidenceTab.evaluate(element => element.matches(':focus-visible'))).toBe(true);
+  await expect(focusValue).toHaveText('Experience Evidence');
+  await expect(status).toHaveClass(/keyboard-focus-active/);
 
   const focusStyle = await evidenceTab.evaluate(element => {
     const style = getComputedStyle(element);
@@ -52,29 +63,17 @@ test('module navigation makes keyboard focus and active location visually distin
       boxShadow: style.boxShadow
     };
   });
-  expect(parseFloat(focusStyle.outlineWidth)).toBeGreaterThanOrEqual(4);
+  expect(parseFloat(focusStyle.outlineWidth)).toBeGreaterThanOrEqual(5);
   expect(focusStyle.outlineColor).toBe('rgb(255, 216, 77)');
   expect(focusStyle.textDecorationLine).toContain('underline');
   expect(focusStyle.boxShadow).not.toBe('none');
 
   await evidenceTab.press('Enter');
   await expect(evidenceTab).toHaveClass(/active/);
+  await expect(evidenceTab.locator('.nav-current-badge')).toHaveText('Current');
+  await expect(currentValue).toHaveText('Experience Evidence');
   await expect(page.locator('#workspace')).toBeFocused();
-
-  const activeStyle = await evidenceTab.evaluate(element => {
-    const style = getComputedStyle(element);
-    const marker = getComputedStyle(element, '::after');
-    return {
-      borderBottomWidth: style.borderBottomWidth,
-      boxShadow: style.boxShadow,
-      markerHeight: marker.height,
-      markerContent: marker.content
-    };
-  });
-  expect(parseFloat(activeStyle.borderBottomWidth)).toBeGreaterThanOrEqual(2);
-  expect(activeStyle.boxShadow).toContain('inset');
-  expect(parseFloat(activeStyle.markerHeight)).toBeGreaterThanOrEqual(4);
-  expect(activeStyle.markerContent).not.toBe('none');
+  await expect(focusValue).toHaveText('Not on module navigation');
 });
 
 test('core, Companion, email review, and capability surfaces pass automated WCAG preflight', async ({ page }) => {
