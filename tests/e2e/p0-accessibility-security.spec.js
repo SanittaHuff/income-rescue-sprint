@@ -73,7 +73,7 @@ test('module navigation explicitly names current section and keyboard focus', as
   await expect(evidenceTab.locator('.nav-current-badge')).toHaveText('Current');
   await expect(currentValue).toHaveText('Experience Evidence');
   await expect(page.locator('#workspace')).toBeFocused();
-  await expect(focusValue).toHaveText('Not on module navigation');
+  await expect(focusValue).toHaveText('Workspace content');
 });
 
 test('core, Companion, email review, and capability surfaces pass automated WCAG preflight', async ({ page }) => {
