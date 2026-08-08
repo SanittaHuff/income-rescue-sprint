@@ -28,14 +28,24 @@ test('all major product areas are visibly discoverable in narrow-screen navigati
     expect(box.x, `${panel} left edge must remain in the viewport`).toBeGreaterThanOrEqual(0);
     expect(box.x + box.width, `${panel} right edge must remain in the viewport`).toBeLessThanOrEqual(391);
   }
+  console.log('::notice title=Mobile discovery phase::Navigation geometry assertions passed');
 
   await page.locator('.nav-button[data-panel="email-review"]').click();
-  await expect(page.getByRole('heading', { name: 'Recruiter Email Review' })).toBeVisible();
-  await page.locator('.nav-button[data-panel="capabilities"]').click();
-  await expect(page.getByRole('heading', { name: 'Connections & Agent Controls' })).toBeVisible();
+  const emailHeading = page.getByRole('heading', { name: 'Recruiter Email Review' });
+  console.log(`::notice title=Mobile email-review phase::${JSON.stringify({ count: await emailHeading.count(), visible: await emailHeading.isVisible().catch(() => false), focus: await page.locator('#moduleFocusValue').textContent() })}`);
+  await expect(emailHeading, 'Recruiter Email Review heading must render after mobile navigation activation').toBeVisible();
 
+  await page.locator('.nav-button[data-panel="capabilities"]').click();
+  const capabilitiesHeading = page.getByRole('heading', { name: 'Connections & Agent Controls' });
+  console.log(`::notice title=Mobile capabilities phase::${JSON.stringify({ count: await capabilitiesHeading.count(), visible: await capabilitiesHeading.isVisible().catch(() => false), focus: await page.locator('#moduleFocusValue').textContent() })}`);
+  await expect(capabilitiesHeading, 'Connections & Agent Controls heading must render after mobile navigation activation').toBeVisible();
+
+  console.log('::notice title=Mobile screenshot phase::Starting full-page evidence screenshot');
+  const screenshot = await page.screenshot({ fullPage: true });
+  console.log(`::notice title=Mobile screenshot phase::Screenshot captured (${screenshot.length} bytes)`);
   await testInfo.attach('mobile-navigation-discovery', {
-    body: await page.screenshot({ fullPage: true }),
+    body: screenshot,
     contentType: 'image/png'
   });
+  console.log('::notice title=Mobile discovery phase::Test completed');
 });
