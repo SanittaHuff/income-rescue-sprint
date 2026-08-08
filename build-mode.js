@@ -101,6 +101,7 @@ function installModuleNavigationStatus() {
     settings: 'Data & Settings'
   };
   const buttons = [...nav.querySelectorAll('.nav-button')];
+  const workspace = document.getElementById('workspace');
   buttons.forEach(button => {
     const label = moduleLabels[button.dataset.panel] || button.getAttribute('aria-label') || button.textContent.trim();
     button.dataset.moduleLabel = label;
@@ -124,8 +125,10 @@ function installModuleNavigationStatus() {
     if (!active) return;
     currentValue.textContent = active.dataset.moduleLabel;
     buttons.forEach(button => {
+      const isActive = button === active;
       let badge = button.querySelector('.nav-current-badge');
-      if (button === active) {
+      if (isActive) {
+        button.setAttribute('aria-current', 'page');
         if (!badge) {
           badge = document.createElement('span');
           badge.className = 'nav-current-badge';
@@ -134,30 +137,31 @@ function installModuleNavigationStatus() {
           button.appendChild(badge);
         }
       } else {
+        button.removeAttribute('aria-current');
         badge?.remove();
       }
     });
   };
 
-  const setFocusStatus = button => {
-    focusValue.textContent = button?.dataset.moduleLabel || 'Not on module navigation';
-    status.classList.toggle('keyboard-focus-active', Boolean(button));
+  const setFocusStatus = target => {
+    const focusedButton = buttons.find(candidate => candidate === target);
+    const inWorkspace = Boolean(workspace && target && (target === workspace || workspace.contains(target)));
+    focusValue.textContent = focusedButton?.dataset.moduleLabel || (inWorkspace ? 'Workspace content' : 'Not on module navigation');
+    status.classList.toggle('keyboard-focus-active', Boolean(focusedButton));
   };
 
+  document.addEventListener('focusin', event => setFocusStatus(event.target));
+  document.addEventListener('focusout', () => {
+    window.setTimeout(() => setFocusStatus(document.activeElement), 0);
+  });
   buttons.forEach(button => {
-    button.addEventListener('focus', () => setFocusStatus(button));
-    button.addEventListener('blur', () => {
-      window.setTimeout(() => {
-        const focusedButton = buttons.find(candidate => candidate === document.activeElement);
-        setFocusStatus(focusedButton || null);
-      }, 0);
-    });
     button.addEventListener('click', () => window.setTimeout(syncCurrent, 0));
   });
 
   const observer = new MutationObserver(syncCurrent);
   observer.observe(nav, { subtree: true, attributes: true, attributeFilter: ['class'] });
   syncCurrent();
+  setFocusStatus(document.activeElement);
 }
 
 // Only patch known legacy controls. Never rewrite user-authored content or governed status labels.
