@@ -86,6 +86,68 @@ function improveWelcomeKeyboardSafety() {
   });
 }
 
+function installModuleNavigationStatus() {
+  const nav = document.querySelector('.module-nav');
+  if (!nav || document.getElementById('moduleNavStatus')) return;
+
+  const buttons = [...nav.querySelectorAll('.nav-button')];
+  buttons.forEach(button => {
+    button.dataset.moduleLabel = button.textContent.trim();
+  });
+
+  const status = document.createElement('section');
+  status.id = 'moduleNavStatus';
+  status.className = 'module-nav-status card';
+  status.setAttribute('aria-label', 'Module navigation status');
+  status.innerHTML = `
+    <span class="module-status current-status"><strong>Current section:</strong> <span id="moduleCurrentValue">Overview</span></span>
+    <span class="module-status focus-status"><strong>Keyboard focus:</strong> <span id="moduleFocusValue">Not on module navigation</span></span>`;
+  nav.parentNode.insertBefore(status, nav);
+
+  const currentValue = document.getElementById('moduleCurrentValue');
+  const focusValue = document.getElementById('moduleFocusValue');
+
+  const syncCurrent = () => {
+    const active = buttons.find(button => button.classList.contains('active')) || buttons[0];
+    if (!active) return;
+    currentValue.textContent = active.dataset.moduleLabel;
+    buttons.forEach(button => {
+      let badge = button.querySelector('.nav-current-badge');
+      if (button === active) {
+        if (!badge) {
+          badge = document.createElement('span');
+          badge.className = 'nav-current-badge';
+          badge.setAttribute('aria-hidden', 'true');
+          badge.textContent = 'Current';
+          button.appendChild(badge);
+        }
+      } else {
+        badge?.remove();
+      }
+    });
+  };
+
+  const setFocusStatus = button => {
+    focusValue.textContent = button?.dataset.moduleLabel || 'Not on module navigation';
+    status.classList.toggle('keyboard-focus-active', Boolean(button));
+  };
+
+  buttons.forEach(button => {
+    button.addEventListener('focus', () => setFocusStatus(button));
+    button.addEventListener('blur', () => {
+      window.setTimeout(() => {
+        const focusedButton = buttons.find(candidate => candidate === document.activeElement);
+        setFocusStatus(focusedButton || null);
+      }, 0);
+    });
+    button.addEventListener('click', () => window.setTimeout(syncCurrent, 0));
+  });
+
+  const observer = new MutationObserver(syncCurrent);
+  observer.observe(nav, { subtree: true, attributes: true, attributeFilter: ['class'] });
+  syncCurrent();
+}
+
 // Only patch known legacy controls. Never rewrite user-authored content or governed status labels.
 function replaceVisibleText(root = document.body) {
   if (!root || root.nodeType !== Node.ELEMENT_NODE) return;
@@ -167,6 +229,7 @@ function initializeBuildMode() {
   enableWorkspaceProgrammaticFocus();
   installExperiencePreferences();
   improveWelcomeKeyboardSafety();
+  installModuleNavigationStatus();
   installCareerCompanion();
   replaceVisibleText();
   const observer = new MutationObserver(mutations => {
